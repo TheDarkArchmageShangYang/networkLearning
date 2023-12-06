@@ -54,3 +54,6 @@ curl --http3-only https://nghttp2.org:4433/
 ```
 curl --http3 https://nghttp2.org:4433/
 ```
+
+#### 使用
+使用的是ngtcp2，与quicgo不兼容，使用--http3-only选项访问使用quicgo+caddy搭建的网页无法访问
