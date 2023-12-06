@@ -1,0 +1,11 @@
+## proxygen安装及使用
+#### 安装
+```
+git clone https://github.com/facebook/proxygen.git
+cd proxygen/proxygen
+./build.sh
+```
+
+#### 使用心得
+1. 安装时build.sh的31行需要sudo权限，没有权限可以直接把sudo删了或者直接不管
+2. 
