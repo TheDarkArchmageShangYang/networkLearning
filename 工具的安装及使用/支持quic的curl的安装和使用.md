@@ -48,11 +48,11 @@ make install
 #### 测试
 仅使用HTTP/3:
 ```
-curl --http3-only https://nghttp2.org:4433/
+curl -v --http3-only https://nghttp2.org:4433/
 ```
 使用HTTP/3并允许回退到HTTP/2或HTTP/1.1:
 ```
-curl --http3 https://nghttp2.org:4433/
+curl -v --http3 https://nghttp2.org:4433/
 ```
 
 #### 使用
