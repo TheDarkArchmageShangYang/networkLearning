@@ -45,6 +45,11 @@ LDFLAGS="-Wl,-rpath,<somewhere1>/lib64" ./configure --with-openssl=<somewhere1> 
 make
 make install
 ```
+如果没有权限装在/usr/local下，可以把第五步命令改成
+```
+LDFLAGS="-Wl,-rpath,<somewhere1>/lib64" ./configure --with-openssl=<somewhere1> --with-nghttp3=<somewhere2> --with-ngtcp2=<somewhere3> --prefix=<somewhere4>
+```
+然后在<somewhere4/bin>中使用./curl来运行(因为linux基本都自带curl，所以直接用curl访问会使用自带的curl而不是新装的)
 #### 测试
 仅使用HTTP/3:
 ```
