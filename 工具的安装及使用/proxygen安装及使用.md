@@ -20,7 +20,7 @@ cd ..
 ```
 本地访问时host为127.0.0.1，其他为服务器的公网IP
 #### 使用心得
-1. 安装时build.sh的31行需要sudo权限，没有权限可以直接把sudo删了或者直接不管
-2. 第一次编译完成后，后续编译可以把build.sh的426-432行注释掉
-3. 注意server的port对应的UDP端口和h2port对应的TCP的端口都要打开
-4.proxygen与certbot的证书冲突(疑似)
+1.安装时build.sh的31行需要sudo权限，没有权限可以直接把sudo删了或者直接不管<br>
+2.第一次编译完成后，后续编译可以把build.sh的426-432行注释掉<br>
+3.注意server的port对应的UDP端口和h2port对应的TCP的端口都要打开<br>
+4.proxygen与certbot的证书冲突(疑似)<br>
