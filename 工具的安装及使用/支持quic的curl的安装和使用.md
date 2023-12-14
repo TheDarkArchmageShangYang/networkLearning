@@ -1,4 +1,4 @@
-## 支持QUIC的CURL安装
+## 支持QUIC的CURL安装及libcurl库的使用
 
 #### 构建quictls
 
@@ -59,6 +59,19 @@ curl -v --http3-only https://nghttp2.org:4433/
 ```
 curl -v --http3 https://nghttp2.org:4433/
 ```
-
+#### libcurl库使用
+程序中需要添加
+```
+#include <curl/curl.h>
+```
+编译时使用如下命令
+```
+gcc/g++ <filename.c/cpp> -o <fimename> -lcurl
+```
+如果curl的安装没有sudo权限，此时-lcurl仍然指向老的curl(一般为7.81.0)，需要(待更新)
 #### 使用
-使用的是ngtcp2，与quicgo不兼容，使用--http3-only选项访问使用quicgo+caddy搭建的网页无法访问
+1.curl的-k选项可以忽略SSL证书验证<br>
+2.curl的--libcurl <file.c>可以把执行的命令转换为c语言输出到该文件，但是不是100%准确<br>
+3.curl的-v选项可以展示详细信息，方便查看包头<br>
+4.curl的--http3-only不允许HTTP回退，--http3允许回退<br>
+5.libcurl库的使用详见https://curl.se/libcurl/c/<br>
