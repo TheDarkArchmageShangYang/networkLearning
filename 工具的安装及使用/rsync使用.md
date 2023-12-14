@@ -1,7 +1,7 @@
 ## rsync使用
 #### 密码登陆
 ```
-rsync -r -va /home/fzchen/proxygen/ fzchen@60.204.136.199:/home/fzchen/proxygen/
+rsync -va /home/fzchen/proxygen/ fzchen@60.204.136.199:/home/fzchen/proxygen/
 ```
 
 #### 密钥登陆
@@ -18,6 +18,9 @@ cat id_rsa1.pub >> authorized_keys
 ```
 服务器A
 ```
-rsync -r -va -e "ssh -p2220" /home/fzchen/proxygen/ fzchen@60.204.136.199:/home/fzchen/proxygen/
+rsync-va -e "ssh -p2220" /home/fzchen/proxygen/ fzchen@60.204.136.199:/home/fzchen/proxygen/
 ```
 -p表示端口号，22时可以连带-e "ssh"省略
+
+#### 注意事项
+1.如果直接访问IP地址不行可以尝试访问域名
