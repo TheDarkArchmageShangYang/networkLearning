@@ -1,7 +1,6 @@
 ## 支持QUIC的CURL安装及libcurl库的使用
-
+记住安装过程中的<somewhere1/2/3>，在其他部分的编译中有用
 #### 构建quictls
-
 ```
 git clone --depth 1 -b openssl-3.1.4+quic https://github.com/quictls/openssl
 cd openssl
@@ -9,9 +8,7 @@ cd openssl
 make
 make install
 ```
-
 #### 构建nghttp3
-
 ```
 cd ..
 git clone -b v1.1.0 https://github.com/ngtcp2/nghttp3
@@ -21,9 +18,7 @@ autoreconf -i -I /usr/share/aclocal/
 make
 make install
 ```
-
 #### 构建ngtcp2
-
 ```
 cd ..
 git clone -b v1.1.0 https://github.com/ngtcp2/ngtcp2
@@ -33,9 +28,7 @@ autoreconf -i -I /usr/share/aclocal/
 make
 make install
 ```
-
 #### 构建curl
-
 ```
 cd ..
 git clone https://github.com/curl/curl
@@ -66,9 +59,13 @@ curl -v --http3 https://nghttp2.org:4433/
 ```
 编译时使用如下命令
 ```
-gcc/g++ <filename.c/cpp> -o <fimename> -lcurl
+gcc/g++ <文件名.c/cpp> -o <可执行文件名> -lcurl
 ```
-如果curl的安装没有sudo权限，此时-lcurl仍然指向老的curl(一般为7.81.0)，需要(待更新)
+如果curl的安装没有sudo权限，此时-lcurl仍然指向老的curl(一般为7.81.0)，需要使用如下命令
+```
+g++ <文件名.cpp> -o <可执行文件名> -I <curl地址/include/> -L <curl地址/lib/> -lcurl -Wl,-rpath=<curl地址/lib>
+```
+注意#include中头文件是curl/curl.h，所以-I只需要到/include就可以了
 #### 使用
 1.curl的-k选项可以忽略SSL证书验证<br>
 2.curl的--libcurl <file.c>可以把执行的命令转换为c语言输出到该文件，但是不是100%准确<br>
