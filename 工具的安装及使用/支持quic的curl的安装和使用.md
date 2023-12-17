@@ -8,12 +8,13 @@ cd openssl
 make
 make install
 ```
+--prefix选项必须为绝对路径
 #### 构建nghttp3
 ```
 cd ..
 git clone -b v1.1.0 https://github.com/ngtcp2/nghttp3
 cd nghttp3
-autoreconf -i -I /usr/share/aclocal/
+autoreconf -fi
 ./configure --prefix=<somewhere2> --enable-lib-only
 make
 make install
@@ -23,7 +24,7 @@ make install
 cd ..
 git clone -b v1.1.0 https://github.com/ngtcp2/ngtcp2
 cd ngtcp2
-autoreconf -i -I /usr/share/aclocal/
+autoreconf -fi
 ./configure PKG_CONFIG_PATH=<somewhere1>/lib64/pkgconfig:<somewhere2>/lib/pkgconfig LDFLAGS="-Wl,-rpath,<somewhere1>/lib64" --prefix=<somewhere3> --enable-lib-only
 make
 make install
@@ -33,8 +34,8 @@ make install
 cd ..
 git clone https://github.com/curl/curl
 cd curl
-autoreconf -i -I /usr/share/aclocal/
-LDFLAGS="-Wl,-rpath,<somewhere1>/lib64" ./configure --with-openssl=<somewhere1> --with-nghttp3=<somewhere2> --with-ngtcp2=<somewhere3>
+autoreconf -fi
+LDFLAGS="-Wl,-rpath,<somewhere1>/lib64" ./configure --with-openssl=<somewhere1> --with-nghttp3=<somewhere2> --with-ngtcp2=<somewhere3> --prefix=<somewhere4>
 make
 make install
 ```
