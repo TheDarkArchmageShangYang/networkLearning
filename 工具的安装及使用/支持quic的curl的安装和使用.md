@@ -24,7 +24,7 @@ cd ..
 git clone -b v1.1.0 https://github.com/ngtcp2/ngtcp2
 cd ngtcp2
 autoreconf -i -I /usr/share/aclocal/
-./configure PKG_CONFIG_PATH=<somewhere1>/lib64/pkgconfig:<somewhere2>/lib64/pkgconfig LDFLAGS="-Wl,-rpath,<somewhere1>/lib64" --prefix=<somewhere3> --enable-lib-only
+./configure PKG_CONFIG_PATH=<somewhere1>/lib64/pkgconfig:<somewhere2>/lib/pkgconfig LDFLAGS="-Wl,-rpath,<somewhere1>/lib64" --prefix=<somewhere3> --enable-lib-only
 make
 make install
 ```
