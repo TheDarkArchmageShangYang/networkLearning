@@ -1,6 +1,6 @@
 ## python画图
-python推荐使用matplotlib画图
-参考链接(https://blog.csdn.net/weixin_41558411/article/details/115582012?ops_request_misc=&request_id=&biz_id=102&utm_term=python%E7%94%BB%E5%9B%BE&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-115582012.142^v96^pc_search_result_base8&spm=1018.2226.3001.4187)
+python推荐使用matplotlib画图<br>
+[参考链接](https://blog.csdn.net/weixin_41558411/article/details/115582012?ops_request_misc=&request_id=&biz_id=102&utm_term=python%E7%94%BB%E5%9B%BE&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-115582012.142^v96^pc_search_result_base8&spm=1018.2226.3001.4187)
 #### 常用API
 ###### 导入模块
 ```
