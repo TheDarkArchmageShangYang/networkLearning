@@ -1,0 +1,106 @@
+from matplotlib import pyplot as plt
+import numpy as np
+import seaborn as sns
+
+sns.set_style({'font.sans-serif':['simhei','Arial']})
+
+bandwidth = np.array([512,1024,768])
+loss = np.array([0.01,2,4,6,8,10])
+rtt = np.array([52.5, 102.5, 152.5, 202.5, 252.5])
+
+data = np.zeros((3,6,5))
+data[1][5][0] = 4854.62
+data[1][5][1] = 5008.96
+data[1][5][2] = 5219.52
+data[1][5][3] = 5363.11
+data[1][5][4] = 5656.56
+
+data[1][4][0] = 4764.94
+data[1][4][1] = 4900.13
+data[1][4][2] = 5108.48
+data[1][4][3] = 5256.92
+data[1][4][4] = 7286.23
+
+data[1][3][0] = 4705.74
+data[1][3][1] = 4939.89
+data[1][3][2] = 4974.74
+data[1][3][3] = 5291.91
+data[1][3][4] = 5389.59
+
+data[1][2][0] = 4679.01
+data[1][2][1] = 4772.40
+data[1][2][2] = 4906.59
+data[1][2][3] = 5053.11
+data[1][2][4] = 5192.19
+
+data[1][1][0]
+data[1][1][1]
+data[1][1][2]
+data[1][1][3]
+data[1][1][4]
+
+data[1][0][0] = 4678.57
+data[1][0][1] = 4649.30
+data[1][0][2] = 4705.68
+data[1][0][3]
+data[1][0][4]
+
+control = np.zeros((3,6,5))
+control[1][5][0] = 4734.76
+control[1][5][1] = 4873.47
+control[1][5][2] = 5046.42
+control[1][5][3] = 5247.35
+control[1][5][4] = 5485.45
+
+control[1][4][0] = 4591.9
+control[1][4][1]
+control[1][4][2]
+control[1][4][3]
+control[1][4][4]
+
+control[1][3][0] = 4452.18
+control[1][3][1] = 4560.52
+control[1][3][2] = 4692.12
+control[1][3][3] = 4842.43
+control[1][3][4] = 5016.25
+
+control[1][2][0] = 4315.82
+control[1][2][1] = 4406.76
+control[1][2][2] = 4514.87
+control[1][2][3] = 4636.94
+control[1][2][4] = 4776.35
+
+control[1][2][0]
+control[1][2][1]
+control[1][2][2]
+control[1][2][3]
+control[1][2][4]
+
+control[1][1][0]
+control[1][1][1]
+control[1][1][2]
+control[1][1][3]
+control[1][1][4]
+
+x = 1
+y = 3
+print("data[",x,"][",y,"]",sep="")
+print(data[x][y])
+print("control[",x,"][",y,"]",sep="")
+print(control[x][y])
+print("error")
+print(abs(data[x][y]-control[x][y])/data[x][y])
+
+plt.subplot(1,2,1)
+plt.plot(rtt, data[x][y],marker="*",color="r",linestyle="-")
+plt.plot(rtt, control[x][y],marker="*",color="b",linestyle="--")
+
+plt.subplot(1,2,2)
+plt.plot(rtt, (data[x][y]-control[x][y])/data[x][y],marker="*",color="g",linestyle="-")
+plt.yticks(np.arange(0,0.1,0.01))
+
+plt.xlabel("")
+plt.ylabel("")
+plt.title("")
+#plt.legend(['', '', ''])
+plt.show()
