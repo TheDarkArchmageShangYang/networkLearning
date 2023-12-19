@@ -9,41 +9,41 @@ loss = np.array([0.01,2,4,6,8,10])
 rtt = np.array([52.5, 102.5, 152.5, 202.5, 252.5])
 
 data = np.zeros((3,6,5))
-data[1][5][0] = 4854.62
-data[1][5][1] = 5008.96
-data[1][5][2] = 5219.52
-data[1][5][3] = 5363.11
-data[1][5][4] = 5656.56
+data[1][5][0] = 4854.64
+data[1][5][1] = 5003.48
+data[1][5][2] = 5194.63
+data[1][5][3] = 5343.53
+data[1][5][4] = 5636.46
 
-data[1][4][0] = 4764.94
-data[1][4][1] = 4900.13
-data[1][4][2] = 5108.48
-data[1][4][3] = 5256.92
-data[1][4][4] = 7286.23
+data[1][4][0] = 4770.24
+data[1][4][1] = 4909.48
+data[1][4][2] = 5093.83
+data[1][4][3] = 5235.35
+data[1][4][4] = 5517.19
 
-data[1][3][0] = 4705.74
-data[1][3][1] = 4939.89
+data[1][3][0] = 4711.78
+data[1][3][1] = 4823.83
 data[1][3][2] = 4974.74
-data[1][3][3] = 5291.91
-data[1][3][4] = 5389.59
+data[1][3][3] = 5132.18
+data[1][3][4] = 5357.78
 
-data[1][2][0] = 4679.01
-data[1][2][1] = 4772.40
-data[1][2][2] = 4906.59
-data[1][2][3] = 5053.11
-data[1][2][4] = 5192.19
+data[1][2][0] = 4673.64
+data[1][2][1] = 4722.03
+data[1][2][2] = 4915.34
+data[1][2][3] = 5062.18
+data[1][2][4] = 5211.28
 
-data[1][1][0]
-data[1][1][1]
-data[1][1][2]
-data[1][1][3]
-data[1][1][4]
+data[1][1][0] = 4674.59
+data[1][1][1] = 4778.83
+data[1][1][2] = 4907.48
+data[1][1][3] = 4992.84
+data[1][1][4] = 5118.83
 
-data[1][0][0] = 4678.57
-data[1][0][1] = 4649.30
-data[1][0][2] = 4705.68
-data[1][0][3]
-data[1][0][4]
+data[1][0][0] = 4670.57
+data[1][0][1] = 4645.01
+data[1][0][2] = 4697.75
+data[1][0][3] = 4761.64
+data[1][0][4] = 4796.71
 
 control = np.zeros((3,6,5))
 control[1][5][0] = 4734.76
@@ -52,11 +52,11 @@ control[1][5][2] = 5046.42
 control[1][5][3] = 5247.35
 control[1][5][4] = 5485.45
 
-control[1][4][0] = 4591.9
-control[1][4][1]
-control[1][4][2]
-control[1][4][3]
-control[1][4][4]
+control[1][4][0] = 4591.90
+control[1][4][1] = 4716.02
+control[1][4][2] = 4868.86
+control[1][4][3] = 5044.93
+control[1][4][4] = 5250.88
 
 control[1][3][0] = 4452.18
 control[1][3][1] = 4560.52
@@ -70,33 +70,49 @@ control[1][2][2] = 4514.87
 control[1][2][3] = 4636.94
 control[1][2][4] = 4776.35
 
-control[1][2][0]
-control[1][2][1]
-control[1][2][2]
-control[1][2][3]
-control[1][2][4]
+control[1][1][0] = 4182.79
+control[1][1][1] = 4254.45
+control[1][1][2] = 4335.81
+control[1][1][3] = 4425.28
+control[1][1][4] = 4524.91
 
-control[1][1][0]
-control[1][1][1]
-control[1][1][2]
-control[1][1][3]
-control[1][1][4]
+control[1][0][0] = 4053.14
+control[1][0][1] = 4103.26
+control[1][0][2] = 4153.43
+control[1][0][3] = 4203.65
+control[1][0][4] = 4253.93
 
 x = 1
-y = 3
-print("data[",x,"][",y,"]",sep="")
-print(data[x][y])
-print("control[",x,"][",y,"]",sep="")
-print(control[x][y])
-print("error")
-print(abs(data[x][y]-control[x][y])/data[x][y])
+
+xnum = 1
+ynum = 4
+y11 = data[xnum][ynum]
+y12 = control[xnum][ynum]
+y21 = data[xnum][:,ynum]
+y22 = control[xnum][:,ynum]
+if x == 1:
+    x = rtt
+    y1 = y11
+    y2 = y12
+    plt.suptitle("bw=1mbit/s loss=" + str(loss[ynum]) + "%", y=0.05)
+elif x == 2:
+    x = loss
+    y1 = y21
+    y2 = y22
+    plt.suptitle("bw=1mbit/s rtt=" + str(rtt[ynum]) + "ms", y=0.05)
+print("data[x][y]: ")
+print(y1)
+print("control[x][y]: ")
+print(y2)
+print("error: ")
+print(abs(y1-y2)/y1)
 
 plt.subplot(1,2,1)
-plt.plot(rtt, data[x][y],marker="*",color="r",linestyle="-")
-plt.plot(rtt, control[x][y],marker="*",color="b",linestyle="--")
+plt.plot(x, y1,marker="*",color="r",linestyle="-")
+plt.plot(x, y2,marker="*",color="b",linestyle="--")
 
 plt.subplot(1,2,2)
-plt.plot(rtt, (data[x][y]-control[x][y])/data[x][y],marker="*",color="g",linestyle="-")
+plt.plot(x, abs(y1-y2)/y1,marker="*",color="g",linestyle="-")
 plt.yticks(np.arange(0,0.1,0.01))
 
 plt.xlabel("")
