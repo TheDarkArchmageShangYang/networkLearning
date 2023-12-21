@@ -4,117 +4,547 @@ import seaborn as sns
 
 sns.set_style({'font.sans-serif':['simhei','Arial']})
 
-bandwidth = np.array([512,1024,768])
-loss = np.array([0.01,2,4,6,8,10])
+bandwidth = np.array([512,768,1024])
+loss = np.array([0.1,0.5,1,2,3,4,6,8,10,15,20,30])
+loss1 = np.array([2,4,6,8,10])
 rtt = np.array([52.5, 102.5, 152.5, 202.5, 252.5])
 
-data = np.zeros((3,6,5))
-data[1][5][0] = 4854.64
-data[1][5][1] = 5003.48
-data[1][5][2] = 5194.63
-data[1][5][3] = 5343.53
-data[1][5][4] = 5636.46
+data = np.zeros((3,12,5))
+data[0][11][0] = 6540.30
+data[0][11][1] = 7003.48
+data[0][11][2] = 7327.38
+data[0][11][3] = 7865.42
+data[0][11][4] = 8972.48
 
-data[1][4][0] = 4770.24
-data[1][4][1] = 4909.48
-data[1][4][2] = 5093.83
-data[1][4][3] = 5235.35
-data[1][4][4] = 5517.19
+data[0][10][0] = 5418.08
+data[0][10][1] = 5688.02
+data[0][10][2] = 5875.11
+data[0][10][3] = 6129.72
+data[0][10][4] = 6526.22
 
-data[1][3][0] = 4711.78
-data[1][3][1] = 4823.83
-data[1][3][2] = 4974.74
-data[1][3][3] = 5132.18
-data[1][3][4] = 5357.78
+data[0][9][0] = 5056.42
+data[0][9][1] = 5298.92
+data[0][9][2] = 5469.93
+data[0][9][3] = 5656.16
+data[0][9][4] = 6055.47
 
-data[1][2][0] = 4673.64
-data[1][2][1] = 4722.03
-data[1][2][2] = 4915.34
-data[1][2][3] = 5062.18
-data[1][2][4] = 5211.28
+data[0][8][0] = 9104.44
+data[0][8][1] = 9460.89
+data[0][8][2] = 9777.55
+data[0][8][3] = 9924.25
+data[0][8][4] = 10085.20
 
-data[1][1][0] = 4674.59
-data[1][1][1] = 4778.83
-data[1][1][2] = 4907.48
-data[1][1][3] = 4992.84
-data[1][1][4] = 5118.83
+data[0][7][0] = 9007.32
+data[0][7][1] = 9385.44
+data[0][7][2] = 9615.49
+data[0][7][3] = 9769.32
+data[0][7][4] = 9924.78
 
-data[1][0][0] = 4670.57
-data[1][0][1] = 4645.01
-data[1][0][2] = 4697.75
-data[1][0][3] = 4761.64
-data[1][0][4] = 4796.71
+data[0][6][0] = 9027.63
+data[0][6][1] = 9292.16
+data[0][6][2] = 9510.12
+data[0][6][3] = 9726.69
+data[0][6][4] = 9885.12
 
-control = np.zeros((3,6,5))
-control[1][5][0] = 4734.76
-control[1][5][1] = 4873.47
-control[1][5][2] = 5046.42
-control[1][5][3] = 5247.35
-control[1][5][4] = 5485.45
+data[0][5][0] = 8947.54
+data[0][5][1] = 9276.60
+data[0][5][2] = 9494.82
+data[0][5][3] = 9581.64
+data[0][5][4] = 9760.72
 
-control[1][4][0] = 4591.90
-control[1][4][1] = 4716.02
-control[1][4][2] = 4868.86
-control[1][4][3] = 5044.93
-control[1][4][4] = 5250.88
+data[0][4][0] = 4652.95
+data[0][4][1] = 4772.48
+data[0][4][2] = 4882.48
+data[0][4][3] = 4997.85
+data[0][4][4] = 5140.28
 
-control[1][3][0] = 4452.18
-control[1][3][1] = 4560.52
-control[1][3][2] = 4692.12
-control[1][3][3] = 4842.43
-control[1][3][4] = 5016.25
+data[0][3][0] = 8947.65
+data[0][3][1] = 9270.76
+data[0][3][2] = 9449.16
+data[0][3][3] = 9542.15
+data[0][3][4] = 9580.40
 
-control[1][2][0] = 4315.82
-control[1][2][1] = 4406.76
-control[1][2][2] = 4514.87
-control[1][2][3] = 4636.94
-control[1][2][4] = 4776.35
+data[0][2][0] = 4661.42
+data[0][2][1] = 4764.49
+data[0][2][2] = 4845.99
+data[0][2][3] = 4911.82
+data[0][2][4] = 5060.88
 
-control[1][1][0] = 4182.79
-control[1][1][1] = 4254.45
-control[1][1][2] = 4335.81
-control[1][1][3] = 4425.28
-control[1][1][4] = 4524.91
+data[0][1][0] = 4655.18
+data[0][1][1] = 4748.33
+data[0][1][2] = 4837.57
+data[0][1][3] = 4915.97
+data[0][1][4] = 5050.11
 
-control[1][0][0] = 4053.14
-control[1][0][1] = 4103.26
-control[1][0][2] = 4153.43
-control[1][0][3] = 4203.65
-control[1][0][4] = 4253.93
+data[0][0][0] = 4657.38
+data[0][0][1] = 4753.80
+data[0][0][2] = 4823.72
+data[0][0][3] = 4915.88
+data[0][0][4] = 5054.08
+
+data[1][11][0] = 6540.30
+data[1][11][1] = 7003.48
+data[1][11][2] = 7327.38
+data[1][11][3] = 7865.42
+data[1][11][4] = 8972.48
+
+data[1][10][0] = 5418.08
+data[1][10][1] = 5688.02
+data[1][10][2] = 5875.11
+data[1][10][3] = 6129.72
+data[1][10][4] = 6526.22
+
+data[1][9][0] = 5056.42
+data[1][9][1] = 5298.92
+data[1][9][2] = 5469.93
+data[1][9][3] = 5656.16
+data[1][9][4] = 6055.47
+
+data[1][8][0] = 6183.03
+data[1][8][1] = 6428.55
+data[1][8][2] = 6556.75
+data[1][8][3] = 6802.41
+data[1][8][4] = 7014.75
+
+data[1][7][0] = 6128.63
+data[1][7][1] = 6340.71
+data[1][7][2] = 6456.86
+data[1][7][3] = 6615.37
+data[1][7][4] = 6823.73
+
+data[1][6][0] = 6075.11
+data[1][6][1] = 6252.67
+data[1][6][2] = 6402.04
+data[1][6][3] = 6588.59
+data[1][6][4] = 6672.89
+
+data[1][5][0] = 6036.04
+data[1][5][1] = 6231.64
+data[1][5][2] = 6369.48
+data[1][5][3] = 6511.58
+data[1][5][4] = 6685.01
+
+data[1][4][0] = 4652.95
+data[1][4][1] = 4772.48
+data[1][4][2] = 4882.48
+data[1][4][3] = 4997.85
+data[1][4][4] = 5140.28
+
+data[1][3][0] = 6003.24
+data[1][3][1] = 6188.01
+data[1][3][2] = 6342.02
+data[1][3][3] = 6438.48
+data[1][3][4] = 6501.13
+
+data[1][2][0] = 4661.42
+data[1][2][1] = 4764.49
+data[1][2][2] = 4845.99
+data[1][2][3] = 4911.82
+data[1][2][4] = 5060.88
+
+data[1][1][0] = 4655.18
+data[1][1][1] = 4748.33
+data[1][1][2] = 4837.57
+data[1][1][3] = 4915.97
+data[1][1][4] = 5050.11
+
+data[1][0][0] = 4657.38
+data[1][0][1] = 4753.80
+data[1][0][2] = 4823.72
+data[1][0][3] = 4915.88
+data[1][0][4] = 5054.08
+
+data[2][11][0] = 6540.30
+data[2][11][1] = 7003.48
+data[2][11][2] = 7327.38
+data[2][11][3] = 7865.42
+data[2][11][4] = 8972.48
+
+data[2][10][0] = 5418.08
+data[2][10][1] = 5688.02
+data[2][10][2] = 5925.11
+data[2][10][3] = 6279.72
+data[2][10][4] = 6726.22
+
+data[2][9][0] = 5056.42
+data[2][9][1] = 5298.92
+data[2][9][2] = 5469.93
+data[2][9][3] = 5726.16
+data[2][9][4] = 6055.47
+
+data[2][8][0] = 4854.64
+data[2][8][1] = 5003.48
+data[2][8][2] = 5194.63
+data[2][8][3] = 5343.53
+data[2][8][4] = 5636.46
+
+data[2][7][0] = 4770.24
+data[2][7][1] = 4909.48
+data[2][7][2] = 5093.83
+data[2][7][3] = 5235.35
+data[2][7][4] = 5517.19
+
+data[2][6][0] = 4711.78
+data[2][6][1] = 4823.83
+data[2][6][2] = 4974.74
+data[2][6][3] = 5132.18
+data[2][6][4] = 5357.78
+
+data[2][5][0] = 4673.64
+data[2][5][1] = 4782.03
+data[2][5][2] = 4915.34
+data[2][5][3] = 5062.18
+data[2][5][4] = 5231.28
+
+data[2][4][0] = 4652.95
+data[2][4][1] = 4772.48
+data[2][4][2] = 4882.48
+data[2][4][3] = 4997.85
+data[2][4][4] = 5140.28
+
+data[2][3][0] = 4674.59
+data[2][3][1] = 4778.83
+data[2][3][2] = 4865.92
+data[2][3][3] = 4992.84
+data[2][3][4] = 5118.83
+
+data[2][2][0] = 4661.42
+data[2][2][1] = 4764.49
+data[2][2][2] = 4845.99
+data[2][2][3] = 4911.82
+data[2][2][4] = 5060.88
+
+data[2][1][0] = 4655.18
+data[2][1][1] = 4748.33
+data[2][1][2] = 4837.57
+data[2][1][3] = 4915.97
+data[2][1][4] = 5050.11
+
+data[2][0][0] = 4657.38
+data[2][0][1] = 4753.80
+data[2][0][2] = 4823.72
+data[2][0][3] = 4915.88
+data[2][0][4] = 5054.08
+
+control = np.zeros((3,12,5))
+control[0][0][0] = 8067.27
+control[0][0][1] = 8117.98
+control[0][0][2] = 8168.97
+control[0][0][3] = 8220.24
+control[0][0][4] = 8271.79
+
+control[0][1][0] = 8108.91
+control[0][1][1] = 8162.46
+control[0][1][2] = 8217.38
+control[0][1][3] = 8273.67
+control[0][1][4] = 8331.3
+
+control[0][2][0] = 8161.31
+control[0][2][1] = 8218.39
+control[0][2][2] = 8278.13
+control[0][2][3] = 8340.54
+control[0][2][4] = 8405.57
+
+control[0][3][0] = 8267.34
+control[0][3][1] = 8331.33
+control[0][3][2] = 8400.45
+control[0][3][3] = 8474.65
+control[0][3][4] = 8553.81
+
+control[0][4][0] = 8375.02
+control[0][4][1] = 8445.77
+control[0][4][2] = 8523.9
+control[0][4][3] = 8609.33
+control[0][4][4] = 8701.85
+
+control[0][5][0] = 8484.41
+control[0][5][1] = 8561.76
+control[0][5][2] = 8648.54
+control[0][5][3] = 8744.7
+control[0][5][4] = 8849.89
+
+control[0][6][0] = 8708.55
+control[0][6][1] = 8798.6
+control[0][6][2] = 8901.65
+control[0][6][3] = 9017.91
+control[0][6][4] = 9146.74
+
+control[0][7][0] = 8940.23
+control[0][7][1] = 9042.34
+control[0][7][2] = 9160.38
+control[0][7][3] = 9295.19
+control[0][7][4] = 9445.94
+
+control[0][8][0] = 9179.98
+control[0][8][1] = 9293.52
+control[0][8][2] = 9425.38
+control[0][8][3] = 9577.55
+control[0][8][4] = 9749.04
+
+control[0][9][0] = 9818.56
+control[0][9][1] = 9958.51
+control[0][9][2] = 10120.7
+control[0][9][3] = 10313.1
+control[0][9][4] = 10534.6
+
+control[0][10][0] = 10522.1
+control[0][10][1] = 10687.2
+control[0][10][2] = 10875.6
+control[0][10][3] = 11108.1
+control[0][10][4] = 11382.5
+
+control[0][11][0] = 12184.2
+control[0][11][1] = 12417.7
+control[0][11][2] = 12659.9
+control[0][11][3] = 12993.9
+control[0][11][4] = 13409.4
+
+
+control[1][0][0] = 5396.68
+control[1][0][1] = 5447.56
+control[1][0][2] = 5498.86
+control[1][0][3] = 5550.67
+control[1][0][4] = 5602.8
+
+control[1][1][0] = 5428.45
+control[1][1][1] = 5482.82
+control[1][1][2] = 5539.23
+control[1][1][3] = 5598.15
+control[1][1][4] = 5658.62
+
+control[1][2][0] = 5468.38
+control[1][2][1] = 5527.04
+control[1][2][2] = 5589.71
+control[1][2][3] = 5657.22
+control[1][2][4] = 5727.7
+
+control[1][3][0] = 5549.05
+control[1][3][1] = 5616.04
+control[1][3][2] = 5690.72
+control[1][3][3] = 5774.55
+control[1][3][4] = 5863.84
+
+control[1][4][0] = 5630.78
+control[1][4][1] = 5705.8
+control[1][4][2] = 5791.88
+control[1][4][3] = 5891.04
+control[1][4][4] = 5997.79
+
+control[1][5][0] = 5713.64
+control[1][5][1] = 5796.35
+control[1][5][2] = 5893.29
+control[1][5][3] = 6006.93
+control[1][5][4] = 6130.06
+
+control[1][6][0] = 5882.83
+control[1][6][1] = 5980.01
+control[1][6][2] = 6097.24
+control[1][6][3] = 6237.83
+control[1][6][4] = 6391.39
+
+control[1][7][0] = 6056.98
+control[1][7][1] = 6167.41
+control[1][7][2] = 6303.32
+control[1][7][3] = 6468.99
+control[1][7][4] = 6651.07
+
+control[1][8][0] = 6236.46
+control[1][8][1] = 6358.99
+control[1][8][2] = 6512.39
+control[1][8][3] = 6702.07
+control[1][8][4] = 6911.86
+
+control[1][9][0] = 6711.66
+control[1][9][1] = 6860.11
+control[1][9][2] = 7054.34
+control[1][9][3] = 7303.94
+control[1][9][4] = 7584.86
+
+control[1][10][0] = 7232.38
+control[1][10][1] = 7402.36
+control[1][10][2] = 7638.01
+control[1][10][3] = 7954.94
+control[1][10][4] = 8317.38
+
+control[1][11][0] = 8469.63
+control[1][11][1] = 8683.22
+control[1][11][2] = 9029.59
+control[1][11][3] = 9541.66
+control[1][11][4] = 10131.8
+
+
+control[2][0][0] = 4061.35
+control[2][0][1] = 4112.5
+control[2][0][2] = 4164.2
+control[2][0][3] = 4216.38
+control[2][0][4] = 4269.19
+
+control[2][1][0] = 4088.03
+control[2][1][1] = 4143.71
+control[2][1][2] = 4202.08
+control[2][1][3] = 4262.81
+control[2][1][4] = 4326.51
+
+control[2][2][0] = 4121.55
+control[2][2][1] = 4182.77
+control[2][2][2] = 4249.23
+control[2][2][3] = 4320.18
+control[2][2][4] = 4396.82
+
+control[2][3][0] = 4189.15
+control[2][3][1] = 4261.07
+control[2][3][2] = 4342.92
+control[2][3][3] = 4433.04
+control[2][3][4] = 4533.59
+
+control[2][4][0] = 4257.51
+control[2][4][1] = 4339.65
+control[2][4][2] = 4435.95
+control[2][4][3] = 4543.83
+control[2][4][4] = 4666.28
+
+control[2][5][0] = 4326.66
+control[2][5][1] = 4418.56
+control[2][5][2] = 4528.51
+control[2][5][3] = 4653.03
+control[2][5][4] = 4795.91
+
+control[2][6][0] = 4467.43
+control[2][6][1] = 4577.55
+control[2][6][2] = 4712.91
+control[2][6][3] = 4868.31
+control[2][6][4] = 5049.33
+
+control[2][7][0] = 4611.73
+control[2][7][1] = 4738.53
+control[2][7][2] = 4897.47
+control[2][7][3] = 5081.82
+control[2][7][4] = 5299.34
+
+control[2][8][0] = 4759.85
+control[2][8][1] = 4902.04
+control[2][8][2] = 5083.48
+control[2][8][3] = 5296.03
+control[2][8][4] = 5550.11
+
+control[2][9][0] = 5149.4
+control[2][9][1] = 5326.17
+control[2][9][2] = 5563.51
+control[2][9][3] = 5848.92
+control[2][9][4] = 6202.11
+
+control[2][10][0] = 5572.88
+control[2][10][1] = 5782.7
+control[2][10][2] = 6082.98
+control[2][10][3] = 6452.95
+control[2][10][4] = 6926.06
+
+control[2][11][0] = 6574.07
+control[2][11][1] = 6871.04
+control[2][11][2] = 7360.15
+control[2][11][3] = 7973.72
+control[2][11][4] = 8793.32
 
 x = 1
 
-xnum = 1
-ynum = 4
-y11 = data[xnum][ynum]
-y12 = control[xnum][ynum]
-y21 = data[xnum][:,ynum]
-y22 = control[xnum][:,ynum]
+xnum = 2
 if x == 1:
-    x = rtt
-    y1 = y11
-    y2 = y12
-    plt.suptitle("bw=1mbit/s loss=" + str(loss[ynum]) + "%", y=0.05)
+    j = 0;
+    for i in [3,5,6,7,8]:
+        x = rtt
+        y1 = data[xnum][i]
+        y2 = control[xnum][i]
+        plt.suptitle("bw=1mbit/s时传输时间和误差随着rtt变化的关系", y=0.05,fontsize=32)
+        plt.subplot(5, 2, 2*j+1)
+        plt.xlabel("RTT/ms")
+        plt.ylabel("传输时间/ms",fontsize=16)
+        plt.plot(x, y1, marker="*", color="r", linestyle="-")
+        plt.plot(x, y2, marker="*", color="b", linestyle="--")
+        plt.text(x=50, y=y1[4]-100, fontsize=20, s="loss=" + str(loss[i]) + "%")
+
+        plt.subplot(5, 2, 2*j+2)
+        plt.xlabel("RTT/ms")
+        plt.ylabel("误差",fontsize=16)
+        plt.plot(x, abs(y1 - y2) / y1, marker="*", color="g", linestyle="-")
+        plt.yticks(np.arange(0, 0.16, 0.02))
+        plt.text(x=225, y=0.12, fontsize=20, s="loss=" + str(loss[i]) + "%")
+        j = j + 1;
 elif x == 2:
-    x = loss
-    y1 = y21
-    y2 = y22
-    plt.suptitle("bw=1mbit/s rtt=" + str(rtt[ynum]) + "ms", y=0.05)
-print("data[x][y]: ")
-print(y1)
-print("control[x][y]: ")
-print(y2)
-print("error: ")
-print(abs(y1-y2)/y1)
+    for i in range(0,5):
+        x = loss
+        y1 = data[xnum][:,i]
+        y2 = control[xnum][:,i]
+        plt.suptitle("bw=1mbit/s时传输时间和误差随着丢包率变化的关系", y=0.15, fontsize=32)
+        plt.subplot(6, 2, 2 * i + 1)
+        plt.xlabel("loss/%")
+        plt.ylabel("传输时间/ms",fontsize=16)
+        plt.plot(x, y1, marker="*", color="r", linestyle="-")
+        plt.plot(x, y2, marker="*", color="b", linestyle="--")
+        plt.text(x=25, y=y2[4], fontsize=20, s="rtt=" + str(rtt[i]) + "ms")
 
-plt.subplot(1,2,1)
-plt.plot(x, y1,marker="*",color="r",linestyle="-")
-plt.plot(x, y2,marker="*",color="b",linestyle="--")
+        plt.subplot(6, 2, 2 * i + 2)
+        plt.xlabel("loss/%")
+        plt.ylabel("误差",fontsize=16)
+        plt.plot(x, abs(y1 - y2) / y1, marker="*", color="g", linestyle="-")
+        plt.yticks(np.arange(0, 0.16, 0.02))
+        plt.text(x=25, y=0.12, fontsize=20, s="rtt=" + str(rtt[i]) + "ms")
+elif x == 3:
+    j = 0
+    for i in [3,5,6,7,8]:
+        x = rtt
+        y1 = data[xnum][i]
+        y2 = control[xnum][i]
+        plt.suptitle("bw=512kbit/s时传输时间和误差随丢包率变化的关系", y=0.05)
+        plt.subplot(5, 2, 2 * j + 1)
+        plt.xlabel("RTT")
+        plt.ylabel("传输时间")
+        plt.plot(x, y1, marker="*", color="r", linestyle="-")
+        plt.plot(x, y2, marker="*", color="b", linestyle="--")
 
-plt.subplot(1,2,2)
-plt.plot(x, abs(y1-y2)/y1,marker="*",color="g",linestyle="-")
-plt.yticks(np.arange(0,0.1,0.01))
+        plt.subplot(5, 2, 2 * j + 2)
+        plt.xlabel("RTT")
+        plt.ylabel("误差")
+        plt.plot(x, abs(y1 - y2) / y1, marker="*", color="g", linestyle="-")
+        plt.yticks(np.arange(0, 0.16, 0.02))
+        j = j + 1
+elif x == 4:
+    for i in range(0,5):
+        x = loss1
+        y1 = np.array([data[xnum][3][i],data[xnum][5][i],data[xnum][6][i],data[xnum][7][i],data[xnum][8][i]])
+        y2 = np.array([control[xnum][3][i],control[xnum][5][i],control[xnum][6][i],control[xnum][7][i],control[xnum][8][i]])
+        plt.suptitle("rtt=102.5ms", y=0.05, fontsize=32)
+        plt.subplot(5, 2, 2 * i + 1)
+        plt.xlabel("loss")
+        plt.ylabel("传输时间")
+        plt.plot(x, y1, marker="*", color="r", linestyle="-")
+        plt.plot(x, y2, marker="*", color="b", linestyle="--")
 
+        plt.subplot(5, 2, 2 * i + 2)
+        plt.xlabel("loss")
+        plt.ylabel("误差")
+        plt.plot(x, abs(y1 - y2) / y1, marker="*", color="g", linestyle="-")
+        plt.yticks(np.arange(0, 0.16, 0.02))
+elif x == 5:
+    j = 0
+    for i in [3, 5, 6, 7, 8]:
+        x = bandwidth
+        y1 = data[:,i,1]
+        y2 = control[:,i,1]
+        plt.suptitle("rtt=102.5ms时传输时间和误差随着带宽变化的关系", y=0.05, fontsize=32)
+        plt.subplot(5, 2, 2 * j + 1)
+        plt.xlabel("带宽/kbps")
+        plt.ylabel("传输时间/ms",fontsize=16)
+        plt.plot(x, y1, marker="*", color="r", linestyle="-")
+        plt.plot(x, y2, marker="*", color="b", linestyle="--")
+        plt.text(x=950,y=8800,fontsize=20,s="loss="+str(loss[i])+"%")
+
+        plt.subplot(5, 2, 2 * j + 2)
+        plt.xlabel("带宽/kbps")
+        plt.ylabel("误差",fontsize=16)
+        plt.plot(x, abs(y1 - y2) / y1, marker="*", color="g", linestyle="-")
+        plt.yticks(np.arange(0, 0.16, 0.02))
+        plt.text(x=950, y=0.12, fontsize=20, s="loss=" + str(loss[i]) + "%")
+        j = j + 1
 plt.xlabel("")
 plt.ylabel("")
 plt.title("")
