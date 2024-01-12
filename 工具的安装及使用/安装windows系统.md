@@ -1,7 +1,7 @@
 ## 安装windows系统
 #### 通过官方下载工具下载镜像
 1.下载官方安装工具<br>
-[下载地址](https://www.microsoft.com/zh-cn/software-download/windows10)
+[下载地址](https://www.microsoft.com/zh-cn/software-download/windows10)<br>
 点击"立即下载工具"<br>
 ![a31783408f3f43c38f862554191f6efc](https://github.com/TheDarkArchmageShangYang/networkLearning/assets/149142839/1164785e-db97-439b-a3b7-a8155728e06c)
 2.制作启动盘
