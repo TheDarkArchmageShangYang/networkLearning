@@ -51,3 +51,15 @@ tmux attach -t <会话名>
 ```
 tmux kill-session -t <会话名>
 ```
+###### 支持鼠标滚动
+1.通过tmux界面输入(对于其他tmux不起作用)
+进入tmux界面，按ctrl+B后，再按冒号:，进入命令行
+输入
+```
+set -g mouse on
+```
+2.通过配置文件
+在用户目录的.tmux.conf下，添加
+```
+set -g mouse on
+```
