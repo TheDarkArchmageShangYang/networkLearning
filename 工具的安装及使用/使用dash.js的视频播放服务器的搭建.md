@@ -1,5 +1,5 @@
-## 使用dash.js+caddy的服务器搭建
-#### 安装caddy
+# 使用dash.js+caddy的服务器搭建
+## 安装caddy
 ```
 git clone https://github.com/caddyserver/caddy.git
 cd caddy/cmd/caddy
@@ -8,7 +8,11 @@ caddy upgrade
 ```
 如果发生caddy: command not found，将caddy/cmd/caddy下的caddy文件移动到/usr/bin目录下
 
-写Caddyfile文件放在caddy目录下
+## caddy使用
+
+###### 配置Caddyfile
+
+把Caddyfile文件放在caddy目录下
 ```
 localhost {
     respond "Hello, world!"
@@ -19,21 +23,28 @@ udpcc.dfshan.net（域名） {
     file_server
 }
 ```
-打开：
+###### 打开
+
 ```
 caddy start
 ```
-关闭：
+###### 关闭
+
 ```
 caddy stop
 ```
-#### 获取原视频：mp4格式，相机拍一个
-#### 安装编码器ffmpeg：sudo apt install ffmpeg
+## 获取原视频：mp4格式，相机拍一个
+## 安装编码器ffmpeg
+
+```shell
+sudo apt install ffmpeg
+```
+
 转码视频：
+```shell
+ffmpeg -i pre_video.mp4 -s 640*360 -c:v libx264 -b:v 1000k -keyint_min 48 -g 48 -sc_threshold 0 -an video_640x360_1000k.mp4//等多个格式
 ```
-ffmpeg -i pre_video.mp4 -s 640*360 -c:v libx264 -b:v 1000k -keyint_min 48 -g 48 -sc_threshold 0 -an video_640x360_1000k.mp4等多个格式
-```
-#### 安装bento4
+## 安装bento4
 ```
 wget https://www.bok.net/Bento4/binaries/Bento4-SDK-1-6-0-640.x86_64-unknown-linux.zip
 unzip Bento4-SDK-1-6-0-640.x86_64-unknown-linux.zip
@@ -45,7 +56,8 @@ source /etc/profile
 BENTO4_PATH=/home/xxx/Bento4-SDK-1-6-0-640.x86_64-unknown-linux/bin
 export PATH=$PATH:$BENTO4_PATH
 ```
-视频切片：
+## 视频切片
+
 ```
 mp4fragment --fragment-duration 2000 video_640x360_1000k.mp4 fra_640x360_1000k.mp4
 mp4dash fra_640x360_1000k.mp4 fra_640x360_500k.mp4
@@ -71,7 +83,10 @@ output/
             ├── ...
             
             └── seg-327.m4s
-#### 使用dash.js写一个视频播放器，放在stream.mpd同一文件夹下
+## 测试
+
+使用dash.js写一个视频播放器，放在stream.mpd同一文件夹下
+
 ```
 <!doctype html>
 <html>

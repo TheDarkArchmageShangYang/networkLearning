@@ -1,6 +1,6 @@
-## 支持QUIC的CURL安装及libcurl库的使用
+# 支持QUIC的CURL安装及libcurl库的使用
 记住安装过程中的<somewhere1/2/3>，在其他部分的编译中有用
-#### 构建quictls
+## 构建quictls
 ```
 git clone --depth 1 -b openssl-3.1.4+quic https://github.com/quictls/openssl
 cd openssl
@@ -9,7 +9,7 @@ make
 make install
 ```
 --prefix选项必须为绝对路径
-#### 构建nghttp3
+## 构建nghttp3
 ```
 cd ..
 git clone -b v1.1.0 https://github.com/ngtcp2/nghttp3
@@ -19,7 +19,7 @@ autoreconf -fi
 make
 make install
 ```
-#### 构建ngtcp2
+## 构建ngtcp2
 ```
 cd ..
 git clone -b v1.1.0 https://github.com/ngtcp2/ngtcp2
@@ -29,7 +29,7 @@ autoreconf -fi
 make
 make install
 ```
-#### 构建curl
+## 构建curl
 ```
 cd ..
 git clone https://github.com/curl/curl
@@ -44,7 +44,7 @@ make install
 LDFLAGS="-Wl,-rpath,<somewhere1>/lib64" ./configure --with-openssl=<somewhere1> --with-nghttp3=<somewhere2> --with-ngtcp2=<somewhere3> --prefix=<somewhere4>
 ```
 然后在<somewhere4/bin>中使用./curl来运行(因为linux基本都自带curl，所以直接用curl访问会使用自带的curl而不是新装的)
-#### 测试
+## 测试
 仅使用HTTP/3:
 ```
 curl -v --http3-only https://nghttp2.org:4433/
@@ -53,7 +53,7 @@ curl -v --http3-only https://nghttp2.org:4433/
 ```
 curl -v --http3 https://nghttp2.org:4433/
 ```
-#### libcurl库使用
+## libcurl库使用
 程序中需要添加
 ```
 #include <curl/curl.h>

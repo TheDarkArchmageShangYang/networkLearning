@@ -38,5 +38,5 @@ sudo tc qdisc add dev eth0 root handle 1: tbf rate 1mbit buffer 1600 limit 3000
 sudo tc qdisc add dev eth0 parent 1:1 handle 10: netem delay 100ms loss 10%
 ```
 #### 注意事项
-1.tc qdisc add dev ...的命令中add表示增加配置，也可以改成change表示覆盖，del表示删除<br>
-2.参考网站https://plantegg.github.io/2016/08/24/Linux%20tc%20qdisc%E7%9A%84%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B/
+1.tc qdisc add dev ...的命令中add表示增加配置，也可以改成change表示覆盖，del表示删除
+2.[参考网站](https://plantegg.github.io/2016/08/24/Linux%20tc%20qdisc%E7%9A%84%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B/)

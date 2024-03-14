@@ -1,6 +1,5 @@
-## windows磁盘管理
-路径:<br>
-控制面板->系统和安全->管理工具->创建并格式化硬盘分区<br>
+# windows磁盘管理
+路径:控制面板->系统和安全->管理工具->创建并格式化硬盘分区
 #### C盘和D盘之间还有个恢复分区
 如图:
 ![a9aaa1c840054356a449687bd71884d3](https://github.com/TheDarkArchmageShangYang/networkLearning/assets/149142839/b34a2a7e-0b3a-43cc-991b-1de0014e5d7f)

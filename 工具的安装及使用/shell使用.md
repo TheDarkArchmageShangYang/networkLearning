@@ -1,6 +1,6 @@
 # shell使用
-推荐使用zsh<br>
-终端复用工具推荐tmux<br>
+推荐使用zsh
+终端复用工具推荐tmux
 ## zsh
 ## tmux
 可以后台执行脚本(即使关闭终端)
