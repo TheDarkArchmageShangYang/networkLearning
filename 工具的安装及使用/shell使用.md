@@ -45,6 +45,22 @@ source $ZSH/oh-my-zsh.sh
 ```
 source .zshrc
 ```
+#### 使用
+###### 修改主题
+下载主题，在.zshrc中设置ZSH_THEME=""
+###### 自动补全命令
+只要输入过某命令，后续会按照输入来匹配最符合的历史指令，按右箭头补全
+###### 快捷跳转
+z插件会记录在命令行跳转过的每个路径及跳转次数,不需要输入完整的路径就可以跳转
+```
+#跳转/home/fzchen/worknew/tengine-install/sbin
+z wo
+```
+###### 快捷跳转
+输入d可以显示访问过的路径，再输入数字可以直接跳转
+
+![image](https://github.com/TheDarkArchmageShangYang/networkLearning/assets/149142839/b4fa15e6-5375-4aed-a4cc-974ce27dd126)
+
 ## tmux
 可以后台执行脚本(即使关闭终端)
 #### 安装
