@@ -2,6 +2,27 @@
 推荐使用zsh
 终端复用工具推荐tmux
 ## zsh
+#### 安装
+```
+sudo apt install zsh
+```
+#### 安装oh-my-zsh
+```
+sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+.oh-my-zsh和.zshrc文件都在/home/fzchen下
+#### 安装插件
+/home/fzchen/.oh-my-zsh/custom/plugins
+```
+# zsh-suggestions:根据历史命令和当前输入，自动提示命令参数和选项
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+# zsh-syntax-highlighting:根据语法高亮显示命令和文件路径等内容
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+# autojump:根据使用频率，自动跳转到最常用的目录
+git clone https://github.com/wting/autojump.git
+# fzf:快速模糊搜索历史命令和文件路径
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+```
 ## tmux
 可以后台执行脚本(即使关闭终端)
 #### 安装
