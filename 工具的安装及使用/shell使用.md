@@ -5,23 +5,45 @@
 #### 安装
 ```
 sudo apt install zsh
-```
-#### 安装oh-my-zsh
-```
 sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 .oh-my-zsh和.zshrc文件都在/home/fzchen下
+
+vscode切换默认终端
+
+![image](https://github.com/TheDarkArchmageShangYang/networkLearning/assets/149142839/71faa6f6-2aa6-459b-b5fc-171c9c8233fa)
 #### 安装插件
-/home/fzchen/.oh-my-zsh/custom/plugins
+所有插件都应该下载到/home/fzchen/.oh-my-zsh/custom/plugins
 ```
 # zsh-suggestions:根据历史命令和当前输入，自动提示命令参数和选项
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
 # zsh-syntax-highlighting:根据语法高亮显示命令和文件路径等内容
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
 # autojump:根据使用频率，自动跳转到最常用的目录
 git clone https://github.com/wting/autojump.git
+cd autojump
+./install.py
+
 # fzf:快速模糊搜索历史命令和文件路径
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+```
+修改.zshrc文件
+```
+# extract和z是oh-my-zsh自带的
+plugins=(git 
+         zsh-autosuggestions 
+         zsh-syntax-highlighting
+         autojump
+         extract
+         z)
+
+source $ZSH/oh-my-zsh.sh
+```
+使.zshrc文件生效
+```
+source .zshrc
 ```
 ## tmux
 可以后台执行脚本(即使关闭终端)
