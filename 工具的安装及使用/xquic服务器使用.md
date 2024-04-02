@@ -3,7 +3,7 @@
 ```
 # 下载 Tongsuo，示例中下载 8.3.2 版本
 wget -c "https://github.com/Tongsuo-Project/Tongsuo/archive/refs/tags/8.3.2.tar.gz"
-tar -x 8.3.2.tar.gz
+tar -xf 8.3.2.tar.gz
 
 # 下载 xquic，示例中下载 1.6.0 版本
 wget -c "https://github.com/alibaba/xquic/archive/refs/tags/v1.6.0.tar.gz"
