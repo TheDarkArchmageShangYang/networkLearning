@@ -10,7 +10,7 @@ wget -c "https://github.com/alibaba/xquic/archive/refs/tags/v1.6.0.tar.gz"
 tar -xf v1.6.0.tar.gz
 
 # 下载 Tengine 3.0.0 以上版本，示例从 master 获取最新版本，也可下载指定版本
-git clone git@github.com:alibaba/tengine.git
+git clone https://github.com/alibaba/tengine.git
 
 # 编译 Tongsuo
 cd Tongsuo-8.3.2
