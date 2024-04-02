@@ -21,14 +21,14 @@ export SSL_TYPE_STR="babassl"
 export SSL_PATH_STR="${PWD}"
 export SSL_INC_PATH_STR="${PWD}/include"
 export SSL_LIB_PATH_STR="${PWD}/libssl.a;${PWD}/libcrypto.a"
-cd ../../
+cd ../
 
 # 编译 xquic 库
 cd xquic-1.6.0/
 mkdir -p build; cd build
 cmake -DXQC_SUPPORT_SENDMMSG_BUILD=1 -DXQC_ENABLE_BBR2=1 -DXQC_DISABLE_RENO=0 -DSSL_TYPE=${SSL_TYPE_STR} -DSSL_PATH=${SSL_PATH_STR} -DSSL_INC_PATH=${SSL_INC_PATH_STR} -DSSL_LIB_PATH=${SSL_LIB_PATH_STR} ..
 make
-cd ..
+cd ../../
 
 # 编译 Tengine
 cd tengine
