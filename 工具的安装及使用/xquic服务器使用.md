@@ -1,5 +1,7 @@
-[参考连接](https://github.com/alibaba/tengine/tree/master/modules/ngx_http_xquic_module)
 ## 安装
+
+[参考链接](https://github.com/alibaba/tengine/tree/master/modules/ngx_http_xquic_module)
+
 ```
 # 下载 Tongsuo，示例中下载 8.3.2 版本
 wget -c "https://github.com/Tongsuo-Project/Tongsuo/archive/refs/tags/8.3.2.tar.gz"
@@ -39,7 +41,7 @@ cd tengine
 make
 make install
 ```
-## 使用
+## 运行
 在tengine-install目录下新增nginx.conf文件
 ```
 worker_processes  1;
@@ -74,6 +76,7 @@ http {
 }
 ```
 常用命令
+
 ```
 # 指定配置文件启动
 ./tengine -c conf/nginx.conf
@@ -86,10 +89,62 @@ http {
 # 重新加载配置文件启动
 ./tengine -s reload
 ```
+## 机制
+
+### 处理收到的ACK包
+
+xquic使用结构体 *<u>**xqc_ack_info_t**</u>* 来存储ACK包的数据，结构体定义在 ***<u>/src/transport/xqc_recv_recode.h:34</u>*** 
+
+![image-20240410162249888](C:\Users\fzchen\AppData\Roaming\Typora\typora-user-images\image-20240410162249888.png)
+
+ACK包的处理函数在 ***<u>/src/transport/xqc_frame_parser.c:662</u>*** 的 ***<u>xqc_parse_ack_frame()</u>*** 但是该函数没有记录dcid_seq_num
+
+
+
+以一个ACK为例
+
+![image-20240410162717998](C:\Users\fzchen\AppData\Roaming\Typora\typora-user-images\image-20240410162717998.png)
+
+经过处理
+
+```
+n_ranges = 4;
+ranges[0].high = 921;
+ranges[0].low = 895;
+ranges[1].high = 893;
+ranges[1].low = 891;
+ranges[2].high = 889;
+ranges[2].low = 886;
+ranges[3].high = 884;
+ranges[3].low = 884;
+```
+
+每收到一个ACK，就调用 ***<u>/src/trsnaport/xqc_send_ctl.c:880</u>*** 的 ***<u>xqc_send_ctl_on_ack_received()</u>*** 函数
+
+对于每个已发送但未被确认的包：例如892
+
+1.判断该包号是否超过最大ACK(pkt_number > 921)
+
+2.判断该包号属于哪个ranges中(pkt_num > ranges[i].high)
+
+包号>884，继续下一个判断
+
+包号>889，继续下一个判断
+
+包号<893，在ranges[1]中
+
+3.判断该包号是否被确认(pkt_num > ranges[i].low)
+
+包号>891，该包号被这个ACK包确认
+
 ## 常见问题
+
 #### 问题1
 
 ![image](https://github.com/TheDarkArchmageShangYang/networkLearning/assets/149142839/17b9b03e-9450-4382-a7e8-0bb73acdfa56)
+
+原因：共享库libxquic.so没有被添加到环境变量中
+
 ```
 vim /etc/ld.so.conf
 
@@ -103,7 +158,22 @@ sudo权限无法编辑ld.so.conf，root用户可以
 #### 问题2
 
 ![image](https://github.com/TheDarkArchmageShangYang/networkLearning/assets/149142839/b6a6443c-fe40-47cc-b932-7cf997fc726b)
+
+原因：tengine没有权限
+
 ```
 sudo chown root tengine
 sudo chmod u+s tengine
 ```
+
+#### 问题3
+
+有时候向服务器发送请求收不到响应
+
+原因：可能是后台开了多个tengine
+
+```
+ps -aux | grep tengine
+sudo kill -9 端口号
+```
+
