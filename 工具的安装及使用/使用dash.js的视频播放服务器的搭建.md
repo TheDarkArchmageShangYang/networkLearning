@@ -119,9 +119,27 @@ output/
 wget http://cdn.dashjs.org/latest/dash.all.min.js
 ```
 ## dash.js代码分析
+
+针对参考播放器dash-if-reference
+
 dash.js播放设置选项如下：
 ![image](https://github.com/TheDarkArchmageShangYang/networkLearning/assets/149142839/7d2f75f4-f6cf-415a-b193-655e25c97ad5)
-#### 执行ABR算法的流程
-首先通过 main.js: 564 判断是否勾选了ABR Options中的Use Custom ABR Rules,记录在 currentConfig.streaming.abr.useDefaultABRRules 
 
-如果是，将 /samples/dash-if_reference/app/rules 下的ABR算法加入到ABR算法列表中;如果否，将这些算法移除
+#### 一些默认项的设置
+
+在 /src/core/settings.js 中，可以设置播放选项的初始勾选情况，计算带宽的参数等
+
+#### 执行ABR算法的流程
+
+##### 前端记录使用哪些ABR算法
+
+首先通过 **<u>*main.js: 564*</u>** 判断是否勾选了ABR Options中的Use Custom ABR Rules,记录在 **<u>*currentConfig.streaming.abr.useDefaultABRRules*</u>** 
+
+如果是，将 **<u>*/samples/dash-if-reference/app/rules*</u>** 下的ABR算法加入到ABR算法列表中;如果否，将这些算法移除
+
+在 <u>***main.js:2332***</u> 调用 **<u>*main.js:2143 setAbrRules()*</u>** 函数，根据播放设置记录是否勾选了 **<u>*InsufficientBufferRule*</u>** 等算法，以及使用哪种ABR Strategy。在main.js:631 中将勾选的算法加入到ABR算法列表中。在 main.js:532 设置使用哪种ABR Strategy
+
+##### 后端读取使用哪些ABR算法
+
+在 /src/streaming/rules/abr/ABRRulesCollection.js:61 中根据之前记录的数据来选择是否创建对应算法的工厂
+
