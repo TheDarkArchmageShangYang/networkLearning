@@ -1,5 +1,5 @@
-# 使用dash.js+caddy的服务器搭建
-## 安装caddy
+## 使用dash.js+caddy的服务器搭建
+#### 安装caddy
 ```
 git clone https://github.com/caddyserver/caddy.git
 cd caddy/cmd/caddy
@@ -8,7 +8,7 @@ caddy upgrade
 ```
 如果发生caddy: command not found，将caddy/cmd/caddy下的caddy文件移动到/usr/bin目录下
 
-## caddy使用
+#### caddy使用
 
 ###### 配置Caddyfile
 
@@ -33,8 +33,8 @@ caddy start
 ```
 caddy stop
 ```
-## 获取原视频：mp4格式，相机拍一个
-## 安装编码器ffmpeg
+#### 获取原视频：mp4格式，相机拍一个
+#### 安装编码器ffmpeg
 
 ```shell
 sudo apt install ffmpeg
@@ -44,7 +44,7 @@ sudo apt install ffmpeg
 ```shell
 ffmpeg -i pre_video.mp4 -s 640*360 -c:v libx264 -b:v 1000k -keyint_min 48 -g 48 -sc_threshold 0 -an video_640x360_1000k.mp4//等多个格式
 ```
-## 安装bento4
+#### 安装bento4
 ```
 wget https://www.bok.net/Bento4/binaries/Bento4-SDK-1-6-0-640.x86_64-unknown-linux.zip
 unzip Bento4-SDK-1-6-0-640.x86_64-unknown-linux.zip
@@ -56,7 +56,7 @@ source /etc/profile
 BENTO4_PATH=/home/xxx/Bento4-SDK-1-6-0-640.x86_64-unknown-linux/bin
 export PATH=$PATH:$BENTO4_PATH
 ```
-## 视频切片
+#### 视频切片
 
 ```
 mp4fragment --fragment-duration 2000 video_640x360_1000k.mp4 fra_640x360_1000k.mp4
@@ -83,7 +83,7 @@ output/
             ├── ...
             
             └── seg-327.m4s
-## 测试
+#### 测试
 
 使用dash.js写一个视频播放器，放在stream.mpd同一文件夹下
 
@@ -118,4 +118,10 @@ output/
 ```
 wget http://cdn.dashjs.org/latest/dash.all.min.js
 ```
+## dash.js代码分析
+dash.js播放设置选项如下：
+![image](https://github.com/TheDarkArchmageShangYang/networkLearning/assets/149142839/7d2f75f4-f6cf-415a-b193-655e25c97ad5)
+#### 执行ABR算法的流程
+首先通过 main.js: 564 判断是否勾选了ABR Options中的Use Custom ABR Rules,记录在 currentConfig.streaming.abr.useDefaultABRRules 
 
+如果是，将 /samples/dash-if_reference/app/rules 下的ABR算法加入到ABR算法列表中;如果否，将这些算法移除
