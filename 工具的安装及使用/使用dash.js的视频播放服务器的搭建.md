@@ -141,5 +141,12 @@ dash.js播放设置选项如下：
 
 ##### 后端读取使用哪些ABR算法
 
-在 /src/streaming/rules/abr/ABRRulesCollection.js:61 中根据之前记录的数据来选择是否创建对应算法的工厂
+在 **<u>*/src/streaming/rules/abr/ABRRulesCollection.js:61*</u>** 中根据之前记录的数据来选择是否创建对应算法的工厂(设计模式中的工厂模式)
 
+以BolaRule算法为例，先调用函数 **<u>*BolaRule(context)*</u>** ，该函数定义在 **<u>*/src/streaming rules/abr/BolaRule.js:59*</u>** 。在该函数中
+
+586行，又调用了 **<u>*/src/core/FactoryMaker.js:135*</u>** 的函数，该函数定义了 **<u>*create()*</u>** 函数，最后在 **<u>*ABRRulesCollection.js*</u>** 中被调用，创建BolaRule的工厂
+
+##### 播放流程
+
+/src/streaming/MediaPlayer.js 初始化了AbrController
