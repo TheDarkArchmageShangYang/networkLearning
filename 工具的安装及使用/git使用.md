@@ -49,3 +49,21 @@ git log
 ```
 git push origin <branch>
 ```
+
+#### 常见问题
+
+1.项目提交到github后部分文件缺失
+
+本地文件夹目录
+
+![image-20240424162312213](C:\Users\fzchen\AppData\Roaming\Typora\typora-user-images\image-20240424162312213.png)
+
+github中目录
+
+![image-20240424162251032](C:\Users\fzchen\AppData\Roaming\Typora\typora-user-images\image-20240424162251032.png)
+
+可以看到dist文件夹和node_modules文件夹缺失了，dist文件夹是运行 npm run build之后打包生成的文件夹
+
+原因：项目根目录下有文件.gitignore，打开文件可以看到里面写入了哪些文件需要被忽略
+
+解决方法：注释掉对应代码，重新push
