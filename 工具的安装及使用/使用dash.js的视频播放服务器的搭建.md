@@ -398,3 +398,33 @@ throughput: { data: [], selected: true, color: '#326e88', label: 'Throughput (kb
       - **let indexToRequest = lastSegment ? lastSegment.index + 1 : 0;** // 下一个视频块
       - **DashHandler.js:298 _getRequest()**
         - **DashHandler.js:153 _getRequestForSegment()**
+
+#### 读取参数
+
+bufferLevel
+
+```
+const DashMetrics = factory.getSingletonFactoryByName('DashMetrics');
+let dashMetrics = DashMetrics(context).getInstance();
+const mediaType = rulesContext.getMediaType();
+let bufferLevel = dashMetrics.getCurrentBufferLevel(mediaType);
+```
+
+- /src/dash/DashMetrics.js:110 getCurrentBufferLevel(mediaType)
+  - const metrics = metricsModel.getMetricsFor(*mediaType*, true);
+    - /src/streaming/models/MetricsModel.js:92 getMetricsFor(type, readOnly)
+  - const metric = getCurrent(metrics, MetricsConstants.BUFFER_LEVEL);
+    - DashMetrics:239 getCurrent(metrics, metricName)
+  - return Round10.round10(metric.level / 1000, -3);
+
+- /src/streaming/controllers/StreamController.js:744 _onBufferLevelUpdated(e)
+  - DashMetrics.js:142 addBufferLevel(mediaType, t, level)
+    - /src/streaming/models/MetricsModel.js:224 addBufferLevel(mediaType, t, level)
+      - MetricsModel.js:219 pushAndNotify()
+        - MetricsModel.js:109 pushMetrics()
+        - MetricsModel.js:77 metricAdded(mediaType, metricType, vo)
+          - eventBus.trigger(Events.METRIC_ADDED...)
+          - MetricsModel.js:67 metricChanged(mediaType)
+            - eventBus.trigger(Events.METRIC_CHANGED...)
+            - MetricsModel.js:63 metricsChanged()
+              - eventBus.trigger(Events.METRICS_CHANGED...)
