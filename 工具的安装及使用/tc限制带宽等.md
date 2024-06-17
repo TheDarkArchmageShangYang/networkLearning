@@ -34,7 +34,7 @@ tc qdisc add dev eth0 root tbf rate 1mbit latency 10ms burst 15kb
 rate表示带宽，latency表示数据包在队列中最长等待时间，burst表示缓冲区
 #### 同时限制带宽和RTT/丢包率
 ```
-sudo tc qdisc add dev eth0 root handle 1: tbf rate 1mbit buffer 1600 limit 3000
+sudo tc qdisc add dev eth0 root handle 1: tbf rate 1mbit buffer 1600 limit 10mbit
 sudo tc qdisc add dev eth0 parent 1:1 handle 10: netem delay 100ms loss 10%
 ```
 #### 注意事项

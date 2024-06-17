@@ -14,3 +14,34 @@ openssl req -new -newkey rsa:2048 -nodes -keyout server.key -out server.csr -sub
 openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 3650
 ```
 
+## 使用certbot申请证书
+
+1.安装snapd
+
+正常情况ubuntu18以上默认安装，但有些未被安装，并且apt install会报错
+
+在/etc/apt/preferences.d中可能有nosnap.pref,可以改个名字将其无效掉
+
+```
+sudo apt update
+sudo apt install snapd
+```
+
+2.安装certbot
+
+```
+sudo snap install --classic certbot
+```
+
+3.准备certbot命令
+
+```
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+```
+
+4.运行certbot
+
+```
+sudo certbot certonly --standalone
+```
+
