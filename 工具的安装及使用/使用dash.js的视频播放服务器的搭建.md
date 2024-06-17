@@ -60,7 +60,7 @@ export PATH=$PATH:$BENTO4_PATH
 
 ```
 mp4fragment --fragment-duration 2000 video_640x360_1000k.mp4 fra_640x360_1000k.mp4
-mp4dash fra_640x360_1000k.mp4 fra_640x360_500k.mp4
+mp4dash fra_640x360_1000k.mp4
 ```
 
 文件目录如下：
