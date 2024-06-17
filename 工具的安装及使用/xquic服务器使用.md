@@ -16,7 +16,7 @@ git clone https://github.com/alibaba/tengine.git
 
 # 编译 Tongsuo
 cd Tongsuo-8.3.2
-./config --prefix=/home/fzchen/worknew/babassl
+./config --prefix=/home/fzchen/xquic/babassl
 make
 make install
 export SSL_TYPE_STR="babassl"
@@ -27,7 +27,8 @@ cd ../
 
 # 编译 xquic 库
 cd xquic-1.6.0/
-mkdir -p build; cd build
+mkdir -p build
+cd build
 cmake -DXQC_SUPPORT_SENDMMSG_BUILD=1 -DXQC_ENABLE_BBR2=1 -DXQC_DISABLE_RENO=0 -DSSL_TYPE=${SSL_TYPE_STR} -DSSL_PATH=${SSL_PATH_STR} -DSSL_INC_PATH=${SSL_INC_PATH_STR} -DSSL_LIB_PATH=${SSL_LIB_PATH_STR} ..
 make
 cd ../../
@@ -35,8 +36,9 @@ cd ../../
 # 编译 Tengine
 cd tengine
 
-# 注：xquic 依赖 ngx_http_v2_module，需要参数 --with-http_v2_module
-./configure   --prefix=/home/fzchen/worknew/tengine-install   --sbin-path=sbin/tengine   --with-xquic-inc="../xquic-1.6.0/include"   --with-xquic-lib="../xquic-1.6.0/build"   --with-http_v2_module   --without-http_rewrite_module   --add-module=modules/ngx_http_xquic_module   --with-openssl="../Tongsuo-8.3.2"
+# 注：xquic 依赖 ngx_http_v2_module，需
+要参数 --with-http_v2_module
+./configure   --prefix=/home/fzchen/xquic/tengine-install   --sbin-path=sbin/tengine   --with-xquic-inc="../xquic-1.6.0/include"   --with-xquic-lib="../xquic-1.6.0/build"   --with-http_v2_module   --without-http_rewrite_module   --add-module=modules/ngx_http_xquic_module   --with-openssl="../Tongsuo-8.3.2"
 
 make
 make install
@@ -146,15 +148,14 @@ ranges[3].low = 884;
 原因：共享库libxquic.so没有被添加到环境变量中
 
 ```
-vim /etc/ld.so.conf
+cd /etc/ld.so.conf.d
+sudo vim xquic_cfz.conf
 
-# 在ld.so.conf中添加以下内容
-/home/fzchen/worknew/xquic-1.6.0/build
+# 在xquic_cfz.conf中添加以下内容
+/home/fzchen/xquic/xquic-1.6.0/build
 
 sudo ldconfig
 ```
-sudo权限无法编辑ld.so.conf，root用户可以
-
 #### 问题2
 
 ![image](https://github.com/TheDarkArchmageShangYang/networkLearning/assets/149142839/b6a6443c-fe40-47cc-b932-7cf997fc726b)
