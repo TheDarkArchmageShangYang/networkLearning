@@ -32,7 +32,6 @@ auto p = &a; // p为int*类型
 
 ```c++
 const int a = 0, b = 1;
-const int &ai = a;
 
 auto p = a; // p为int类型,顶层const被忽略
 p = 5; // p的值可以被改变
@@ -100,7 +99,7 @@ int a = 0;
 int &b = a;
 
 auto p1 = b; // p1为int类型
-auto p2 = b; // p2为int &类型
+auto &p2 = b; // p2为int &类型
 ```
 
 
@@ -152,7 +151,7 @@ auto multiply(_Tx x, _Ty y)->decltype(x*y)
 
 ## 注意事项
 
-1.auto变量必须在定义时初始化
+1.auto变量必须在定义时初始化,类似于const关键字
 
 2.初始化为数组时,auto推导类型为指针;初始化为数组且使用auto &,推导类型为数组类型
 
@@ -179,10 +178,4 @@ cout << sizeof(auto) << endl; // 错误
 cout << typeid(auto).name() << endl; // 错误
 ```
 
-学习中断
-
-1.https://blog.csdn.net/weixin_43744293/article/details/117413892
-
-2.https://blog.csdn.net/weixin_43744293/article/details/118083899
-
-3.https://blog.csdn.net/weixin_43744293/article/details/117988589
+5.定义在一个auto序列的变量必须被推导成同一类型

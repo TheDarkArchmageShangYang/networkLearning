@@ -63,11 +63,11 @@ STL(Standard Template Library,标准模板库)是c++标准库的一部分,不需
 
 STL六大组件:
 
-容器(Container):各种数据结构,如动态数组(vector),链表(list),双端队列(deque),队列(queue),堆栈(stack),集合(set),映射(map)等
+容器(Container):各种数据结构,如动态数组(vector),链表(list),双端队列(deque),集合(set),映射(map)等
 
 算法(Algorithm):各种常用算法,提供了执行各种操作的方式,包括对容器内容执行初始化,排序,搜索和转换等操作,如排序(sort),查找(find),copy,erase函数等
 
-迭代器(Iterator):一种抽象的数据类型,课用于访问容器中的元素
+迭代器(Iterator):一种抽象的数据类型,用于访问容器中的元素
 
 仿函数(Functor)
 
@@ -153,7 +153,7 @@ vector<vector<int>> a(size1, vector<int>(size2, 0)) //有size1行,size2列,且�
 
 
 
-##### 方法函数
+##### 成员函数
 
 获取vector中元素个数
 ```c++
@@ -179,17 +179,32 @@ int column = a[0].size();
 | a.insert(it,val)     | 向迭代器it插入一个元素val                                    |
 | a.erase(first,last)  | 删除[first,last)的所有元素                                   |
 | a.empty()            | 判断是否为空,为空返回true,否则返回flase                      |
+| a.find(val)          | 查询元素val,如果存在则返回对应迭代器,否则返回最后一个键值对后一个位置的迭代器(end()方法返回的迭代器) |
 | a.at(index)          | 返回a[index]的值,越界会报错                                  |
 | a.clear()            | 清空a中的元素                                                |
 | a.swap(b)            | 将a中的元素和b中的元素整体交换                               |
 
 额外补充
 
+1.
+
 ```c++
 // 二维vector获取长度
 int raw = a.size();
 int column = a[0].size();
 ```
+
+2.a.size()的数据类型是size_t,在64位系统中为long unsigned int(占用8字节),所以可能会出现
+
+```c++
+cout << a.size() << endl; // 输出2
+cout << a.size() - 3 << endl // 输出18446744073709551615(2^64-1)
+    
+// 建议使用方法
+int vectorSize = a.size();
+```
+
+
 
 ##### 访问
 
@@ -248,6 +263,23 @@ for (auto val : a) {
     cout << val << endl;
 }
 ```
+
+### unordered_set
+
+#### 介绍
+
+unordered_set为无序集合
+
+#### 常用操作
+
+##### 头文件
+
+```c++
+#include <unordered_set>
+using namespace std; // 在std命名空间中
+```
+
+其他基本都和unordered_map相同
 
 ### unordered_map
 
@@ -315,7 +347,7 @@ for (auto c : s) {
 // 拷贝构造一个容器
 unordered_map <key, T> hash_map(hash_map1);
 
-// 使用迭代器区间构造一个容器
+// 使用迭代器区间构造一个容器,使用其他容器(如vector)来可以,注意元素类型
 unordered_map <key, T> hash_map(hash_map1.begin(),hash_map1.end());
 ```
 
@@ -331,6 +363,12 @@ unordered_map <Key, T>::iterator it;
 ##### 遍历
 
 ```c++
+for (auto it = map.begin(); it != map.end(); it++) {
+    if (it->second != 0){
+        ...;
+    }
+}
+
 for (auto it : map) {
     if (it.second != 0) {
         ...;
@@ -338,7 +376,10 @@ for (auto it : map) {
 }
 ```
 
+注意:
 
+- 基于迭代器遍历关联型容器时,auto推导出来是迭代器类型,需要用it->first,it->second取出键值对
+- 基于范围的for循环遍历关联型容器时,auto推导出来是std::pair<key, value>类型,需要用it.first,it.second取出键值对
 
 ##### 方法函数
 
@@ -365,3 +406,150 @@ for (auto it : map) {
 | a.clear()              | 清空a中的元素                                                |
 | a.count(key)           | 查询关键字为key的元素个数,非0即1                             |
 
+注意在使用count或find进行判断时
+
+```c++
+if (myHashMap.count(i)) {...} // 正确
+if (myHashMap.find(i)) {...} // 错误
+if (myHashMap.find(i) != myHashMap.end()) {...} //正确
+```
+
+## 算法
+
+### 简介
+
+STL的算法库提供了很多种算法,可以用来处理各种数据结构,例如数组,栈,队列等
+
+#### 头文件
+
+```c++
+// <algorithm>是所有STL头文件中最大的一个,范围涉及比较,交换,查找,遍历,复制,修改等
+#include <algorithm>
+
+// <functional>定义了一些模板类,用以声明函数对象
+#include <functional>
+
+// <numeric>只包括几个在序列上进行简单数学运算的模板函数
+#include <numeric>
+```
+
+### 遍历算法
+
+#### **for_each**
+
+**功能:遍历容器**
+
+**函数原型**
+
+```c++
+#include <algorithm>
+
+for_each(iterator begin, iterator end, func); // 遍历容器元素
+```
+
+例子
+
+```c++
+vector<int> myVector{1, 2, 3, 4, 5};
+
+void print1(int val) {
+    cout << val << endl;
+}
+
+for_each(myVector.begin(), myVector.end(), print1);
+```
+
+### 查找算法
+
+#### **find**
+
+**功能:按值查找元素,找到则返回该元素的迭代器,找不到则返回end()返回的迭代器**
+
+**函数原型**
+
+```c++
+#include <algorithm>
+
+find(iterator begin, iterator end, value);
+```
+
+例子
+
+```c++
+vector<int> myVector{1, 2, 3, 4, 5};
+
+auto it = find(myVector.begin(), myVector.end(), 5);
+```
+
+#### count
+
+**功能:统计元素个数,返回元素个数**
+
+**函数原型**
+
+```c++
+#include <algorithm>
+
+count(iterator begin, iterator end, value);
+```
+
+例子
+
+```c++
+vector<int> myVector{1, 2, 3, 4, 5};
+
+int num = find(myVector.begin(), myVector.end(), 5);
+```
+
+## 容器适配器
+
+### 简介
+
+如果类(或函数)的成员,功能与类(或函数)B类似,但有一些不同,可以通过封装B来实现A,从而把B的接口转化为A的接口.
+
+#### 分类
+
+STL的适配器分为三类:
+
+- 容器适配器
+- 仿函数适配器
+- 迭代器适配器
+
+### 容器适配器
+
+STL提供的栈和队列并不是容器,而是容器适配器.stack和queue封装其他容器,修饰其接口来满足逻辑结构(stack先入后出,queue先入先出)的需求.
+
+默认情况下,底层容器使用deque(双端队列)来实现stack和queue.
+
+**deque的缺点**
+
+- 随机访问效率低(由于其分段式的结构,使其在跨越不同缓冲区的时候会消耗时间,导致效率低)
+- 不适合遍历(在遍历时需要频繁检测迭代器是否到达某个缓冲区的边界,导致效率低)
+
+**deque的优点**
+
+- 相比于vector,deque减少了空间浪费(在数据量较少,deque数据集中在几个缓冲区,可以基本忽略缺点;头插和头删的效率远高于vector)
+- 相比于list,deque支持随机访问,且空间利用率比较高
+
+**为什么用deque作为stack和queue的底层容器**
+
+- stack和queue都只能在两端访问数据,stack先进先出,queue先进后出,都不支持遍历和随机读取.所以deque的缺点都不会体现
+- deque支持头插尾插,头删尾删(且效率高于vector).提供"整体连续的空间,提高了空间的使用率(vector有空间冗余,list需要存储额外字段)
+
+#### stack
+
+##### 成员函数
+
+| 函数名  | 含义               |
+| ------- | ------------------ |
+| empty   | 判断stack是否为空  |
+| size    | 返回stack是否为空  |
+| top     | 返回栈顶元素的引用 |
+| push    | 将元素压入栈中     |
+| emplace |                    |
+| pop     |                    |
+| swap    |                    |
+
+
+
+#### queue
