@@ -11,15 +11,11 @@ import matplotlib as plt
 ###### 防止中文乱码
 ```
 import seaborn as sns
-sns.set_style({'font.sans-serif':['simhei','Arial']})
+sns.set_style({'font.sans-serif': ['simhei', 'Arial']})
 ```
-###### 绘制折线图
+#### 折线图
 ```
 plt.plot(x,y)
-```
-###### 绘制垂直柱状图
-```
-plt.bar(x,y)
 ```
 ###### 设置横纵坐标标签
 ```
@@ -77,3 +73,57 @@ plt.show()
 ```
 结果:
 ![image](https://github.com/TheDarkArchmageShangYang/networkLearning/assets/149142839/d0ecfb9b-8a58-4620-970c-d2f3e519ee62)
+
+
+
+#### 柱状图
+
+修改柱状图的形状
+
+###### 边框颜色
+
+```py
+plt.bar(x, values, width, edgecolor='black')
+```
+
+###### 内部填充颜色
+
+无色为none
+
+```py
+plt.bar(x, values, width, edgecolor='red') 
+```
+
+###### 边框和内部颜色
+
+```python
+plt.bar(x, values, width, color='red') 
+```
+
+###### 内部填充线和颜色
+
+```py
+plt.bar(x, values, width, hatch='/') 
+```
+
+常见hatch图案样式:
+
+- '/':斜线
+- '\\\\':反斜线('\\\\'表示单斜杠,'\\\\\\\\'表示双斜杠)
+- '|':竖线
+- '-':水平线
+- '+':横竖线
+- 'x':斜线和反斜线
+
+###### 颜色列表
+
+![image-20240913165519024](C:\Users\fzchen\Desktop\networkLearning\工具的安装及使用\assets\颜色列表.png)
+
+###### 图层
+
+zorder默认值为1,越高显示在越上层,越低显示在越下层
+
+```py
+plt.bar(x, values, width, zorder=2) 
+```
+

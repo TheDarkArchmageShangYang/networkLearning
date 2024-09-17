@@ -380,7 +380,7 @@ getMaxQuality() 函数先获取所有当前已启动的ABR算法，然后调用 
 </div>
 ```
 
-2.在main.js:136行左右的audio和video中添加
+2.在main.js:136行左右的audio和video中添加,自己找个颜色
 
 ```javascript
 rebufferTime: { data: [], selected: true, color: '#326e88', label: 'Rebuffer Time (ms)' }
@@ -388,11 +388,29 @@ rebufferTime: { data: [], selected: true, color: '#326e88', label: 'Rebuffer Tim
 
 如果只添加在video，控制台会报错，但是能运行
 
-3.在main.js:2063 updateMetrics()中添加以下内容
+3.获取想要输出的数据
+
+4.在main.js:2063 updateMetrics()中添加以下内容
 
 ```javascript
-// 2075行
+// 显示具体数值,用来传递给刚刚定义的label
+$scope[type + 'RebufferTime'] = $scope.rebufferTime;
+
+// 画图
+$scope.plotPoint('rebufferTime', type, $scope.rebufferTime, time);
 ```
+
+5.此时播放初始界面通常如下:视频平均清晰度:kbps
+
+我们希望改成视频平均清晰度:0kbps
+
+在main.js:272左右增加
+
+```c++
+$scope.videoRebufferTime = 0;
+```
+
+
 
 ### 播放流程
 
