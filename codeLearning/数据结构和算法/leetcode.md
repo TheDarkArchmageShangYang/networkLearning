@@ -1238,7 +1238,792 @@ public:
 };
 ```
 
+### 3.两个数组的交集
 
+#### 349.[两个数组的交集](https://leetcode.cn/problems/intersection-of-two-arrays/description/)(简单)
+
+**题目**
+
+给定两个数组 `nums1` 和 `nums2` ，返回 *它们的* 
+
+*交集*
+
+ 。输出结果中的每个元素一定是 **唯一** 的。我们可以 **不考虑输出结果的顺序** 。
+
+
+
+ 
+
+**示例 1：**
+
+```
+输入：nums1 = [1,2,2,1], nums2 = [2,2]
+输出：[2]
+```
+
+**示例 2：**
+
+```
+输入：nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+输出：[9,4]
+解释：[4,9] 也是可通过的
+```
+
+ 
+
+**提示：**
+
+- `1 <= nums1.length, nums2.length <= 1000`
+- `0 <= nums1[i], nums2[i] <= 1000`
+
+**代码**
+
+```c++
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> ans;
+        unordered_set<int> mySet(nums1.begin(), nums1.end());
+        for (auto i : nums2) {
+            if (mySet.count(i)) {
+                ans.push_back(i);
+                mySet.erase(i);
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### 4.快乐数
+
+#### 202.[快乐数](https://leetcode.cn/problems/happy-number/description/)(简单)
+
+**题目**
+
+编写一个算法来判断一个数 `n` 是不是快乐数。
+
+**「快乐数」** 定义为：
+
+- 对于一个正整数，每一次将该数替换为它每个位置上的数字的平方和。
+- 然后重复这个过程直到这个数变为 1，也可能是 **无限循环** 但始终变不到 1。
+- 如果这个过程 **结果为** 1，那么这个数就是快乐数。
+
+如果 `n` 是 *快乐数* 就返回 `true` ；不是，则返回 `false` 。
+
+ 
+
+**示例 1：**
+
+```
+输入：n = 19
+输出：true
+解释：
+12 + 92 = 82
+82 + 22 = 68
+62 + 82 = 100
+12 + 02 + 02 = 1
+```
+
+**示例 2：**
+
+```
+输入：n = 2
+输出：false
+```
+
+ 
+
+**提示：**
+
+- `1 <= n <= 231 - 1`
+
+**代码**
+
+注意个位数经过运算也能变成1,如7->49->97->130->10->1
+
+注意一共有3种情况:
+
+- 最终得到1
+- 最终进入循环
+- 值越来越大,最后接近无穷大(证明不存在这种情况)
+
+```c++
+class Solution {
+public:
+    bool isHappy(int n) {
+        unordered_set<int> mySet;
+        while (n > 1) {
+            if (mySet.count(n)) {
+                return false;
+            }
+            mySet.insert(n);
+            int sum = 0;
+            while (n > 0) {
+                sum += pow(n % 10, 2);
+                n = n / 10;
+            }
+            n = sum;
+        }
+        return true;
+    }
+};
+```
+
+### 5.两数之和
+
+#### 1.[两数之和](https://leetcode.cn/problems/two-sum/description/)(简单)
+
+**题目**
+
+给定一个整数数组 `nums` 和一个整数目标值 `target`，请你在该数组中找出 **和为目标值** *`target`* 的那 **两个** 整数，并返回它们的数组下标。
+
+你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。
+
+你可以按任意顺序返回答案。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [2,7,11,15], target = 9
+输出：[0,1]
+解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。
+```
+
+**示例 2：**
+
+```
+输入：nums = [3,2,4], target = 6
+输出：[1,2]
+```
+
+**示例 3：**
+
+```
+输入：nums = [3,3], target = 6
+输出：[0,1]
+```
+
+ 
+
+**提示：**
+
+- `2 <= nums.length <= 104`
+- `-109 <= nums[i] <= 109`
+- `-109 <= target <= 109`
+- **只会存在一个有效答案**
+
+ 
+
+**进阶：**你可以想出一个时间复杂度小于 `O(n2)` 的算法吗？
+
+**代码**
+
+```c++
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        vector<int> ans(2, -1);
+        unordered_map<int, int> myHashMap;
+        for (int i = 0; i < nums.size(); i++) {
+            auto it = myHashMap.find(target - nums[i]);
+            if (it != myHashMap.end()) {
+                ans[0] = i;
+                ans[1] = it->second;
+                return ans;
+            }
+            myHashMap.emplace(nums[i], i);
+        }
+        return ans;
+    }
+};
+```
+
+
+
+### 6.四数相加II
+
+#### 454.[四数相加II](https://leetcode.cn/problems/4sum-ii/description/)(中等)
+
+**题目**
+
+给你四个整数数组 `nums1`、`nums2`、`nums3` 和 `nums4` ，数组长度都是 `n` ，请你计算有多少个元组 `(i, j, k, l)` 能满足：
+
+- `0 <= i, j, k, l < n`
+- `nums1[i] + nums2[j] + nums3[k] + nums4[l] == 0`
+
+ 
+
+**示例 1：**
+
+```
+输入：nums1 = [1,2], nums2 = [-2,-1], nums3 = [-1,2], nums4 = [0,2]
+输出：2
+解释：
+两个元组如下：
+1. (0, 0, 0, 1) -> nums1[0] + nums2[0] + nums3[0] + nums4[1] = 1 + (-2) + (-1) + 2 = 0
+2. (1, 1, 0, 0) -> nums1[1] + nums2[1] + nums3[0] + nums4[0] = 2 + (-1) + (-1) + 0 = 0
+```
+
+**示例 2：**
+
+```
+输入：nums1 = [0], nums2 = [0], nums3 = [0], nums4 = [0]
+输出：1
+```
+
+ 
+
+ **提示：**
+
+- `n == nums1.length`
+- `n == nums2.length`
+- `n == nums3.length`
+- `n == nums4.length`
+- `1 <= n <= 200`
+- `-228 <= nums1[i], nums2[i], nums3[i], nums4[i] <= 228`
+
+**代码**
+
+```c++
+class Solution {
+public:
+    int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3, vector<int>& nums4) {
+        unordered_map<int, int> myHashMap;
+        for (auto i : nums1) {
+            for (auto j : nums2) {
+                myHashMap[i + j]++ ;
+            }
+        }
+
+        int ans = 0;
+        for (auto i : nums3) {
+            for (auto j : nums4) {
+                if (myHashMap.find(- i - j) != myHashMap.end()) {
+                    ans += myHashMap[- i - j];
+                }
+            }
+        }
+        return ans;
+    }
+};
+```
+
+
+
+### 7.赎金信
+
+#### 383.[赎金信](https://leetcode.cn/problems/ransom-note/description/)(简单)
+
+**题目**
+
+给你两个字符串：`ransomNote` 和 `magazine` ，判断 `ransomNote` 能不能由 `magazine` 里面的字符构成。
+
+如果可以，返回 `true` ；否则返回 `false` 。
+
+`magazine` 中的每个字符只能在 `ransomNote` 中使用一次。
+
+ 
+
+**示例 1：**
+
+```
+输入：ransomNote = "a", magazine = "b"
+输出：false
+```
+
+**示例 2：**
+
+```
+输入：ransomNote = "aa", magazine = "ab"
+输出：false
+```
+
+**示例 3：**
+
+```
+输入：ransomNote = "aa", magazine = "aab"
+输出：true
+```
+
+ 
+
+**提示：**
+
+- `1 <= ransomNote.length, magazine.length <= 105`
+- `ransomNote` 和 `magazine` 由小写英文字母组成
+
+**代码**
+
+```c++
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        unordered_map<char, int> myHashMap;
+        for (auto c : magazine) {
+            myHashMap[c]++;
+        }
+        
+        for (auto c : ransomNote) {
+            if (myHashMap[c] == 0) {
+                return false;
+            }
+            myHashMap[c]--;
+        }
+        return true;
+    }
+};
+```
+
+
+
+### 8.三数之和
+
+#### 15.[三数之和](https://leetcode.cn/problems/3sum/description/)(中等)
+
+**题目**
+
+给你一个整数数组 `nums` ，判断是否存在三元组 `[nums[i], nums[j], nums[k]]` 满足 `i != j`、`i != k` 且 `j != k` ，同时还满足 `nums[i] + nums[j] + nums[k] == 0` 。请
+
+你返回所有和为 `0` 且不重复的三元组。
+
+**注意：**答案中不可以包含重复的三元组。
+
+ 
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [-1,0,1,2,-1,-4]
+输出：[[-1,-1,2],[-1,0,1]]
+解释：
+nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0 。
+nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0 。
+nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0 。
+不同的三元组是 [-1,0,1] 和 [-1,-1,2] 。
+注意，输出的顺序和三元组的顺序并不重要。
+```
+
+**示例 2：**
+
+```
+输入：nums = [0,1,1]
+输出：[]
+解释：唯一可能的三元组和不为 0 。
+```
+
+**示例 3：**
+
+```
+输入：nums = [0,0,0]
+输出：[[0,0,0]]
+解释：唯一可能的三元组和为 0 。
+```
+
+ 
+
+**提示：**
+
+- `3 <= nums.length <= 3000`
+- `-105 <= nums[i] <= 105`
+
+**代码**
+
+求出三数之和为0的三元组不难,难点在于保证不重复
+
+```c++
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> ans;
+        sort(nums.begin(), nums.end());
+        for (int i = 0; i < nums.size() - 2; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            int j = i + 1, k = nums.size() - 1;
+            while (j < k) {
+                if (j > i + 1 && nums[j] == nums[j - 1]) {
+                    j++;
+                    continue;
+                }
+                if (k < nums.size() - 1 && nums[k] == nums[k + 1]) {
+                    k--;
+                    continue;
+                }
+                if (nums[j] + nums[k] > -nums[i]) {
+                    k--;
+                }
+                else if (nums[j] + nums[k] < -nums[i]) {
+                    j++;
+                }
+                else {
+                    ans.push_back({nums[i], nums[j], nums[k]});
+                    j++;
+                    k--;
+                }
+            }
+        }
+        return ans;
+    }
+};
+```
+
+
+
+### 9.四数之和
+
+#### 18.[四数之和](https://leetcode.cn/problems/4sum/description/)(中等)
+
+**题目**
+
+给你一个由 `n` 个整数组成的数组 `nums` ，和一个目标值 `target` 。请你找出并返回满足下述全部条件且**不重复**的四元组 `[nums[a], nums[b], nums[c], nums[d]]` （若两个四元组元素一一对应，则认为两个四元组重复）：
+
+- `0 <= a, b, c, d < n`
+- `a`、`b`、`c` 和 `d` **互不相同**
+- `nums[a] + nums[b] + nums[c] + nums[d] == target`
+
+你可以按 **任意顺序** 返回答案 。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [1,0,-1,0,-2,2], target = 0
+输出：[[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+```
+
+**示例 2：**
+
+```
+输入：nums = [2,2,2,2,2], target = 8
+输出：[[2,2,2,2]]
+```
+
+ 
+
+**提示：**
+
+- `1 <= nums.length <= 200`
+- `-109 <= nums[i] <= 109`
+- `-109 <= target <= 109`
+
+**代码**
+
+```c++
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        if (nums.size() < 4) {
+            return {};
+        }
+        vector<vector<int>> ans;
+        sort(nums.begin(), nums.end());
+        for (int i = 0; i < nums.size() - 3; i++) {
+            cout << i << endl;
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            for (int j = i + 1; j < nums.size() - 2; j++) {
+                if (j > i + 1 && nums[j] == nums[j - 1]) {
+                    continue;
+                }
+                int left = j + 1, right = nums.size() - 1;
+                while (left < right) {
+                    long sum = (long)nums[i] + nums[j] + nums[left] + nums[right];
+                    if (sum == target) {
+                        ans.push_back({nums[i], nums[j], nums[left], nums[right]});
+                        while (left < right && nums[left] == nums[left + 1]) {
+                            left++;
+                        }
+                        left++;
+                        while (left <right && nums[right] == nums[right - 1]) {
+                            right--;
+                        }
+                        right--;
+                    }
+                    else if (sum < target) {
+                        left++;
+                    }
+                    else {
+                        right--;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
+```
+
+## 字符串
+
+### 1.反转字符串
+
+#### 344.[反转字符串](https://leetcode.cn/problems/reverse-string/description/)(简单)
+
+**题目**
+
+编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 `s` 的形式给出。
+
+不要给另外的数组分配额外的空间，你必须**[原地](https://baike.baidu.com/item/原地算法)修改输入数组**、使用 O(1) 的额外空间解决这一问题。
+
+ 
+
+**示例 1：**
+
+```
+输入：s = ["h","e","l","l","o"]
+输出：["o","l","l","e","h"]
+```
+
+**示例 2：**
+
+```
+输入：s = ["H","a","n","n","a","h"]
+输出：["h","a","n","n","a","H"]
+```
+
+ 
+
+**提示：**
+
+- `1 <= s.length <= 105`
+- `s[i]` 都是 [ASCII](https://baike.baidu.com/item/ASCII) 码表中的可打印字符
+
+**代码**
+
+```c++
+class Solution {
+public:
+    void reverseString(vector<char>& s) {
+        for (int i = 0; i < s.size() / 2; i++) {
+            swap(s[i], s[s.size() - 1 - i]);
+        }
+    }
+};
+```
+
+
+
+### 2.反转字符串II
+
+#### 541.[反转字符串II](https://leetcode.cn/problems/reverse-string-ii/description/)(简单)
+
+**题目**
+
+给定一个字符串 `s` 和一个整数 `k`，从字符串开头算起，每计数至 `2k` 个字符，就反转这 `2k` 字符中的前 `k` 个字符。
+
+- 如果剩余字符少于 `k` 个，则将剩余字符全部反转。
+- 如果剩余字符小于 `2k` 但大于或等于 `k` 个，则反转前 `k` 个字符，其余字符保持原样。
+
+ 
+
+**示例 1：**
+
+```
+输入：s = "abcdefg", k = 2
+输出："bacdfeg"
+```
+
+**示例 2：**
+
+```
+输入：s = "abcd", k = 2
+输出："bacd"
+```
+
+ 
+
+**提示：**
+
+- `1 <= s.length <= 104`
+- `s` 仅由小写英文组成
+- `1 <= k <= 104`
+
+**代码**
+
+```c++
+class Solution {
+public:
+    string reverseStr(string s, int k) {
+        int n = s.size();
+        for (int i = 0; i < n; i += 2 * k) {
+            int l = min(n, i + k);
+            for (int left = i, right = l - 1; left < right; left++, right--) {
+                swap(s[left], s[right]);
+            }
+        }
+        return s;
+    }
+};
+```
+
+
+
+### 3.替换数字
+
+#### [替换数字](https://kamacoder.com/problempage.php?pid=1064)(卡码网)
+
+**题目**
+
+###### 题目描述
+
+给定一个字符串 s，它包含小写字母和数字字符，请编写一个函数，将字符串中的字母字符保持不变，而将每个数字字符替换为number。 例如，对于输入字符串 "a1b2c3"，函数应该将其转换为 "anumberbnumbercnumber"。
+
+###### 输入描述
+
+输入一个字符串 s,s 仅包含小写字母和数字字符。
+
+###### 输出描述
+
+打印一个新的字符串，其中每个数字字符都被替换为了number
+
+###### 输入示例
+
+```
+a1b2c3
+```
+
+###### 输出示例
+
+```
+anumberbnumbercnumber
+```
+
+###### 提示信息
+
+数据范围：
+1 <= s.length < 10000。
+
+**代码**
+
+```c++
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main(void){
+    string ans;
+    string str = "number";
+    cin >> ans;
+    
+    int num=0;
+    for (auto letter : ans) {
+        if (letter >= '0' && letter <= '9') {
+            num++;
+        }
+    }
+    
+    int slow = ans.size() - 1;
+    ans.resize(ans.size() + 5 * num);
+    int fast = ans.size() - 1;
+    
+    for (int i = slow; i >= 0; i--) {
+        if (ans[i] >= '0'&& ans[i] <= '9') {
+            for (int j = 5; j >= 0; j--){
+                ans[fast] = str[j];
+                fast--;
+            }
+        }else{
+            ans[fast] = ans[i];
+            fast--;
+        }
+    }
+    
+    cout << ans << endl;
+    return 0;
+}
+```
+
+
+
+### 4.翻转字符串里的单词
+
+#### 151.[反转字符串中的单词](https://leetcode.cn/problems/reverse-words-in-a-string/description/)(中等)
+
+**题目**
+
+给你一个字符串 `s` ，请你反转字符串中 **单词** 的顺序。
+
+**单词** 是由非空格字符组成的字符串。`s` 中使用至少一个空格将字符串中的 **单词** 分隔开。
+
+返回 **单词** 顺序颠倒且 **单词** 之间用单个空格连接的结果字符串。
+
+**注意：**输入字符串 `s`中可能会存在前导空格、尾随空格或者单词间的多个空格。返回的结果字符串中，单词间应当仅用单个空格分隔，且不包含任何额外的空格。
+
+ 
+
+**示例 1：**
+
+```
+输入：s = "the sky is blue"
+输出："blue is sky the"
+```
+
+**示例 2：**
+
+```
+输入：s = "  hello world  "
+输出："world hello"
+解释：反转后的字符串中不能存在前导空格和尾随空格。
+```
+
+**示例 3：**
+
+```
+输入：s = "a good   example"
+输出："example good a"
+解释：如果两个单词间有多余的空格，反转后的字符串需要将单词间的空格减少到仅有一个。
+```
+
+ 
+
+**提示：**
+
+- `1 <= s.length <= 104`
+- `s` 包含英文大小写字母、数字和空格 `' '`
+- `s` 中 **至少存在一个** 单词
+
+
+
+ 
+
+**进阶：**如果字符串在你使用的编程语言中是一种可变数据类型，请尝试使用 `O(1)` 额外空间复杂度的 **原地** 解法。
+
+**代码**
+
+### 5.右旋转字符串
+
+### 6.实现strStr()
+
+### 7.重复的子字符串
+
+## 栈与队列
+
+### 1.栈与队列理论基础
+
+栈是以底层容器完成其工作,对外提供统一的接口,底层容器是可插拔的(可以控制用哪种容器来实现栈的功能,vector,deque,list等都可以,默认使用deque)
+
+### 2.用栈实现队列
+
+### 3.用队列实现栈
+
+#### 4.有效的括号
+
+### 5.删除字符串中的所有相邻重复项
+
+### 6.逆波兰表达式求值
+
+### 7.滑动窗口最大值
+
+### 8.前k个高频元素
 
 ## 博弈
 
