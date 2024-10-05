@@ -64,7 +64,7 @@ plt.title(label='first')  # 设置字体大小与格式
 
 ax2 = plt.subplot(2, 2, 2)
 plt.plot([1, 2, 3, 5], [4, 5, 7, 8], color="y", linestyle="-")
-plt.title('tow')
+plt.title('two')
 
 
 ax3 = plt.subplot(223)
