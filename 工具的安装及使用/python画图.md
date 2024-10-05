@@ -117,7 +117,7 @@ plt.bar(x, values, width, hatch='/')
 
 ###### 颜色列表
 
-![image-20240913165519024](C:\Users\fzchen\Desktop\networkLearning\工具的安装及使用\assets\颜色列表.png)
+![image-20241006044713471](assets/python%E7%94%BB%E5%9B%BE/image-20241006044713471.png)
 
 ###### 图层
 
