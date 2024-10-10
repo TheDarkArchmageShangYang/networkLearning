@@ -97,7 +97,7 @@ http {
 
 xquic使用结构体 *<u>**xqc_ack_info_t**</u>* 来存储ACK包的数据，结构体定义在 ***<u>/src/transport/xqc_recv_recode.h:34</u>*** 
 
-![image-20240410162249888](C:\Users\fzchen\AppData\Roaming\Typora\typora-user-images\image-20240410162249888.png)
+![image-20240410162249888](assets/xquic%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BD%BF%E7%94%A8/image-20240410162249888.png)
 
 ACK包的处理函数在 ***<u>/src/transport/xqc_frame_parser.c:662</u>*** 的 ***<u>xqc_parse_ack_frame()</u>*** 但是该函数没有记录dcid_seq_num
 
@@ -105,7 +105,7 @@ ACK包的处理函数在 ***<u>/src/transport/xqc_frame_parser.c:662</u>*** 的 
 
 以一个ACK为例
 
-![image-20240410162717998](C:\Users\fzchen\AppData\Roaming\Typora\typora-user-images\image-20240410162717998.png)
+![image-20240410162717998](assets/xquic%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BD%BF%E7%94%A8/image-20240410162717998.png)
 
 经过处理
 
@@ -143,7 +143,7 @@ ranges[3].low = 884;
 
 #### 问题1
 
-![image](https://github.com/TheDarkArchmageShangYang/networkLearning/assets/149142839/17b9b03e-9450-4382-a7e8-0bb73acdfa56)
+![image](assets/xquic%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BD%BF%E7%94%A8/17b9b03e-9450-4382-a7e8-0bb73acdfa56.png)
 
 原因：共享库libxquic.so没有被添加到环境变量中
 
@@ -158,7 +158,7 @@ sudo ldconfig
 ```
 #### 问题2
 
-![image](https://github.com/TheDarkArchmageShangYang/networkLearning/assets/149142839/b6a6443c-fe40-47cc-b932-7cf997fc726b)
+![image](assets/xquic%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BD%BF%E7%94%A8/b6a6443c-fe40-47cc-b932-7cf997fc726b.png)
 
 原因：tengine没有权限
 

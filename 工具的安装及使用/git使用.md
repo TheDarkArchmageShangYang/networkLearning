@@ -56,11 +56,11 @@ git push origin <branch>
 
 本地文件夹目录
 
-![image-20240424162312213](C:\Users\fzchen\AppData\Roaming\Typora\typora-user-images\image-20240424162312213.png)
+![image-20241010113459152](assets/git%E4%BD%BF%E7%94%A8/image-20241010113459152.png)
 
 github中目录
 
-![image-20240424162251032](C:\Users\fzchen\AppData\Roaming\Typora\typora-user-images\image-20240424162251032.png)
+![image-20240424162251032](assets/git%E4%BD%BF%E7%94%A8/image-20240424162251032.png)
 
 可以看到dist文件夹和node_modules文件夹缺失了，dist文件夹是运行 npm run build之后打包生成的文件夹
 

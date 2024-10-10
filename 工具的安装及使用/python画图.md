@@ -72,9 +72,8 @@ fig.suptitle("四种样式的线条", y=0.05)  # 设置大标题及位置
 plt.show()
 ```
 结果:
-![image](https://github.com/TheDarkArchmageShangYang/networkLearning/assets/149142839/d0ecfb9b-8a58-4620-970c-d2f3e519ee62)
 
-
+![image](assets/python%E7%94%BB%E5%9B%BE/d0ecfb9b-8a58-4620-970c-d2f3e519ee62.png)
 
 #### 柱状图
 

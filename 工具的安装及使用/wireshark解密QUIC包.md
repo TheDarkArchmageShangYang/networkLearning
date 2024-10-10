@@ -18,4 +18,4 @@ export SSLKEYLOGFILE=/home/fzchen/sslkeylog.log
 4.停止抓包，用wireshark打开抓到的包
 打开[编辑]-[首选项]-[协议]-[TLS]-[(pre)-Master-Secret log filename]，选中sslkeylog.log
 得到解密后的QUIC包
-![image](https://github.com/TheDarkArchmageShangYang/networkLearning/assets/149142839/d8c104ef-0429-4d4d-9f56-3d08d2d474ee)
+![image](assets/wireshark%E8%A7%A3%E5%AF%86QUIC%E5%8C%85/d8c104ef-0429-4d4d-9f56-3d08d2d474ee.png)
