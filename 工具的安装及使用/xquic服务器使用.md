@@ -44,6 +44,7 @@ make
 make install
 ```
 ## 运行
+
 在tengine-install目录下新增nginx.conf文件
 ```
 worker_processes  1;
