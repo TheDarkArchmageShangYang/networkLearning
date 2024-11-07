@@ -52,25 +52,31 @@ error_log  logs/error.log debug;
 events {
     worker_connections  1024;
 }
-xquic_log   "pipe:rollback /usr/local/tengine/logs/tengine-xquic.log baknum=10 maxsize=1G interval=1d adjust=600" info;
+xquic_log   "pipe:rollback /home/fzchen/xquic/tengine-install/logs/xquic.log baknum=10 maxsize=1G interval=1d adjust=600" info;
 http {
+    include       /home/fzchen/xquic/tengine-install/conf/mime.types;
+    default_type  application/octet-stream;
     xquic_ssl_certificate        /home/fzchen/cert/fullchain.pem;
     xquic_ssl_certificate_key    /home/fzchen/cert/privkey.pem;
     xquic_congestion_control bbr;
     xquic_socket_rcvbuf 5242880;
     xquic_socket_sndbuf 5242880;
     xquic_anti_amplification_limit 5;
+    xquic_log_level info;
     server {
-        #listen 80 default_server reuseport backlog=4096;
-        listen 8000 default_server reuseport backlog=4096 ssl http2;
-        listen 8000 default_server reuseport backlog=4096 xquic;
-        #listen 8000 xquic reuseport;
+        listen 8000 ssl http2;
+        listen 8000 xquic reuseport;
         server_name udpcc-shh.dfshan.net;
-        add_header Alt-Svc 'h3=":8000"; ma=2592000,h3-29=":8000"; ma=2592000' always;
+        
+        add_header Alt-Svc 'h3=":8000"; ma=2592000,h3-29=":8000"; ma=2592000;' always;
+        
+        ssl_protocols       TLSv1.3;
         ssl_certificate     /home/fzchen/cert/fullchain.pem;
         ssl_certificate_key /home/fzchen/cert/privkey.pem;
         location / {
-            root   /home/fzchen/worknew/tengine-install;
+            root    /home/fzchen/dash.js/;
+            index index.html;
+
             autoindex on;
             autoindex_exact_size   on;
         }
