@@ -58,7 +58,7 @@ C:\Users\\[用户名]\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Star
 
 注意:有些软件的exe文件启动需要一些dll文件,所以该方法不一定可行
 
-方法2.自己写脚本,在脚本中启动exe文件
+方法2.创建script.bat,在脚本中启动exe文件
 
 ```shell
 E:

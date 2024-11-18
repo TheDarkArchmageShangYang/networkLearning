@@ -126,3 +126,6 @@ zorder默认值为1,越高显示在越上层,越低显示在越下层
 plt.bar(x, values, width, zorder=2) 
 ```
 
+#### 坐标轴
+
+
