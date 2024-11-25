@@ -1,166 +1,8 @@
-# LeetCode
+# 数据结构
 
 ## 数组
 
-### 1.数组理论基础
 
-略
-
-### 2.二分查找
-
-注意二分查找的不同写法
-
-写法一:target在一个左闭右闭区间里,也就是[left, right]
-
-- while (left <= right),因为left==right是有意义得,所以使用<=
-- if (nums[mid] > target) {right = mid - 1},right要赋值为mid-1,因为nums[mid]一定不是target
-
-写法二:target在一个左闭右开区间里,也就是[left, right)
-
-- while (left < right),因为left==right在[left, right)里是没有意义得
-- if (nums[mid] > target) {right = mid},这里reight赋值为mid,因为当前nums[mid]!=target,在左区间寻找,而寻找区间左闭右开,所以rihgt更新为mid,即下一个寻找区间不包括nums[mid]
-
-#### 704.二分查找
-
-**题目**
-
-给定一个 `n` 个元素有序的（升序）整型数组 `nums` 和一个目标值 `target` ，写一个函数搜索 `nums` 中的 `target`，如果目标值存在返回下标，否则返回 `-1`。
-
-**示例 1:**
-
-```
-输入: nums = [-1,0,3,5,9,12], target = 9
-输出: 4
-解释: 9 出现在 nums 中并且下标为 4
-```
-
-**示例 2:**
-
-```
-输入: nums = [-1,0,3,5,9,12], target = 2
-输出: -1
-解释: 2 不存在 nums 中因此返回 -1
-```
-
- 
-
-**提示：**
-
-1.你可以假设 `nums` 中的所有元素是不重复的。
-
-2.`n` 将在 `[1, 10000]`之间。
-
-3.`nums` 的每个元素都将在 `[-9999, 9999]`之间。
-
-**代码**
-
-```c++
-class Solution {
-public:
-    int search(vector<int>& nums, int target) {
-        int left = 0;
-        int right = nums.size() - 1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] < target) {
-                left = mid + 1;
-            }
-            else if (nums[mid] > target) {
-                right = mid - 1;
-            }
-            else if (nums[mid] == target) {
-                return mid;
-            }
-        }
-        return -1;
-    }
-};
-```
-
-**相似题目**
-
-35.搜索插入位置
-
-34.在排序数组中查找元素的第一个和最后一个位置
-
-69.x的平方根
-
-367.有效的完全平方数
-
-### 3.移除元素
-
-常用双指针法(快慢指针法):通过一个快指针和慢指针在一个for/while循环下完成两个for循环的工作
-
-定义快慢指针
-
-- 快指针：寻找新数组的元素 ，新数组就是不含有目标元素的数组
-- 慢指针：指向更新 新数组下标的位置
-
-#### 27.移除元素
-
-**题目**
-
-给你一个数组 `nums` 和一个值 `val`，你需要 **[原地](https://baike.baidu.com/item/原地算法)** 移除所有数值等于 `val` 的元素。元素的顺序可能发生改变。然后返回 `nums` 中与 `val` 不同的元素的数量。
-
-假设 `nums` 中不等于 `val` 的元素数量为 `k`，要通过此题，您需要执行以下操作：
-
-- 更改 `nums` 数组，使 `nums` 的前 `k` 个元素包含不等于 `val` 的元素。`nums` 的其余元素和 `nums` 的大小并不重要。
-- 返回 `k`。
-
-**示例 1：**
-
-```
-输入：nums = [3,2,2,3], val = 3
-输出：2, nums = [2,2,_,_]
-解释：你的函数函数应该返回 k = 2, 并且 nums 中的前两个元素均为 2。
-你在返回的 k 个元素之外留下了什么并不重要（因此它们并不计入评测）。
-```
-
-**示例 2：**
-
-```
-输入：nums = [0,1,2,2,3,0,4,2], val = 2
-输出：5, nums = [0,1,4,0,3,_,_,_]
-解释：你的函数应该返回 k = 5，并且 nums 中的前五个元素为 0,0,1,3,4。
-注意这五个元素可以任意顺序返回。
-你在返回的 k 个元素之外留下了什么并不重要（因此它们并不计入评测）。
-```
-
- 
-
-**提示：**
-
-- `0 <= nums.length <= 100`
-- `0 <= nums[i] <= 50`
-- `0 <= val <= 100`
-
-**代码**
-
-```c++
-class Solution {
-public:
-    int removeElement(vector<int>& nums, int val) {
-        int index = 0;
-        for (int i = 0; i < nums.size(); i++) {
-            if (nums[i] != val) {
-                nums[index] = nums[i];
-                index++;
-            }
-        }
-        return index;
-    }
-};
-```
-
-**相似题目**
-
-26.删除排序数组中的重复项
-
-283.移动零
-
-844.比较含退格的字符串
-
-977.有序数组的平方
 
 ### 4.有序数组的平方
 
@@ -2191,6 +2033,20 @@ myStack.empty(); // 返回 False
 ### 7.滑动窗口最大值
 
 ### 8.前k个高频元素
+
+## 二叉树
+
+## 图论
+
+# 常见算法
+
+## 双指针法
+
+## 动态规划
+
+## 贪心算法
+
+## 回溯算法
 
 ## 博弈
 
