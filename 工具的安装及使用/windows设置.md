@@ -70,6 +70,34 @@ start Snipaste.exe
 
 此电脑(右键管理)->任务计划程序->创建任务
 
+### 右键创建md文件
+
+需要安装Typora
+
+1.右键->新建->文本文档
+
+2.输入以下内容
+
+```
+Windows Registry Editor Version 5.00
+[HKEY_CLASSES_ROOT.md]
+@=“Typora.exe”
+[HKEY_CLASSES_ROOT.md\ShellNew]
+“NullFile”=""
+[HKEY_CLASSES_ROOT\Typora.exe]
+@=“Markdown”
+```
+
+其中==@=“Typora.exe”==是Markdown编辑器的名字
+
+==@=“Markdown”==是右键->新建时看到的文件名
+
+3.关闭文件,右键->重命名为xxx.reg
+
+4.双击运行
+
+5.如果还是不能直接创建md就重启
+
 ## 软件
 
 ### Snipaste
