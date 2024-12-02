@@ -179,7 +179,7 @@ public:
 
 **示例 1：**
 
-![img](https://assets.leetcode.com/uploads/2020/11/13/spiraln.jpg)
+![image-20241203044745013](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203044745094.png)
 
 ```
 输入：n = 3
@@ -279,7 +279,7 @@ struct ListNode {
 
 **示例 1：**
 
-![img](https://assets.leetcode.com/uploads/2021/03/06/removelinked-list.jpg)
+![image-20241203044758178](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203044758261.png)
 
 ```
 输入：head = [1,2,6,3,4,5,6], val = 6
@@ -496,7 +496,7 @@ private:
 
 **示例 1：**
 
-![img](https://assets.leetcode.com/uploads/2021/02/19/rev1ex1.jpg)
+![image-20241203044812421](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203044812512.png)
 
 ```
 输入：head = [1,2,3,4,5]
@@ -505,7 +505,7 @@ private:
 
 **示例 2：**
 
-![img](https://assets.leetcode.com/uploads/2021/02/19/rev1ex2.jpg)
+![image-20241203044818542](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203044818649.png)
 
 ```
 输入：head = [1,2]
@@ -591,7 +591,7 @@ public:
 
 **示例 1：**
 
-![img](https://assets.leetcode.com/uploads/2020/10/03/swap_ex1.jpg)
+![image-20241203044827209](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203044827296.png)
 
 ```
 输入：head = [1,2,3,4]
@@ -664,7 +664,7 @@ public:
 
 **示例 1：**
 
-![img](https://assets.leetcode.com/uploads/2020/10/03/remove_ex1.jpg)
+![image-20241203044834161](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203044834252.png)
 
 ```
 输入：head = [1,2,3,4,5], n = 2
@@ -743,7 +743,7 @@ public:
 
 图示两个链表在节点 `c1` 开始相交**：**
 
-[![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/14/160_statement.png)](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/14/160_statement.png)
+![image-20241203044904427](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203044904525.png)
 
 题目数据 **保证** 整个链式结构中不存在环。
 
@@ -765,7 +765,7 @@ public:
 
 **示例 1：**
 
-[![img](https://assets.leetcode.com/uploads/2021/03/05/160_example_1_1.png)](https://assets.leetcode.com/uploads/2018/12/13/160_example_1.png)
+![image-20241203044917009](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203044917107.png)
 
 ```
 输入：intersectVal = 8, listA = [4,1,8,4,5], listB = [5,6,1,8,4,5], skipA = 2, skipB = 3
@@ -780,7 +780,7 @@ public:
 
 **示例 2：**
 
-[![img](https://assets.leetcode.com/uploads/2021/03/05/160_example_2.png)](https://assets.leetcode.com/uploads/2018/12/13/160_example_2.png)
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203044928898.png)
 
 ```
 输入：intersectVal = 2, listA = [1,9,1,2,4], listB = [3,2,4], skipA = 3, skipB = 1
@@ -792,7 +792,7 @@ public:
 
 **示例 3：**
 
-[![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/14/160_example_3.png)](https://assets.leetcode.com/uploads/2018/12/13/160_example_3.png)
+![image-20241203044955386](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203044955479.png)
 
 ```
 输入：intersectVal = 0, listA = [2,6,4], listB = [1,5], skipA = 3, skipB = 2
@@ -896,7 +896,7 @@ public:
 
 **示例 1：**
 
-![img](https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist.png)
+![image-20241203045005209](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203045005292.png)
 
 ```
 输入：head = [3,2,0,-4], pos = 1
@@ -906,7 +906,7 @@ public:
 
 **示例 2：**
 
-![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist_test2.png)
+![image-20241203045015564](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203045015651.png)
 
 ```
 输入：head = [1,2], pos = 0
@@ -916,7 +916,7 @@ public:
 
 **示例 3：**
 
-![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist_test3.png)
+![image-20241203045022980](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203045023072.png)
 
 ```
 输入：head = [1], pos = -1

@@ -73,7 +73,7 @@ plt.show()
 ```
 结果:
 
-![image](assets/python%E7%94%BB%E5%9B%BE/d0ecfb9b-8a58-4620-970c-d2f3e519ee62.png)
+![image](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203042219192.png)
 
 #### 柱状图
 
@@ -116,7 +116,7 @@ plt.bar(x, values, width, hatch='/')
 
 ###### 颜色列表
 
-![image-20241006044713471](assets/python%E7%94%BB%E5%9B%BE/image-20241006044713471.png)
+![image-20241006044713471](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203042228372.png)
 
 ###### 图层
 
@@ -127,5 +127,4 @@ plt.bar(x, values, width, zorder=2)
 ```
 
 #### 坐标轴
-
 
