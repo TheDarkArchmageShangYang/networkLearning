@@ -136,7 +136,7 @@ npm run start
 针对参考播放器dash-if-reference
 
 dash.js播放设置选项如下：
-![image](assets/%E4%BD%BF%E7%94%A8dash.js%E7%9A%84%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%90%AD%E5%BB%BA/7d2f75f4-f6cf-415a-b193-655e25c97ad5.png)
+![image](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203043501224.png)
 
 ### 一些默认项的设置
 
@@ -315,7 +315,7 @@ getMaxQuality() 函数先获取所有当前已启动的ABR算法，然后调用 
 
 参考页面如下
 
-![image-20240423154621871](assets/%E4%BD%BF%E7%94%A8dash.js%E7%9A%84%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%90%AD%E5%BB%BA/image-20240423154621871.png)
+![image-20240423154621871](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203043514610.png)
 
 以上内容在 **/samples/dash-if-reference-player/index.html:1001** 行定义
 
@@ -579,7 +579,7 @@ let bufferLevel = dashMetrics.getCurrentBufferLevel(mediaType);
 
 该事件在/src/streaming/models/FragmentModel.js:273 onLoadingCompleted()中定义
 
-![image-20240530133415036](assets/%E4%BD%BF%E7%94%A8dash.js%E7%9A%84%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%90%AD%E5%BB%BA/image-20240530133415036.png)
+![image-20240530133415036](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203043526280.png)
 
 所以在监听该事件的函数中，可以调用e.request、e.response等对象
 
@@ -590,7 +590,7 @@ let bufferLevel = dashMetrics.getCurrentBufferLevel(mediaType);
 属性定义在/src/streaming/vo/FragmentRequest.js
 
 属性赋值在/src/dash/DashHandler.js:153 _getRequestForSegment()中，属性如下：
-![image-20240530133217627](assets/%E4%BD%BF%E7%94%A8dash.js%E7%9A%84%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%90%AD%E5%BB%BA/image-20240530133217627.png)
+![image-20240530133217627](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203043530451.png)
 
 可以看到其中并没有trequest、tresponse等属性
 

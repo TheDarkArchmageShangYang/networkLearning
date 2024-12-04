@@ -52,7 +52,7 @@ Github链接:https://github.com/liangjingkanji/DrakeTyporaTheme?tab=readme-ov-fi
 
 #### 2.2.2 图像
 
-![image-20241006043929153](assets/Typora/image-20241006043929153.png)
+![image-20241006043929153](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203042554897.png)
 
 默认设置使用的是绝对路径,此时插入的图片在其他主机/github上看不到.所以需要将插入的图片在git库中额外复制一份,同时使用相对路径来插入(使用绝对路径会由于路径问题看不到)
 

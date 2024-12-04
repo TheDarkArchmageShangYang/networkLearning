@@ -11,7 +11,7 @@ sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools
 
 vscode切换默认终端
 
-![image](https://github.com/TheDarkArchmageShangYang/networkLearning/assets/149142839/71faa6f6-2aa6-459b-b5fc-171c9c8233fa)
+![image-20241203043628026](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203043628106.png)
 #### 安装插件
 所有插件都应该下载到/home/fzchen/.oh-my-zsh/custom/plugins
 ```
@@ -59,11 +59,12 @@ z wo
 ###### 快捷跳转
 输入d可以显示访问过的路径，再输入数字可以直接跳转
 
-![image](https://github.com/TheDarkArchmageShangYang/networkLearning/assets/149142839/b4fa15e6-5375-4aed-a4cc-974ce27dd126)
+![image-20241203043638336](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203043638410.png)
 
 ## tmux
 可以后台执行脚本(即使关闭终端)
 #### 安装
+
 ```
 $ sudo apt-get install tmux
 ```
@@ -82,6 +83,7 @@ n:选择下一个窗口
 p:选择上一个窗口
 0~9:选择0~9对应的窗口
 &:关闭当前窗口
+
 #### 会话(session)操作
 ###### 启动
 ```

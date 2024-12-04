@@ -10,7 +10,7 @@
 
 注意在此题中排序的时间复杂度为O(N•log(N)),使用哈希表可以降到O(N),且空间复杂度均为O(N)
 
-![image-20241128143854127](assets/nSum%E9%97%AE%E9%A2%98/image-20241128143854127.png)
+![image-20241128143854127](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203045213117.png)
 
 ```c++
 class Solution {
@@ -85,7 +85,7 @@ public:
 
 为了将两数之和的函数抽出来,导致空间复杂度O(N).如果放在for循环下,空间复杂度O(log(N))(即sort的空间复杂度)
 
-![image-20241128152157816](assets/nSum%E9%97%AE%E9%A2%98/image-20241128152157816.png)
+![image-20241128152157816](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203045219053.png)
 
 ```c++
 class Solution {
@@ -147,7 +147,7 @@ public:
 
 注意target和nums[i]的取值是[-10^9, 10^9],int会溢出
 
-![image-20241128152737428](assets/nSum%E9%97%AE%E9%A2%98/image-20241128152737428.png)
+![image-20241128152737428](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203045226989.png)
 
 ```c++
 class Solution {

@@ -2,7 +2,7 @@
 路径:控制面板->系统和安全->管理工具->创建并格式化硬盘分区
 #### C盘和D盘之间还有个恢复分区
 如图:
-![a9aaa1c840054356a449687bd71884d3](assets/windows%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/b34a2a7e-0b3a-43cc-991b-1de0014e5d7f.png)
+![a9aaa1c840054356a449687bd71884d3](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203042726381.png)
 解决方法：
 win+r,cmd
 
@@ -37,5 +37,5 @@ DISKPART> delete partition override
 
 DiskPart 成功地删除了所选分区。
 ```
-![e2b747d12c7b48a6ab6eefc49e3b56b0](assets/windows%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/020f31fc-9dbc-49a5-a3fa-2e57161a7761.png)
+![e2b747d12c7b48a6ab6eefc49e3b56b0](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241203042732274.png)
 #### D盘压缩卷在D盘之后，无法给C盘扩展卷
