@@ -135,7 +135,7 @@ vector<int> c = a; // 方法2
 vector<int> a{1,2,3,4,5}; // 方法1
 vector<int> a(b.begin(),b.begin()+3); // 方法2
 int num[5] = {1,2,3,4,5};
-vector<int> a(num. num+5); // 方法3
+vector<int> a(num, num+5); // 方法3
 ```
 
 ###### 二维初始化
