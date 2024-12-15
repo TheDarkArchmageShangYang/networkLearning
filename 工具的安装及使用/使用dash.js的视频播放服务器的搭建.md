@@ -64,25 +64,26 @@ mp4dash fra_640x360_1000k.mp4
 ```
 
 文件目录如下：
-output/
 
-├── stream.mpd
 
-└── video/
-
-    └── avc1/
+    output/
     
-        ├── 1/
-        
-        ├── 2/
-        
-            ├── init.mp4
-            
-            ├── seg-1.m4s
-            
-            ├── ...
-            
-            └── seg-327.m4s
+    ├── stream.mpd
+    
+    └── video/
+    	└── avc1/
+    
+            ├── 1/
+    
+            ├── 2/
+    
+                ├── init.mp4
+    
+                ├── seg-1.m4s
+    
+                ├── ...
+    
+                └── seg-327.m4s
 #### 测试
 
 使用dash.js写一个视频播放器，放在stream.mpd同一文件夹下
