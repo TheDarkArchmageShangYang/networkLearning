@@ -204,6 +204,16 @@ cout << a.size() - 3 << endl // 输出18446744073709551615(2^64-1)
 int vectorSize = a.size();
 ```
 
+3.vector追加到另一个vector上
+
+```c++
+vector<int> src;
+vector<int> dest;
+dest.insert(dest.end(), src.begin(), src.end());
+```
+
+
+
 
 
 ##### 访问
