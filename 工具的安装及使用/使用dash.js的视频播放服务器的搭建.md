@@ -419,7 +419,14 @@ $scope.videoRebufferTime = 0;
 
 ##### 前后端连接
 
-网页有播放/暂停按钮，定义在**index.html:927**，按钮ID为**playPauseBtn**
+网页有播放/暂停按钮，定义如下:
+
+```javascript
+<div id="playPauseBtn" class="btn-play-pause" data-toggle="tooltip" data-placement="bottom"
+	title="Play/Pause">
+	<span id="iconPlayPause" class="icon-play"></span>
+</div>
+```
 
 触发函数定义在**/contrib/akamai/controlbar/ControlBar.js:1054**
 
@@ -461,17 +468,21 @@ $scope.videoRebufferTime = 0;
 ##### 核心函数调用
 
 - **/src/streaming/controllers/ScheduleController.js:135 schedule()**
+  
   - **ScheduleController.js:214 _shouldScheduleNextRequest()** // 判断是否请求下一个视频块
-    - **/src/streaming/controllers/AbrController.js:609 checkPlaybackQuality()** // 检查新视频块的比特率与上一个视频块是否相同
-      - **/src/streaming/rules/abr/ABRRulesCollection.js:203 getMaxQuality()**
-        - **ABRRulesCollection.js:146 _getRulesWithChange()** // 获取启用的ABR算法
-        - **ABRRulesCollection.js:150 getMinSwitchRequest()** // 根据ABR算法的优先级 strong->default->weak 的顺序来选择优先级最高且最小(不同算法算出来的相同优先级的比特率取最小的)的比特率。
-      - **ABRRulesCollection.js:737 _changeQuality()** //需要切换比特率时
+  
+  - **/src/streaming/controllers/AbrController.js:609 checkPlaybackQuality()** // 检查新视频块的比特率与上一个视频块是否相同
+  
+    - **/src/streaming/rules/abr/ABRRulesCollection.js:203 getMaxQuality()**
+      - **ABRRulesCollection.js:146 _getRulesWithChange()** // 获取启用的ABR算法
+      - **ABRRulesCollection.js:150 getMinSwitchRequest()** // 根据ABR算法的优先级 strong->default->weak 的顺序来选择优先级最高且最小(不同算法算出来的相同优先级的比特率取最小的)的比特率。
+    - **AbrController.js:737 _changeQuality()** //需要切换比特率时
+  
     - **ScheduleController.js:165 _getNextFragment()** // 不需要切换比特率时
 
 
 
-- **ABRRulesCollection.js:737 _changeQuality()** //需要切换比特率
+- **AbrController.js:737 _changeQuality()** //需要切换比特率
   - **eventBus.trigger(Events.QUALITY_CHANGE_REQUESTED...)**
     - **/src/streaming/controllers/StreamProcessor.js:768 _onQualityChanged()**
       - **/src/streaming/Stream.js:739 prepareQualityChange()**
@@ -481,20 +492,11 @@ $scope.videoRebufferTime = 0;
               - **/src/dash/DashAdapter.js:89 convertRepresentationToRepresentationInfo()**
             - **/src/dash/controllers/RepresentationController.js:223 _addRepresentation()**
               - **eventBus.trigger(MediaPlayerEvents.REPRESENTATION_SWITCH...)**
-        - **/src/streaming/StreamProcessor.js:686 _prepareForForceReplacementQualitySwitch()** // 4个if..else if语句，固定比特率时触发
-        - **/src/streaming/StreamProcessor.js:714 _prepareForAbandonQualitySwitch()** // Options勾选AbandonRequestsRule或者自定义ABR设置为abandonFragmentRules时触发
-        - **/src/streaming/StreamProcessor.js:730 _prepareForFastQualitySwitch()** // Options勾选Fast Switching ABR时触发
-        - **/src/streaming/StreamProcessor.js:772 _prepareForDefaultQualitySwitch()** // 默认情况下触发
-
-在 **schedule()** 函数中，调用函数 **ScheduleController.js:220 _shouldScheduleNextRequest()** 来判断当前是否需要请求下一个视频块
-
-判断条件有5项：
-
-- 最大比特率发生更改
-- 当前缓冲区长度 < 目标缓冲区长度
-- 
-
-视频的目标缓冲区长度计算在**ScheduleController.js:322 _getGenericBufferTarget()**
+                - **PlaybackController.js _onRepresentationSwitch()**
+          - **/src/streaming/StreamProcessor.js:686 _prepareForForceReplacementQualitySwitch()** // 4个if..else if语句，固定比特率时触发
+          - **/src/streaming/StreamProcessor.js:714 _prepareForAbandonQualitySwitch()** // Options勾选AbandonRequestsRule或者自定义ABR设置为abandonFragmentRules时触发
+          - **/src/streaming/StreamProcessor.js:730 _prepareForFastQualitySwitch()** // Options勾选Fast Switching ABR时触发
+          - **/src/streaming/StreamProcessor.js:772 _prepareForDefaultQualitySwitch()** // 默认情况下触发
 
 
 

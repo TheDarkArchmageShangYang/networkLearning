@@ -302,6 +302,7 @@ main();
 安装依赖
 
 ```shell
+sudo apt install npm
 npm install ws
 npm install wrtc
 
