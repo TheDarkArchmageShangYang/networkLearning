@@ -52,16 +52,19 @@
    - 1022.[从根到叶的二进制数之和](https://leetcode.cn/problems/sum-of-root-to-leaf-binary-numbers/description/)
    - 1457.[二叉树中的伪回文路径](https://leetcode.cn/problems/pseudo-palindromic-paths-in-a-binary-tree/description/)
    - 404.[左叶子之和](https://leetcode.cn/problems/sum-of-left-leaves/description/)
+   - 1448.[统计二叉树中好节点的数目](https://leetcode.cn/problems/count-good-nodes-in-binary-tree/description/)
    - 971.[翻转二叉树以匹配先序遍历](https://leetcode.cn/problems/flip-binary-tree-to-match-preorder-traversal/description/)
    - 987.[二叉树的垂序遍历](https://leetcode.cn/problems/vertical-order-traversal-of-a-binary-tree/description/)
    - 993.[二叉树的堂兄弟节点](https://leetcode.cn/problems/cousins-in-binary-tree/description/)
    - 1315.[祖父节点值为偶数的节点和](https://leetcode.cn/problems/sum-of-nodes-with-even-valued-grandparent/description/)
+   - 437.[路径总和III](https://leetcode.cn/problems/path-sum-iii/description/)
+   - 1261.[在受污染的二叉树中查找元素](https://leetcode.cn/problems/find-elements-in-a-contaminated-binary-tree/description/)
+   - 386.[字典序排数](https://leetcode.cn/problems/lexicographical-numbers/description/)
+   - 1104.[二叉树寻路](https://leetcode.cn/problems/path-in-zigzag-labelled-binary-tree/description/)
+   - 1145.[二叉树着色游戏](https://leetcode.cn/problems/binary-tree-coloring-game/description/)
 2. BFS
-3. 构造二叉树
-   - 654.[最大二叉树](https://leetcode.cn/problems/maximum-binary-tree/description/)
-   - 105.[从前序与中序遍历序列构造二叉树](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/)
-   - 106.[从中序与后序遍历序列构造二叉树](https://leetcode.cn/problems/construct-binary-tree-from-inorder-and-postorder-traversal/description/)
-   - 889.[根据前序和后序遍历构造二叉树](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-postorder-traversal/description/)
+   - 513.[找树左下角的值](https://leetcode.cn/problems/find-bottom-left-tree-value/description/)
+   - 199.[二叉树的右视图](https://leetcode.cn/problems/binary-tree-right-side-view/description/)
 
 
 
@@ -72,6 +75,16 @@
 987需要记录每个节点的深度,宽度,值
 
 993,1315需要记录父节点/祖父节点
+
+437:二叉树+前缀和
+
+1261:二叉树+哈希表
+
+386:多叉树+字典序
+
+1104:二叉树寻路
+
+1145:二叉树+贪心
 
 ## 深度优先搜索
 
@@ -711,6 +724,92 @@ public:
 
 
 
+#### 1448.[统计二叉树中好节点的数目](https://leetcode.cn/problems/count-good-nodes-in-binary-tree/description/)
+
+给你一棵根为 `root` 的二叉树，请你返回二叉树中好节点的数目。
+
+「好节点」X 定义为：从根到该节点 X 所经过的节点中，没有任何节点的值大于 X 的值。
+
+ 
+
+**示例 1：**
+
+**![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241228020259582.png)**
+
+```
+输入：root = [3,1,4,3,null,1,5]
+输出：4
+解释：图中蓝色节点为好节点。
+根节点 (3) 永远是个好节点。
+节点 4 -> (3,4) 是路径中的最大值。
+节点 5 -> (3,4,5) 是路径中的最大值。
+节点 3 -> (3,1,3) 是路径中的最大值。
+```
+
+**示例 2：**
+
+**![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241228020259603.png)**
+
+```
+输入：root = [3,3,null,4,2]
+输出：3
+解释：节点 2 -> (3, 3, 2) 不是好节点，因为 "3" 比它大。
+```
+
+**示例 3：**
+
+```
+输入：root = [1]
+输出：1
+解释：根节点是好节点。
+```
+
+ 
+
+**提示：**
+
+- 二叉树中节点数目范围是 `[1, 10^5]` 。
+- 每个节点权值的范围是 `[-10^4, 10^4]` 。
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int ans = 0;
+    int goodNodes(TreeNode* root) {
+        traverse(root, INT_MIN);
+        return ans;
+    }
+    void traverse(TreeNode* root, int maxNum) {
+        if (root == nullptr) {
+            return;
+        }
+        if (maxNum <= root->val) {
+            ans++;
+        }
+        maxNum = max(maxNum, root->val);
+        traverse(root->left, maxNum);
+        traverse(root->right, maxNum);
+    }
+};
+```
+
+
+
 #### 971.[翻转二叉树以匹配先序遍历](https://leetcode.cn/problems/flip-binary-tree-to-match-preorder-traversal/description/)
 
 给你一棵二叉树的根节点 `root` ，树中有 `n` 个节点，每个节点都有一个不同于其他节点且处于 `1` 到 `n` 之间的值。
@@ -1071,6 +1170,439 @@ public:
 
 
 
+#### 437.[路径总和III](https://leetcode.cn/problems/path-sum-iii/description/)
+
+给定一个二叉树的根节点 `root` ，和一个整数 `targetSum` ，求该二叉树里节点值之和等于 `targetSum` 的 **路径** 的数目。
+
+**路径** 不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。
+
+ 
+
+**示例 1：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241228025247976.jpeg" alt="img" style="zoom:67%;" />
+
+```
+输入：root = [10,5,-3,3,2,null,11,3,-2,null,1], targetSum = 8
+输出：3
+解释：和等于 8 的路径有 3 条，如图所示。
+```
+
+**示例 2：**
+
+```
+输入：root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
+输出：3
+```
+
+ 
+
+**提示:**
+
+- 二叉树的节点个数的范围是 `[0,1000]`
+- `-10^9 <= Node.val <= 10^9` 
+- `-1000 <= targetSum <= 1000`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int ans = 0;
+    long long sum = 0;
+    unordered_map<long long, int> sums;
+    int pathSum(TreeNode* root, int targetSum) {
+        sums[0] = 1;
+        traverse(root, targetSum);
+        return ans;
+    }
+    void traverse(TreeNode* root, int targetSum) {
+        if (root == nullptr) {
+            return;
+        }
+        sum += root->val;
+        ans += sums[sum - targetSum];
+        sums[sum]++;
+        traverse(root->left, targetSum);
+        traverse(root->right, targetSum);
+        sums[sum]--;
+        sum -= root->val;
+    }
+};
+```
+
+ 
+
+#### 1261.[在受污染的二叉树中查找元素](https://leetcode.cn/problems/find-elements-in-a-contaminated-binary-tree/description/)
+
+给出一个满足下述规则的二叉树：
+
+1. `root.val == 0`
+2. 如果 `treeNode.val == x` 且 `treeNode.left != null`，那么 `treeNode.left.val == 2 * x + 1`
+3. 如果 `treeNode.val == x` 且 `treeNode.right != null`，那么 `treeNode.right.val == 2 * x + 2`
+
+现在这个二叉树受到「污染」，所有的 `treeNode.val` 都变成了 `-1`。
+
+请你先还原二叉树，然后实现 `FindElements` 类：
+
+- `FindElements(TreeNode* root)` 用受污染的二叉树初始化对象，你需要先把它还原。
+- `bool find(int target)` 判断目标值 `target` 是否存在于还原后的二叉树中并返回结果。
+
+ 
+
+**示例 1：**
+
+**![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241228165936084.jpeg)**
+
+```
+输入：
+["FindElements","find","find"]
+[[[-1,null,-1]],[1],[2]]
+输出：
+[null,false,true]
+解释：
+FindElements findElements = new FindElements([-1,null,-1]); 
+findElements.find(1); // return False 
+findElements.find(2); // return True 
+```
+
+**示例 2：**
+
+**![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241228165936061.jpeg)**
+
+```
+输入：
+["FindElements","find","find","find"]
+[[[-1,-1,-1,-1,-1]],[1],[3],[5]]
+输出：
+[null,true,true,false]
+解释：
+FindElements findElements = new FindElements([-1,-1,-1,-1,-1]);
+findElements.find(1); // return True
+findElements.find(3); // return True
+findElements.find(5); // return False
+```
+
+**示例 3：**
+
+**<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241228165936077.jpeg" alt="img" style="zoom:80%;" />**
+
+```
+输入：
+["FindElements","find","find","find","find"]
+[[[-1,null,-1,-1,null,-1]],[2],[3],[4],[5]]
+输出：
+[null,true,false,false,true]
+解释：
+FindElements findElements = new FindElements([-1,null,-1,-1,null,-1]);
+findElements.find(2); // return True
+findElements.find(3); // return False
+findElements.find(4); // return False
+findElements.find(5); // return True
+```
+
+ 
+
+**提示：**
+
+- `TreeNode.val == -1`
+- 二叉树的高度不超过 `20`
+- 节点的总数在 `[1, 10^4]` 之间
+- 调用 `find()` 的总次数在 `[1, 10^4]` 之间
+- `0 <= target <= 10^6`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class FindElements {
+public:
+    unordered_set<int> valSet;
+    FindElements(TreeNode* root) {
+        if (root == nullptr) {
+            return;
+        }
+        root->val = 0;
+        valSet.insert(root->val);
+        traverse(root);
+    }
+
+    void traverse(TreeNode* root) {
+        if (root == nullptr) {
+            return;
+        }
+        valSet.insert(root->val);
+        if (root->left != nullptr) {
+            root->left->val = 2 * root->val + 1;
+        }
+        if (root->right != nullptr) {
+            root->right->val = 2 * root->val + 2;
+        }
+        traverse(root->left);
+        traverse(root->right);
+    }
+    
+    bool find(int target) {
+        return valSet.count(target);
+    }
+};
+
+/**
+ * Your FindElements object will be instantiated and called as such:
+ * FindElements* obj = new FindElements(root);
+ * bool param_1 = obj->find(target);
+ */
+```
+
+
+
+#### 386.[字典序排数](https://leetcode.cn/problems/lexicographical-numbers/description/)
+
+给你一个整数 `n` ，按字典序返回范围 `[1, n]` 内所有整数。
+
+你必须设计一个时间复杂度为 `O(n)` 且使用 `O(1)` 额外空间的算法。
+
+ 
+
+**示例 1：**
+
+```
+输入：n = 13
+输出：[1,10,11,12,13,2,3,4,5,6,7,8,9]
+```
+
+**示例 2：**
+
+```
+输入：n = 2
+输出：[1,2]
+```
+
+ 
+
+**提示：**
+
+- `1 <= n <= 5 * 10^4`
+
+
+
+==**代码**==
+
+想象如下多叉树,每个节点有0~9共10个子节点,字典序就是该多叉树的前序遍历结果
+
+![image-20241228172115672](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241228172115759.png)
+
+```c++
+class Solution {
+public:
+    vector<int> ans;
+    vector<int> lexicalOrder(int n) {
+        for (int i = 1; i < 10; i++) {
+            dfs(i, n);
+        }
+        return ans;
+    }
+    void dfs(int root, int n) {
+        if (root > n) {
+            return;
+        }
+        ans.push_back(root);
+        for (int i = root * 10; i < root * 10 + 10; i++) {
+            dfs(i, n);
+        }
+    }
+};
+```
+
+
+
+#### 1104.[二叉树寻路](https://leetcode.cn/problems/path-in-zigzag-labelled-binary-tree/description/)
+
+在一棵无限的二叉树上，每个节点都有两个子节点，树中的节点 **逐行** 依次按 “之” 字形进行标记。
+
+如下图所示，在奇数行（即，第一行、第三行、第五行……）中，按从左到右的顺序进行标记；
+
+而偶数行（即，第二行、第四行、第六行……）中，按从右到左的顺序进行标记。
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241229165927721.png)
+
+给你树上某一个节点的标号 `label`，请你返回从根节点到该标号为 `label` 节点的路径，该路径是由途经的节点标号所组成的。
+
+ 
+
+**示例 1：**
+
+```
+输入：label = 14
+输出：[1,3,4,14]
+```
+
+**示例 2：**
+
+```
+输入：label = 26
+输出：[1,2,6,10,26]
+```
+
+ 
+
+**提示：**
+
+- `1 <= label <= 10^6`
+
+
+
+==**代码**==
+
+如果没有"之"字形排列,只要不断`label=label/2`,最后反转数组就行了
+
+由于改变了数字的排列顺序,所以需要找规律
+
+以`label=13`为例,13的原父节点为6,现父节点为5
+
+以`label=14`为例,14的原父节点为7,现父节点为4
+
+所以规律为`label原父节点+label现父节点=label上一行的最大数+最小数=(pow(2,depth-1)-1)+pow(2,depth-2)`
+
+![image-20241229170320313](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241229170320405.png)
+
+```c++
+class Solution {
+public:
+    vector<int> ans;
+    vector<int> pathInZigZagTree(int label) {
+        vector<int> ans;
+        int depth = 1, num = 1;
+        while (num * 2 <= label) {
+            depth++;
+            num *= 2;
+        }
+        while (label >= 1) {
+            ans.push_back(label);
+            label = pow(2, depth - 1) - 1 - (label / 2 - pow(2, depth - 2));
+            depth--;
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
+```
+
+
+
+#### 1145.[二叉树着色游戏](https://leetcode.cn/problems/binary-tree-coloring-game/description/)
+
+有两位极客玩家参与了一场「二叉树着色」的游戏。游戏中，给出二叉树的根节点 `root`，树上总共有 `n` 个节点，且 `n` 为奇数，其中每个节点上的值从 `1` 到 `n` 各不相同。
+
+最开始时：
+
+- 「一号」玩家从 `[1, n]` 中取一个值 `x`（`1 <= x <= n`）；
+- 「二号」玩家也从 `[1, n]` 中取一个值 `y`（`1 <= y <= n`）且 `y != x`。
+
+「一号」玩家给值为 `x` 的节点染上红色，而「二号」玩家给值为 `y` 的节点染上蓝色。
+
+之后两位玩家轮流进行操作，「一号」玩家先手。每一回合，玩家选择一个被他染过色的节点，将所选节点一个 **未着色** 的邻节点（即左右子节点、或父节点）进行染色（「一号」玩家染红色，「二号」玩家染蓝色）。
+
+如果（且仅在此种情况下）当前玩家无法找到这样的节点来染色时，其回合就会被跳过。
+
+若两个玩家都没有可以染色的节点时，游戏结束。着色节点最多的那位玩家获得胜利 ✌️。
+
+现在，假设你是「二号」玩家，根据所给出的输入，假如存在一个 `y` 值可以确保你赢得这场游戏，则返回 `true` ；若无法获胜，就请返回 `false` 。
+
+**示例 1 ：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241229181050907.png" alt="img" style="zoom: 50%;" />
+
+```
+输入：root = [1,2,3,4,5,6,7,8,9,10,11], n = 11, x = 3
+输出：true
+解释：第二个玩家可以选择值为 2 的节点。
+```
+
+**示例 2 ：**
+
+```
+输入：root = [1,2,3], n = 3, x = 1
+输出：false
+```
+
+ 
+
+**提示：**
+
+- 树中节点数目为 `n`
+- `1 <= x <= n <= 100`
+- `n` 是奇数
+- `1 <= Node.val <= n`
+- 树中所有值 **互不相同**
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int leftChildNum = 0, rightChildNum = 0;
+    bool btreeGameWinningMove(TreeNode* root, int n, int x) {
+        dfs(root, x); 
+        int parentNum = n - (leftChildNum + rightChildNum + 1);
+        int maxNum = max({leftChildNum, rightChildNum, parentNum});
+        return maxNum > n / 2;
+    }
+    int dfs(TreeNode* root, int x) {
+        if (root == nullptr) {
+            return 0;
+        }
+        int left = dfs(root->left, x);
+        int right = dfs(root->right, x);
+        if (root->val == x) {
+            leftChildNum = left;
+            rightChildNum = right;
+        }
+        return left + right + 1;
+    }
+};
+```
+
+
+
 ## 广度优先搜索
 
 ### 基本模板
@@ -1094,11 +1626,11 @@ public:
                 TreeNode* cur = q.front();
                 q.pop();
                 // 将当前节点的左右子树加入到队列中
-                if (cur->right != nullptr) {
-                    q.push(cur->right);
-                }
                 if (cur->left != nullptr) {
                     q.push(cur->left);
+                }
+                if (cur->right != nullptr) {
+                    q.push(cur->right);
                 }
             }
             depth++;
@@ -1111,6 +1643,87 @@ public:
 
 
 ### 例题
+
+#### 513.[找树左下角的值](https://leetcode.cn/problems/find-bottom-left-tree-value/description/)
+
+给定一个二叉树的 **根节点** `root`，请找出该二叉树的 **最底层 最左边** 节点的值。
+
+假设二叉树中至少有一个节点。
+
+ 
+
+**示例 1:**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241228155245122.jpeg" alt="img" style="zoom:80%;" />
+
+```
+输入: root = [2,1,3]
+输出: 1
+```
+
+**示例 2:**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241228155245154.jpeg" alt="img" style="zoom:67%;" />
+
+```
+输入: [1,2,3,4,null,5,6,null,null,7]
+输出: 7
+```
+
+ 
+
+**提示:**
+
+- 二叉树的节点个数的范围是 `[1,104]`
+- `-2^31 <= Node.val <= 2^31 - 1` 
+
+
+
+==**代码**==
+
+```c+++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int findBottomLeftValue(TreeNode* root) {
+        if (root == nullptr) {
+            return {};
+        }
+        TreeNode* ans = nullptr;
+        queue<TreeNode*> q;
+        q.push(root);
+        int depth = 1;
+        while (!q.empty()) {
+            int n = q.size();
+            ans = q.front();
+            for (int i = 0; i < n; i++) {
+                TreeNode* cur = q.front();
+                q.pop();
+                if (cur->left != nullptr) {
+                    q.push(cur->left);
+                }
+                if (cur->right != nullptr) {
+                    q.push(cur->right);
+                }
+            }
+            depth++;
+        }
+        return ans->val;
+    }
+};
+```
+
+
 
 #### 199.[二叉树的右视图](https://leetcode.cn/problems/binary-tree-right-side-view/description/)
 
@@ -1286,689 +1899,6 @@ public:
         }
         root->left = addOneRow(root->left, val, depth - 1);
         root->right = addOneRow(root->right, val, depth - 1);
-        return root;
-    }
-};
-```
-
-
-
-## 构造二叉树
-
-通过前序/中序/后序中的两个遍历结果构造二叉树
-
-![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241219005753341.jpeg)
-
-前序遍历preorder:[3,9,20,15,7]
-
-中序遍历inorder:[9,3,15,20,7]
-
-后序遍历postorder:[9,15,7,20,3]
-
-思路:先确定根节点的值和左右子树的遍历结果,然后递归构造左右子树
-
-假设对于当前子数,前序遍历结果为[preleft,preright],中序为[inleft,inright],后序为[postleft,postright]
-
-### 前序+中序
-
-根节点val和index:
-
-前序:
-
-- 根节点val: preorder[preleft]
-- 根节点index: preleft
-
-中序:
-
-- 根节点val: 根据前序获得
-- 根节点index: 使用`for循环/哈希表`来查找
-
-左右子树的遍历结果:
-
-中序:
-
-- 左子树: [inleft, 根节点index-1]
-- 左子树长度: 根节点index - inleft
-- 右子树: [根节点index+1, inright]
-
-前序:
-
-- 左子树: [preleft+1, preleft+左子树长度(根节点index-inleft)]
-- 右子树: [preleft+左子树长度+1, preright]
-
-### 后序+中序
-
-根节点val和index:
-
-后序:
-
-- 根节点val: postorder[postright]
-- 根节点index: postright
-
-中序:
-
-- 根节点val: 根据后序获得
-- 根节点index: 使用`for循环/哈希表`来查找
-
-左右子树的遍历结果
-
-中序:
-
-- 左子树: [inleft,根节点index-1]
-- 左子树长度: 根节点index - inleft
-- 右子树: [根节点index+1, inright]
-
-后序:
-
-- 左子树: [postleft, postleft+左子树长度-1]
-- 右子树: [post+左子树长度, postright-1]
-
-### 前序+后序
-
-根节点val和index:
-
-前序:
-
-- 根节点val: preorder[preleft]
-- 根节点index: preleft
-
-后序:
-
-- 根节点val: postorder[postright]
-- 根节点index: postright
-
-由于没有中序遍历来区分左右子树,所以可以根据前序遍历的第二个值来找左子树的根节点的值,或者根据后序遍历的倒数第二个值来找右子树的根节点的值.
-
-`需要注意数组越界问题`
-
-左子树根节点val和index:
-
-前序:
-
-- 左子树根节点val: preorder[preleft+1]
-- 左子树根节点index: preleft+1
-
-后序:
-
-- 左子树根节点val: 根据前序获得
-- 左子树根节点index: 使用`for循环/哈希表`来查找
-
-左右子树的遍历结果
-
-后序: 
-
-- 左子树: [postleft,根节点左子树index]
-- 左子树长度: 根节点左子树index - postleft + 1
-- 右子树: [根节点左子树index+1, postright-1]
-
-前序:
-
-- 左子树: [preleft+1, preleft+左子树长度]
-- 右子树: [preleft+左子树长度+1, preright]
-
-### 例题
-
-#### 654.[最大二叉树](https://leetcode.cn/problems/maximum-binary-tree/description/)
-
-给定一个不重复的整数数组 `nums` 。 **最大二叉树** 可以用下面的算法从 `nums` 递归地构建:
-
-1. 创建一个根节点，其值为 `nums` 中的最大值。
-2. 递归地在最大值 **左边** 的 **子数组前缀上** 构建左子树。
-3. 递归地在最大值 **右边** 的 **子数组后缀上** 构建右子树。
-
-返回 *`nums` 构建的* ***最大二叉树\*** 。
-
- 
-
-**示例 1：**
-
-<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241218224506200.jpeg" alt="img" style="zoom:67%;" />
-
-```
-输入：nums = [3,2,1,6,0,5]
-输出：[6,3,5,null,2,0,null,null,1]
-解释：递归调用如下所示：
-- [3,2,1,6,0,5] 中的最大值是 6 ，左边部分是 [3,2,1] ，右边部分是 [0,5] 。
-    - [3,2,1] 中的最大值是 3 ，左边部分是 [] ，右边部分是 [2,1] 。
-        - 空数组，无子节点。
-        - [2,1] 中的最大值是 2 ，左边部分是 [] ，右边部分是 [1] 。
-            - 空数组，无子节点。
-            - 只有一个元素，所以子节点是一个值为 1 的节点。
-    - [0,5] 中的最大值是 5 ，左边部分是 [0] ，右边部分是 [] 。
-        - 只有一个元素，所以子节点是一个值为 0 的节点。
-        - 空数组，无子节点。
-```
-
-**示例 2：**
-
-<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241218224506108.jpeg" alt="img" style="zoom:67%;" />
-
-```
-输入：nums = [3,2,1]
-输出：[3,null,2,null,1]
-```
-
- 
-
-**提示：**
-
-- `1 <= nums.length <= 1000`
-- `0 <= nums[i] <= 1000`
-- `nums` 中的所有整数 **互不相同**
-
-
-
-==**代码**==
-
-自底向上DFS
-
-```c++
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-class Solution {
-public:
-    TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
-        int n = nums.size();
-        return construct(nums, 0, n - 1);
-    }
-    TreeNode* construct(vector<int>& nums, int left, int right) {
-        if (left > right) return nullptr;
-
-        int index = left;
-        for (int i = left; i <= right; i++) {
-            if (nums[i] > nums[index]) {
-                index = i;
-            }
-        }
-
-        TreeNode* newNode = new TreeNode(nums[index]);
-        newNode->left = construct(nums, left, index - 1);
-        newNode->right = construct(nums, index + 1, right);
-        return newNode;
-    }
-};
-```
-
-
-
-#### 105.[从前序与中序遍历序列构造二叉树](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/)
-
-给定两个整数数组 `preorder` 和 `inorder` ，其中 `preorder` 是二叉树的**先序遍历**， `inorder` 是同一棵树的**中序遍历**，请构造二叉树并返回其根节点。
-
- 
-
-**示例 1:**
-
-![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241219005330036.jpeg)
-
-```
-输入: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
-输出: [3,9,20,null,null,15,7]
-```
-
-**示例 2:**
-
-```
-输入: preorder = [-1], inorder = [-1]
-输出: [-1]
-```
-
- 
-
-**提示:**
-
-- `1 <= preorder.length <= 3000`
-- `inorder.length == preorder.length`
-- `-3000 <= preorder[i], inorder[i] <= 3000`
-- `preorder` 和 `inorder` 均 **无重复** 元素
-- `inorder` 均出现在 `preorder`
-- `preorder` **保证** 为二叉树的前序遍历序列
-- `inorder` **保证** 为二叉树的中序遍历序列
-
-
-
-==**代码**==
-
-```c++
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-class Solution {
-public:
-    unordered_map<int, int> hash_map;
-    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        int n = preorder.size();
-        for (int i = 0; i < n; i++) {
-            hash_map[inorder[i]] = i;
-        }
-        return build(preorder, 0, n - 1, inorder, 0, n - 1);
-    }
-    TreeNode* build(vector<int>& preorder, int preleft, int preright, vector<int>& inorder, int inleft, int inright) {
-        if (preleft > preright) return nullptr;
-        int value = preorder[preleft];
-        int index = hash_map[value];
-        int leftSize = index - inleft;
-        TreeNode* root = new TreeNode(value);
-        root->left = build(preorder, preleft + 1, preleft + leftSize, inorder, inleft, index - 1);
-        root->right = build(preorder, preleft + leftSize + 1, preright, inorder, index + 1, inright);
-        return root;
-    }
-};
-```
-
-
-
-#### 106.[从中序与后序遍历序列构造二叉树](https://leetcode.cn/problems/construct-binary-tree-from-inorder-and-postorder-traversal/description/)
-
-给定两个整数数组 `inorder` 和 `postorder` ，其中 `inorder` 是二叉树的中序遍历， `postorder` 是同一棵树的后序遍历，请你构造并返回这颗 *二叉树* 。
-
- 
-
-**示例 1:**
-
-![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241219231546717.jpeg)
-
-```
-输入：inorder = [9,3,15,20,7], postorder = [9,15,7,20,3]
-输出：[3,9,20,null,null,15,7]
-```
-
-**示例 2:**
-
-```
-输入：inorder = [-1], postorder = [-1]
-输出：[-1]
-```
-
- 
-
-**提示:**
-
-- `1 <= inorder.length <= 3000`
-- `postorder.length == inorder.length`
-- `-3000 <= inorder[i], postorder[i] <= 3000`
-- `inorder` 和 `postorder` 都由 **不同** 的值组成
-- `postorder` 中每一个值都在 `inorder` 中
-- `inorder` **保证**是树的中序遍历
-- `postorder` **保证**是树的后序遍历
-
-
-
-==**代码**==
-
-```c++
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-class Solution {
-public:
-    unordered_map<int, int> hash_map;
-    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
-        int n = inorder.size();
-        for (int i = 0; i < n; i++) {
-            hash_map[inorder[i]] = i;
-        }
-        return build(inorder, 0, n - 1, postorder, 0, n - 1);
-    }
-    TreeNode* build(vector<int>& inorder, int inleft, int inright, vector<int>& postorder, int postleft, int postright) {
-        if (postleft > postright) return nullptr;
-        int value = postorder[postright];
-        int index = hash_map[value];
-        int leftSize = index - inleft;
-        TreeNode* root = new TreeNode(value);
-        root->left = build(inorder, inleft, index - 1, postorder, postleft, postleft + leftSize - 1);
-        root->right = build(inorder, index + 1, inright, postorder, postleft + leftSize, postright - 1);
-        return root;
-    }
-};
-```
-
-
-
-#### 889.[根据前序和后序遍历构造二叉树](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-postorder-traversal/description/)
-
-给定两个整数数组，`preorder` 和 `postorder` ，其中 `preorder` 是一个具有 **无重复** 值的二叉树的前序遍历，`postorder` 是同一棵树的后序遍历，重构并返回二叉树。
-
-如果存在多个答案，您可以返回其中 **任何** 一个。
-
- 
-
-**示例 1：**
-
-![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241219234914116.jpeg)
-
-```
-输入：preorder = [1,2,4,5,3,6,7], postorder = [4,5,2,6,7,3,1]
-输出：[1,2,3,4,5,6,7]
-```
-
-**示例 2:**
-
-```
-输入: preorder = [1], postorder = [1]
-输出: [1]
-```
-
- 
-
-**提示：**
-
-- `1 <= preorder.length <= 30`
-- `1 <= preorder[i] <= preorder.length`
-- `preorder` 中所有值都 **不同**
-- `postorder.length == preorder.length`
-- `1 <= postorder[i] <= postorder.length`
-- `postorder` 中所有值都 **不同**
-- 保证 `preorder` 和 `postorder` 是同一棵二叉树的前序遍历和后序遍历
-
-
-
-==**代码**==
-
-注意寻找左子树根节点val时需要考虑数组越界问题
-
-```c++
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-class Solution {
-public:
-    unordered_map<int, int> hash_map;
-    TreeNode* constructFromPrePost(vector<int>& preorder, vector<int>& postorder) {
-        int n = preorder.size();
-        for (int i = 0; i < n; i++) {
-            hash_map[postorder[i]] = i;
-        }
-        return build(preorder, 0, n - 1, postorder, 0, n - 1);
-    }
-    TreeNode* build(vector<int>& preorder, int preleft, int preright, vector<int>& postorder, int postleft, int postright) {
-        if (preleft > preright) return nullptr;
-        int value = preorder[preleft];
-        TreeNode* root = new TreeNode(value);
-        if (preleft == preright) {
-            return root;
-        }
-        int rootLeftVal = preorder[preleft + 1];
-        int index = hash_map[rootLeftVal];
-        int leftSize = index - postleft + 1;
-        root->left = build(preorder, preleft + 1, preleft + leftSize, postorder, postleft, index);
-        root->right = build(preorder, preleft + leftSize + 1, preright, postorder, index + 1, postright - 1);
-        return root;
-    }
-};
-```
-
-
-
-## 二叉树序列化
-
-当二叉树节点的值不重复时:
-
-1. 如果序列化结果不包含空指针信息,且有1种遍历结果,那么二叉树不唯一
-2. 如果序列化结果不包含空指针信息,且有2种遍历结果,那么
-   - 前序/后序 + 中序,二叉树唯一
-   - 前序 + 后序,二叉树不唯一
-3. 如果序列化结果包含空指针信息,且有1种遍历结果,那么
-   - 前序/后序,二叉树唯一
-   - 中序,二叉树不唯一
-
-序列化和反序列化
-
-- 序列化:正常遍历
-- 反序列化:
-  - 先确认根节点root
-  - 根据前序/中序/后序遍历规则,递归生成左右子树
-
-### 前序遍历
-
-使用`","`作为分隔符,使用`"#"`表示叶子节点
-
-```c++
-class Codec {
-public:
-    string SEP = ","; // 代表分隔不同节点的字符
-    string NULLSYM = "#"; // 代表叶子节点的字符
-
-    // 将二叉树序列化为字符串
-    string serialize(TreeNode* root) {
-        string str;
-        _serialize(root, str);
-        return str;
-    }
-
-    void _serialize(TreeNode* root, string& str) {
-        if (root == NULL) {
-            str.append(NULLSYM).append(SEP);
-            return;
-        }
-
-        str.append(to_string(root->val)).append(SEP);
-        _serialize(root->left, str);
-        _serialize(root->right, str);
-    }
-    
-    // 将字符串反序列化为二叉树
-    TreeNode* deserialize(string data) {
-        // 将字符串转化成列表
-        list<string> nodes;
-        istringstream f(data);
-        string s;    
-        while (getline(f, s, ',')) {
-            nodes.push_back(s);
-        }
-        return _deserialize(nodes);
-    }
-
-    TreeNode* _deserialize(list<string>& nodes) {
-        if (nodes.empty()) return nullptr;
-		
-        // 找到nodes第一个字符作为根节点
-        string first = nodes.front();
-        nodes.pop_front();
-        if (first == NULLSYM) return nullptr;
-        TreeNode* root = new TreeNode(stoi(first));
-
-        root->left = _deserialize(nodes);
-        root->right = _deserialize(nodes);
-
-        return root;
-    }
-};
-```
-
-
-
-### 后序遍历
-
-只有`_serialize`和` _deserialize`函数需要修改
-
-```c++
-class Codec {
-public:
-    string SEP = ",";
-    string NULL_STR = "#";
-
-    // 主函数，将二叉树序列化为字符串
-    string serialize(TreeNode* root) {
-        string str;
-        _serialize(root, str);
-        return str;
-    }
-
-    void _serialize(TreeNode* root, string& str) {
-        if (root == nullptr) {
-            str += NULL_STR + SEP;
-            return;
-        }
-        
-        _serialize(root->left, str);
-        _serialize(root->right, str);
-        str += to_string(root->val) + SEP;
-    }
-
-    // 主函数，将字符串反序列化为二叉树结构
-    TreeNode* deserialize(string data) {
-        list<string> nodes;
-        stringstream ss(data);
-        string buf;
-        while (getline(ss, buf, ',')) {
-            nodes.push_back(buf);
-        }
-        return _deserialize(nodes);
-    }
-
-    // 辅助函数，通过 nodes 列表构造二叉树
-    TreeNode* _deserialize(list<string>& nodes) {
-        if (nodes.empty()) return nullptr;
-        // 从后往前取出元素
-        string last = nodes.back();
-        nodes.pop_back();
-        if (last == NULL_STR) return nullptr;
-        TreeNode* root = new TreeNode(stoi(last));
-        // 先构造右子树，后构造左子树
-        root->right = _deserialize(nodes);
-        root->left = _deserialize(nodes);
-        
-        return root;
-    }
-};
-```
-
-
-
-### 中序遍历
-
-可以序列化,但是不能反序列化,因为无法确定根节点的位置
-
-```c++
-class Codec {
-public:
-    string SEP = ",";
-    string NULL_STR = "#";
-
-    // 主函数，将二叉树序列化为字符串
-    string serialize(TreeNode* root) {
-        string str;
-        _serialize(root, str);
-        return str;
-    }
-
-    void _serialize(TreeNode* root, string& str) {
-        if (root == nullptr) {
-            str += NULL_STR + SEP;
-            return;
-        }
-        
-        _serialize(root->left, str);
-        str += to_string(root->val) + SEP;
-        _serialize(root->right, str);
-    }
-};
-```
-
-
-
-### 层序遍历
-
-```c++
-class Codec {
-    string SEP = ",";
-    string NULLSYM = "#";
-  
-public:
-    // 将二叉树序列化为字符串
-    string serialize(TreeNode* root) {
-        if (root == nullptr) return "";
-        string str;
-        // 初始化队列，将 root 加入队列
-        queue<TreeNode*> q;
-        q.push(root);
-        
-        while (!q.empty()) {
-            int sz = q.size();
-            for (int i = 0; i < sz; ++i) {
-                TreeNode* cur = q.front();
-                q.pop();
-                // 层级遍历代码位置
-                if (cur == nullptr) {
-                    str += NULL + SEP;
-                    continue;
-                }
-                str += to_string(cur->val) + SEP;
-                // ***************
-                q.push(cur->left);
-                q.push(cur->right);
-            }
-        }
-        return sb;
-    }
-    
-    // 将字符串反序列化为二叉树结构
-    TreeNode* deserialize(string data) {
-        if (data.empty()) return nullptr;
-        stringstream ss(data);
-        string item;
-        getline(ss, item, ',');
-        // 第一个元素就是 root 的值
-        TreeNode* root = new TreeNode(stoi(item));
-        // 队列 q 记录父节点，将 root 加入队列
-        queue<TreeNode*> q;
-        q.push(root);
-
-        while (!q.empty()) {
-            int sz = q.size();
-            for (int i = 0; i < sz; i++) {
-                TreeNode* parent = q.front();
-                q.pop();
-                // 为父节点构造左侧子节点
-                if(!getline(ss, item, ',') || item == NULLSYM) {  
-                    parent->left = nullptr;  
-                } else {
-                    parent->left = new TreeNode(stoi(item));
-                    q.push(parent->left);
-                }
-                // 为父节点构造右侧子节点
-                if(!getline(ss, item, ',') || item == NULLSYM) {  
-                    parent->right = nullptr;  
-                } else {
-                    parent->right = new TreeNode(stoi(item));
-                    q.push(parent->right);
-                }
-            }
-        }
         return root;
     }
 };
