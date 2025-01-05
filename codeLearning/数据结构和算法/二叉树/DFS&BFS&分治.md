@@ -67,7 +67,6 @@
    - 1261.[在受污染的二叉树中查找元素](https://leetcode.cn/problems/find-elements-in-a-contaminated-binary-tree/description/)
    - 386.[字典序排数](https://leetcode.cn/problems/lexicographical-numbers/description/)
    - 1104.[二叉树寻路](https://leetcode.cn/problems/path-in-zigzag-labelled-binary-tree/description/)
-   - 1145.[二叉树着色游戏](https://leetcode.cn/problems/binary-tree-coloring-game/description/)
    - 559.[N叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-n-ary-tree/description/)
 2. BFS
    - 513.[找树左下角的值](https://leetcode.cn/problems/find-bottom-left-tree-value/description/)
@@ -83,6 +82,7 @@
    - 101.[对称二叉树](https://leetcode.cn/problems/symmetric-tree/description/)
    - 951.[翻转等价二叉树](https://leetcode.cn/problems/flip-equivalent-binary-trees/description/)
    - 124.[二叉树中的最大路径和](https://leetcode.cn/problems/binary-tree-maximum-path-sum/description/)
+   - 1145.[二叉树着色游戏](https://leetcode.cn/problems/binary-tree-coloring-game/description/)
    - 112.[路径总和](https://leetcode.cn/problems/path-sum/description/)
    - 617.[合并二叉树](https://leetcode.cn/problems/merge-two-binary-trees/description/)
    - 897.[递增顺序搜索树](https://leetcode.cn/problems/increasing-order-search-tree/description/)
@@ -98,33 +98,41 @@
 
 
 
-DFS:
+**DFS**:
 
-226,257,129,988,1022,1457,404相似,均为遍历二叉树的所有路径
+226,257,129,988,1022,404,1448,971,1261相似,均为前序位置遍历二叉树的所有路径,遍历到叶子节点即可
 
-971需要根据先序遍历进行处理
+1457,113,437,559相似,均为前序位置遍历二叉树的所有路径,遍历到叶子节点需要回溯
 
-987需要记录每个节点的深度,宽度,值
+987:需要记录每个节点的深度,宽度,值
 
-993,1315需要记录父节点/祖父节点
+993,1315:需要记录父节点/祖父节点
 
 437:二叉树+前缀和
 
-1261:二叉树+哈希表
-
 386:多叉树+字典序
 
-1104:二叉树寻路
+1104:二叉树寻路+数学规律
+
+**BFS**:
+
+513,199相似,常规层序遍历
+
+**分治**:
+
+623,998,1110,100,101,951,124,112,617,897,1379,508,687,1026,1080相似,将大问题分解成小问题
+
+572,1367,LCR143需要两次递归
+
+894需要对递归结果进行交叉计算
 
 1145:二叉树+贪心
 
-分治:
+1372:交叉遍历二叉树
 
-623,572,1367,998,1110相似,将大问题分解成小问题
+==968:dfs不返回常规信息,而是返回新定义的状态==
 
-==968: dfs不返回常规信息,而是返回新定义的状态==
-
-==2049: 使用二维数组来存储二叉树信息==
+==2049:使用二维数组来存储二叉树信息==
 
 ## 深度优先搜索
 
@@ -1638,94 +1646,6 @@ public:
 
 
 
-#### 1145.[二叉树着色游戏](https://leetcode.cn/problems/binary-tree-coloring-game/description/)
-
-有两位极客玩家参与了一场「二叉树着色」的游戏。游戏中，给出二叉树的根节点 `root`，树上总共有 `n` 个节点，且 `n` 为奇数，其中每个节点上的值从 `1` 到 `n` 各不相同。
-
-最开始时：
-
-- 「一号」玩家从 `[1, n]` 中取一个值 `x`（`1 <= x <= n`）；
-- 「二号」玩家也从 `[1, n]` 中取一个值 `y`（`1 <= y <= n`）且 `y != x`。
-
-「一号」玩家给值为 `x` 的节点染上红色，而「二号」玩家给值为 `y` 的节点染上蓝色。
-
-之后两位玩家轮流进行操作，「一号」玩家先手。每一回合，玩家选择一个被他染过色的节点，将所选节点一个 **未着色** 的邻节点（即左右子节点、或父节点）进行染色（「一号」玩家染红色，「二号」玩家染蓝色）。
-
-如果（且仅在此种情况下）当前玩家无法找到这样的节点来染色时，其回合就会被跳过。
-
-若两个玩家都没有可以染色的节点时，游戏结束。着色节点最多的那位玩家获得胜利 ✌️。
-
-现在，假设你是「二号」玩家，根据所给出的输入，假如存在一个 `y` 值可以确保你赢得这场游戏，则返回 `true` ；若无法获胜，就请返回 `false` 。
-
-**示例 1 ：**
-
-<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241229181050907.png" alt="img" style="zoom: 50%;" />
-
-```
-输入：root = [1,2,3,4,5,6,7,8,9,10,11], n = 11, x = 3
-输出：true
-解释：第二个玩家可以选择值为 2 的节点。
-```
-
-**示例 2 ：**
-
-```
-输入：root = [1,2,3], n = 3, x = 1
-输出：false
-```
-
- 
-
-**提示：**
-
-- 树中节点数目为 `n`
-- `1 <= x <= n <= 100`
-- `n` 是奇数
-- `1 <= Node.val <= n`
-- 树中所有值 **互不相同**
-
-
-
-==**代码**==
-
-```c++
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-class Solution {
-public:
-    int leftChildNum = 0, rightChildNum = 0;
-    bool btreeGameWinningMove(TreeNode* root, int n, int x) {
-        dfs(root, x); 
-        int parentNum = n - (leftChildNum + rightChildNum + 1);
-        int maxNum = max({leftChildNum, rightChildNum, parentNum});
-        return maxNum > n / 2;
-    }
-    int dfs(TreeNode* root, int x) {
-        if (root == nullptr) {
-            return 0;
-        }
-        int left = dfs(root->left, x);
-        int right = dfs(root->right, x);
-        if (root->val == x) {
-            leftChildNum = left;
-            rightChildNum = right;
-        }
-        return left + right + 1;
-    }
-};
-```
-
-
-
 #### 559.[N叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-n-ary-tree/description/)
 
 给定一个 N 叉树，找到其最大深度。
@@ -2837,6 +2757,94 @@ public:
         int rightMaxSum = max(0, _maxPathSum(root->right));
         ans = max(ans, leftMaxSum + root->val + rightMaxSum);
         return root->val + max(leftMaxSum, rightMaxSum);
+    }
+};
+```
+
+
+
+#### 1145.[二叉树着色游戏](https://leetcode.cn/problems/binary-tree-coloring-game/description/)
+
+有两位极客玩家参与了一场「二叉树着色」的游戏。游戏中，给出二叉树的根节点 `root`，树上总共有 `n` 个节点，且 `n` 为奇数，其中每个节点上的值从 `1` 到 `n` 各不相同。
+
+最开始时：
+
+- 「一号」玩家从 `[1, n]` 中取一个值 `x`（`1 <= x <= n`）；
+- 「二号」玩家也从 `[1, n]` 中取一个值 `y`（`1 <= y <= n`）且 `y != x`。
+
+「一号」玩家给值为 `x` 的节点染上红色，而「二号」玩家给值为 `y` 的节点染上蓝色。
+
+之后两位玩家轮流进行操作，「一号」玩家先手。每一回合，玩家选择一个被他染过色的节点，将所选节点一个 **未着色** 的邻节点（即左右子节点、或父节点）进行染色（「一号」玩家染红色，「二号」玩家染蓝色）。
+
+如果（且仅在此种情况下）当前玩家无法找到这样的节点来染色时，其回合就会被跳过。
+
+若两个玩家都没有可以染色的节点时，游戏结束。着色节点最多的那位玩家获得胜利 ✌️。
+
+现在，假设你是「二号」玩家，根据所给出的输入，假如存在一个 `y` 值可以确保你赢得这场游戏，则返回 `true` ；若无法获胜，就请返回 `false` 。
+
+**示例 1 ：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241229181050907.png" alt="img" style="zoom: 50%;" />
+
+```
+输入：root = [1,2,3,4,5,6,7,8,9,10,11], n = 11, x = 3
+输出：true
+解释：第二个玩家可以选择值为 2 的节点。
+```
+
+**示例 2 ：**
+
+```
+输入：root = [1,2,3], n = 3, x = 1
+输出：false
+```
+
+ 
+
+**提示：**
+
+- 树中节点数目为 `n`
+- `1 <= x <= n <= 100`
+- `n` 是奇数
+- `1 <= Node.val <= n`
+- 树中所有值 **互不相同**
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int leftChildNum = 0, rightChildNum = 0;
+    bool btreeGameWinningMove(TreeNode* root, int n, int x) {
+        dfs(root, x); 
+        int parentNum = n - (leftChildNum + rightChildNum + 1);
+        int maxNum = max({leftChildNum, rightChildNum, parentNum});
+        return maxNum > n / 2;
+    }
+    int dfs(TreeNode* root, int x) {
+        if (root == nullptr) {
+            return 0;
+        }
+        int left = dfs(root->left, x);
+        int right = dfs(root->right, x);
+        if (root->val == x) {
+            leftChildNum = left;
+            rightChildNum = right;
+        }
+        return left + right + 1;
     }
 };
 ```
