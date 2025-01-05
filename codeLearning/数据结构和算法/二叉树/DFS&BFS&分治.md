@@ -1,26 +1,31 @@
-# 基本思路
+# DFS&BFS&分治
 
 ## 基本思路
 
 二叉树的问题通常需要遍历整棵树,可以考虑常见的遍历方法:
 
-- 动态规划
+- 分治思想
   - 将复杂问题分解为子问题
-  - 主要关注子树
+  - 主要关注子树,核心思路在于获取到左右子树的信息后,当前节点需要作何操作/需要返回什么
+  - 通常函数返回值类型为`TreeNode*`或者`bool`或`int(记录max,min,depth等)`
 - 回溯算法
   - 与回溯算法基本相同,代码结构也基本相同,不需要刻意区分,以下全使用DFS
   - 主要关注树枝(根节点与左右子树的关系,而不是其中任何一个节点)
 - 深度优先搜索(DFS)
   - 主要关注当前节点
+  - 如果子树的结果可能比当前树好,需要额外变量来记录最好结果;
+    如果当前树的结果覆盖子树结果,可以直接通过return返回结果
 - 广度优先搜索(BFS)
   - 层序遍历二叉树
 
 面对一个问题:
 
-1.判断使用DFS/动态规划来写递归
+1.判断使用DFS/分治思想来写递归
 
 - 是否能够通过一次遍历二叉树来完成
 - 是否能够将原问题分解为多个子问题
+  - 很多时候也可以用分解问题的方式来DFS
+
 
 2.判断在==前序/中序/后序/层序==中写代码
 
@@ -57,16 +62,43 @@
    - 987.[二叉树的垂序遍历](https://leetcode.cn/problems/vertical-order-traversal-of-a-binary-tree/description/)
    - 993.[二叉树的堂兄弟节点](https://leetcode.cn/problems/cousins-in-binary-tree/description/)
    - 1315.[祖父节点值为偶数的节点和](https://leetcode.cn/problems/sum-of-nodes-with-even-valued-grandparent/description/)
+   - 113.[路径总和II](https://leetcode.cn/problems/path-sum-ii/description/)
    - 437.[路径总和III](https://leetcode.cn/problems/path-sum-iii/description/)
    - 1261.[在受污染的二叉树中查找元素](https://leetcode.cn/problems/find-elements-in-a-contaminated-binary-tree/description/)
    - 386.[字典序排数](https://leetcode.cn/problems/lexicographical-numbers/description/)
    - 1104.[二叉树寻路](https://leetcode.cn/problems/path-in-zigzag-labelled-binary-tree/description/)
    - 1145.[二叉树着色游戏](https://leetcode.cn/problems/binary-tree-coloring-game/description/)
+   - 559.[N叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-n-ary-tree/description/)
 2. BFS
    - 513.[找树左下角的值](https://leetcode.cn/problems/find-bottom-left-tree-value/description/)
    - 199.[二叉树的右视图](https://leetcode.cn/problems/binary-tree-right-side-view/description/)
+3. 分治
+   - 623.[在二叉树中增加一行](https://leetcode.cn/problems/add-one-row-to-tree/description/)
+   - 572.[另一棵树的子树](https://leetcode.cn/problems/subtree-of-another-tree/description/)
+   - 1367.[二叉树中的链表](https://leetcode.cn/problems/linked-list-in-binary-tree/description/)
+   - 998.[最大二叉树II](https://leetcode.cn/problems/maximum-binary-tree-ii/description/)
+   - 1110.[删点成林](https://leetcode.cn/problems/delete-nodes-and-return-forest/description/)
+   - 894.[所有可能的真二叉树](https://leetcode.cn/problems/all-possible-full-binary-trees/description/)
+   - 100.[相同的树](https://leetcode.cn/problems/same-tree/description/)
+   - 101.[对称二叉树](https://leetcode.cn/problems/symmetric-tree/description/)
+   - 951.[翻转等价二叉树](https://leetcode.cn/problems/flip-equivalent-binary-trees/description/)
+   - 124.[二叉树中的最大路径和](https://leetcode.cn/problems/binary-tree-maximum-path-sum/description/)
+   - 112.[路径总和](https://leetcode.cn/problems/path-sum/description/)
+   - 617.[合并二叉树](https://leetcode.cn/problems/merge-two-binary-trees/description/)
+   - 897.[递增顺序搜索树](https://leetcode.cn/problems/increasing-order-search-tree/description/)
+   - 1379.[找出克隆二叉树中的相同节点](https://leetcode.cn/problems/find-a-corresponding-node-of-a-binary-tree-in-a-clone-of-that-tree/description/)
+   - LCR143.[子结构判断](https://leetcode.cn/problems/shu-de-zi-jie-gou-lcof/description/)
+   - 508.[出现次数最多的子树元素和](https://leetcode.cn/problems/most-frequent-subtree-sum/description/)
+   - 687.[最长同值路径](https://leetcode.cn/problems/longest-univalue-path/description/)
+   - 1026.[节点与其祖先之间的最大差值](https://leetcode.cn/problems/maximum-difference-between-node-and-ancestor/description/)
+   - 1372.[二叉树中的最长交错路径](https://leetcode.cn/problems/longest-zigzag-path-in-a-binary-tree/description/)
+   - 1080.[根到叶路径上的不足节点](https://leetcode.cn/problems/insufficient-nodes-in-root-to-leaf-paths/description/)
+   - 968.[监控二叉树](https://leetcode.cn/problems/binary-tree-cameras/description/)
+   - 2049.[统计最高分的节点数目](https://leetcode.cn/problems/count-nodes-with-the-highest-score/description/)
 
 
+
+DFS:
 
 226,257,129,988,1022,1457,404相似,均为遍历二叉树的所有路径
 
@@ -85,6 +117,14 @@
 1104:二叉树寻路
 
 1145:二叉树+贪心
+
+分治:
+
+623,572,1367,998,1110相似,将大问题分解成小问题
+
+==968: dfs不返回常规信息,而是返回新定义的状态==
+
+==2049: 使用二维数组来存储二叉树信息==
 
 ## 深度优先搜索
 
@@ -1170,6 +1210,89 @@ public:
 
 
 
+#### 113.[路径总和II](https://leetcode.cn/problems/path-sum-ii/description/)
+
+给你二叉树的根节点 `root` 和一个整数目标和 `targetSum` ，找出所有 **从根节点到叶子节点** 路径总和等于给定目标和的路径。
+
+**叶子节点** 是指没有子节点的节点。
+
+ 
+
+**示例 1：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250103014623357.jpeg" alt="img" style="zoom:50%;" />
+
+```
+输入：root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
+输出：[[5,4,11,2],[5,8,4,5]]
+```
+
+**示例 2：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250103014623615.jpeg)
+
+```
+输入：root = [1,2,3], targetSum = 5
+输出：[]
+```
+
+**示例 3：**
+
+```
+输入：root = [1,2], targetSum = 0
+输出：[]
+```
+
+ 
+
+**提示：**
+
+- 树中节点总数在范围 `[0, 5000]` 内
+- `-1000 <= Node.val <= 1000`
+- `-1000 <= targetSum <= 1000`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> ans;
+    vector<int> path;
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        dfs(root, targetSum);
+        return ans;
+    }
+    void dfs(TreeNode* root, int targetSum) {
+        if (root == nullptr) {
+            return;
+        }
+        path.push_back(root->val);
+        targetSum -= root->val;
+        if (root->left == nullptr && root->right == nullptr && targetSum == 0) {
+            ans.push_back(path);
+        }
+        dfs(root->left, targetSum);
+        dfs(root->right, targetSum);
+        path.pop_back();
+    }
+};
+```
+
+
+
 #### 437.[路径总和III](https://leetcode.cn/problems/path-sum-iii/description/)
 
 给定一个二叉树的根节点 `root` ，和一个整数 `targetSum` ，求该二叉树里节点值之和等于 `targetSum` 的 **路径** 的数目。
@@ -1603,6 +1726,97 @@ public:
 
 
 
+#### 559.[N叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-n-ary-tree/description/)
+
+给定一个 N 叉树，找到其最大深度。
+
+最大深度是指从根节点到最远叶子节点的最长路径上的节点总数。
+
+N 叉树输入按层序遍历序列化表示，每组子节点由空值分隔（请参见示例）。
+
+ 
+
+**示例 1：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250103013912500.png" alt="img" style="zoom:50%;" />
+
+```
+输入：root = [1,null,3,2,4,null,5,6]
+输出：3
+```
+
+**示例 2：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250103013912687.png" alt="img" style="zoom:50%;" />
+
+```
+输入：root = [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14]
+输出：5
+```
+
+ 
+
+**提示：**
+
+- 树的深度不会超过 `1000` 。
+- 树的节点数目位于 `[0, 10^4]` 之间。
+
+
+
+==**代码**==
+
+```c++
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> children;
+
+    Node() {}
+
+    Node(int _val) {
+        val = _val;
+    }
+
+    Node(int _val, vector<Node*> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+
+class Solution {
+public:
+    int ans;
+    int maxDepth(Node* root) {
+        dfs(root, 0);
+        return ans;
+    }
+    void dfs(Node* root, int num) {
+        if (root == nullptr) {
+            return;
+        }
+        num++;
+        bool isLeaf = true;
+        for (auto child : root->children) {
+            if (child != nullptr) {
+                isLeaf = false;
+            }
+        }
+        if (isLeaf) {
+            ans = max(ans, num);
+        }
+        for (auto child : root->children) {
+            dfs(child, num);
+        }
+        num--;
+    }
+};
+```
+
+
+
 ## 广度优先搜索
 
 ### 基本模板
@@ -1819,7 +2033,7 @@ public:
 
 
 
-## 动态规划
+## 分治思想
 
 ### 例题
 
@@ -1900,6 +2114,1711 @@ public:
         root->left = addOneRow(root->left, val, depth - 1);
         root->right = addOneRow(root->right, val, depth - 1);
         return root;
+    }
+};
+```
+
+
+
+#### 572.[另一棵树的子树](https://leetcode.cn/problems/subtree-of-another-tree/description/)
+
+给你两棵二叉树 `root` 和 `subRoot` 。检验 `root` 中是否包含和 `subRoot` 具有相同结构和节点值的子树。如果存在，返回 `true` ；否则，返回 `false` 。
+
+二叉树 `tree` 的一棵子树包括 `tree` 的某个节点和这个节点的所有后代节点。`tree` 也可以看做它自身的一棵子树。
+
+ 
+
+**示例 1：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241231235814812.png" alt="img" style="zoom:50%;" />
+
+```
+输入：root = [3,4,5,1,2], subRoot = [4,1,2]
+输出：true
+```
+
+**示例 2：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20241231235814822.png" alt="img" style="zoom:50%;" />
+
+```
+输入：root = [3,4,5,1,2,null,null,null,null,0], subRoot = [4,1,2]
+输出：false
+```
+
+ 
+
+**提示：**
+
+- `root` 树上的节点数量范围是 `[1, 2000]`
+- `subRoot` 树上的节点数量范围是 `[1, 1000]`
+- `-10^4 <= root.val <= 10^4`
+- `-10^4 <= subRoot.val <= 10^4`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        if (root == nullptr) {
+            return false;
+        }
+        if (isSameTree(root, subRoot)) {
+            return true;
+        }
+        return isSubtree(root->left, subRoot) || isSubtree(root->right, subRoot);
+    }
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        if (!p && !q) {
+            return true;
+        }
+        if (!p || !q || p->val != q->val) {
+            return false;
+        }
+        return isSameTree(p->left, q->left) && isSameTree(p->right, q->right);
+    }
+};
+```
+
+
+
+#### 1367.[二叉树中的链表](https://leetcode.cn/problems/linked-list-in-binary-tree/description/)
+
+给你一棵以 `root` 为根的二叉树和一个 `head` 为第一个节点的链表。
+
+如果在二叉树中，存在一条一直向下的路径，且每个点的数值恰好一一对应以 `head` 为首的链表中每个节点的值，那么请你返回 `True` ，否则返回 `False` 。
+
+一直向下的路径的意思是：从树中某个节点开始，一直连续向下的路径。
+
+ 
+
+**示例 1：**
+
+**<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250101001314114.png" alt="img" style="zoom:67%;" />**
+
+```
+输入：head = [4,2,8], root = [1,4,4,null,2,2,null,1,null,6,8,null,null,null,null,1,3]
+输出：true
+解释：树中蓝色的节点构成了与链表对应的子路径。
+```
+
+**示例 2：**
+
+**<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250101001314147.png" alt="img" style="zoom:67%;" />**
+
+```
+输入：head = [1,4,2,6], root = [1,4,4,null,2,2,null,1,null,6,8,null,null,null,null,1,3]
+输出：true
+```
+
+**示例 3：**
+
+```
+输入：head = [1,4,2,6,8], root = [1,4,4,null,2,2,null,1,null,6,8,null,null,null,null,1,3]
+输出：false
+解释：二叉树中不存在一一对应链表的路径。
+```
+
+ 
+
+**提示：**
+
+- 二叉树和链表中的每个节点的值都满足 `1 <= node.val <= 100` 。
+- 链表包含的节点数目在 `1` 到 `100` 之间。
+- 二叉树包含的节点数目在 `1` 到 `2500` 之间。
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSubPath(ListNode* head, TreeNode* root) {
+        if (root == nullptr) {
+            return false;
+        }
+        if (head == nullptr || check(head, root)) {
+            return true;
+        }
+        return isSubPath(head, root->left) || isSubPath(head, root->right);
+    }
+    bool check(ListNode* head, TreeNode* root) {
+        if (head == nullptr) {
+            return true;
+        }
+        if (root == nullptr || head->val != root->val) {
+            return false;
+        }
+        return check(head->next, root->left) || check(head->next, root->right);
+    }
+};
+```
+
+
+
+#### 998.[最大二叉树II](https://leetcode.cn/problems/maximum-binary-tree-ii/description/)
+
+**最大树** 定义：一棵树，并满足：其中每个节点的值都大于其子树中的任何其他值。
+
+给你最大树的根节点 `root` 和一个整数 `val` 。
+
+就像 [之前的问题](https://leetcode.cn/problems/maximum-binary-tree/) 那样，给定的树是利用 `Construct(a)` 例程从列表 `a`（`root = Construct(a)`）递归地构建的：
+
+- 如果 `a` 为空，返回 `null` 。
+- 否则，令 `a[i]` 作为 `a` 的最大元素。创建一个值为 `a[i]` 的根节点 `root` 。
+- `root` 的左子树将被构建为 `Construct([a[0], a[1], ..., a[i - 1]])` 。
+- `root` 的右子树将被构建为 `Construct([a[i + 1], a[i + 2], ..., a[a.length - 1]])` 。
+- 返回 `root` 。
+
+请注意，题目没有直接给出 `a` ，只是给出一个根节点 `root = Construct(a)` 。
+
+假设 `b` 是 `a` 的副本，并在末尾附加值 `val`。题目数据保证 `b` 中的值互不相同。
+
+返回 `Construct(b)` 。
+
+ 
+
+**示例 1：**
+
+**![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250101232913920.png)![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250101232913718.png)**
+
+```
+输入：root = [4,1,3,null,null,2], val = 5
+输出：[5,4,null,1,3,null,null,2]
+解释：a = [1,4,2,3], b = [1,4,2,3,5]
+```
+
+**示例 2：
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250101232913743.png)![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250101232913939.png)**
+
+```
+输入：root = [5,2,4,null,1], val = 3
+输出：[5,2,4,null,1,null,3]
+解释：a = [2,1,5,4], b = [2,1,5,4,3]
+```
+
+**示例 3：
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250101232913899.png)![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250101232913996.png)**
+
+```
+输入：root = [5,2,3,null,1], val = 4
+输出：[5,2,4,null,1,3]
+解释：a = [2,1,5,3], b = [2,1,5,3,4]
+```
+
+ 
+
+**提示：**
+
+- 树中节点数目在范围 `[1, 100]` 内
+- `1 <= Node.val <= 100`
+- 树中的所有值 **互不相同**
+- `1 <= val <= 100`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* insertIntoMaxTree(TreeNode* root, int val) {
+        if (root == nullptr) {
+            return new TreeNode(val);
+        }
+        if (root->val < val) {
+            TreeNode* newNode = new TreeNode(val, root, nullptr);
+            return newNode;
+        }
+        root->right = insertIntoMaxTree(root->right, val);
+        return root;
+    }
+};
+```
+
+
+
+#### 1110.[删点成林](https://leetcode.cn/problems/delete-nodes-and-return-forest/description/)
+
+给出二叉树的根节点 `root`，树上每个节点都有一个不同的值。
+
+如果节点值在 `to_delete` 中出现，我们就把该节点从树上删去，最后得到一个森林（一些不相交的树构成的集合）。
+
+返回森林中的每棵树。你可以按任意顺序组织答案。
+
+ 
+
+**示例 1：**
+
+**<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250102002958116.png" alt="img" style="zoom:80%;" />**
+
+```
+输入：root = [1,2,3,4,5,6,7], to_delete = [3,5]
+输出：[[1,2,null,4],[6],[7]]
+```
+
+**示例 2：**
+
+```
+输入：root = [1,2,4,null,3], to_delete = [3]
+输出：[[1,2,4]]
+```
+
+ 
+
+**提示：**
+
+- 树中的节点数最大为 `1000`。
+- 每个节点都有一个介于 `1` 到 `1000` 之间的值，且各不相同。
+- `to_delete.length <= 1000`
+- `to_delete` 包含一些从 `1` 到 `1000`、各不相同的值。
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<TreeNode*> ans;
+    unordered_set<int> deleteVal;
+    vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete) {
+        for (auto num : to_delete) {
+            deleteVal.insert(num);
+        }
+        dfs(root, true);
+        return ans;
+    }
+    TreeNode* dfs(TreeNode* root, bool is_root) {
+        if (root == nullptr) {
+            return nullptr;
+        }
+        bool needDelete = deleteVal.count(root->val);
+        root->left = dfs(root->left, needDelete);
+        root->right = dfs(root->right, needDelete);
+        if (needDelete) {
+            return nullptr;
+        }
+        if (is_root) {
+            ans.push_back(root);
+        }
+        return root;
+    }
+};
+```
+
+
+
+#### 894.[所有可能的真二叉树](https://leetcode.cn/problems/all-possible-full-binary-trees/description/)
+
+给你一个整数 `n` ，请你找出所有可能含 `n` 个节点的 **真二叉树** ，并以列表形式返回。答案中每棵树的每个节点都必须符合 `Node.val == 0` 。
+
+答案的每个元素都是一棵真二叉树的根节点。你可以按 **任意顺序** 返回最终的真二叉树列表**。**
+
+**真二叉树** 是一类二叉树，树中每个节点恰好有 `0` 或 `2` 个子节点。
+
+ 
+
+**示例 1：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250102005238322.png" alt="img" style="zoom:67%;" />
+
+```
+输入：n = 7
+输出：[[0,0,0,null,null,0,0,null,null,0,0],[0,0,0,null,null,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,null,null,null,null,0,0],[0,0,0,0,0,null,null,0,0]]
+```
+
+**示例 2：**
+
+```
+输入：n = 3
+输出：[[0,0,0]]
+```
+
+ 
+
+**提示：**
+
+- `1 <= n <= 20`
+
+
+
+==**代码**==
+
+先生成所有可能的左子树,再生成所有可能的右子树,依次组装
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<TreeNode*> allPossibleFBT(int n) {
+        vector<TreeNode*> ans;
+        if (n % 2 == 0) {
+            return {};           
+        }
+        if (n == 1) {
+            return {new TreeNode(0)};
+        }
+        for (int i = 1; i < n; i += 2) {
+            vector<TreeNode*> leftTree = allPossibleFBT(i);
+            vector<TreeNode*> rightTree = allPossibleFBT(n - i - 1);
+            for (auto left : leftTree) {
+                for (auto right : rightTree) {
+                    TreeNode* root = new TreeNode(0);
+                    root->left = left;
+                    root->right = right;
+                    ans.push_back(root);
+                }
+            }
+        }
+        return ans;
+    }
+};
+```
+
+
+
+#### 100.[相同的树](https://leetcode.cn/problems/same-tree/description/)
+
+给你两棵二叉树的根节点 `p` 和 `q` ，编写一个函数来检验这两棵树是否相同。
+
+如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的。
+
+ 
+
+**示例 1：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250102140954078.jpeg)
+
+```
+输入：p = [1,2,3], q = [1,2,3]
+输出：true
+```
+
+**示例 2：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250102140954074.jpeg)
+
+```
+输入：p = [1,2], q = [1,null,2]
+输出：false
+```
+
+**示例 3：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250102140954089.jpeg)
+
+```
+输入：p = [1,2,1], q = [1,1,2]
+输出：false
+```
+
+ 
+
+**提示：**
+
+- 两棵树上的节点数目都在范围 `[0, 100]` 内
+- `-10^4 <= Node.val <= 10^4`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
+ * right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        if (!p && !q) {
+            return true;
+        }
+        if (!p || !q || p->val != q->val) {
+            return false;
+        }
+        return isSameTree(p->left, q->left) && isSameTree(p->right, q->right);
+    }
+};
+```
+
+
+
+#### 101.[对称二叉树](https://leetcode.cn/problems/symmetric-tree/description/)
+
+给你一个二叉树的根节点 `root` ， 检查它是否轴对称。
+
+ 
+
+**示例 1：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250102141544036.png" alt="img" style="zoom:80%;" />
+
+```
+输入：root = [1,2,2,3,4,4,3]
+输出：true
+```
+
+**示例 2：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250102141544027.png" alt="img" style="zoom:80%;" />
+
+```
+输入：root = [1,2,2,null,3,null,3]
+输出：false
+```
+
+ 
+
+**提示：**
+
+- 树中节点数目在范围 `[1, 1000]` 内
+- `-100 <= Node.val <= 100`
+
+ 
+
+**进阶：**你可以运用递归和迭代两种方法解决这个问题吗？
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if (root == nullptr) {
+            return true;
+        }
+        return helper(root->left, root->right);
+    }
+    bool helper(TreeNode* root1, TreeNode* root2) {
+        if (root1 == nullptr && root2 == nullptr) {
+            return true;
+        }
+        if (root1 == nullptr || root2 == nullptr || root1->val != root2->val) {
+            return false;
+        }
+        return helper(root1->left, root2->right) && helper(root1->right, root2->left);
+    }
+};
+```
+
+
+
+#### 951.[翻转等价二叉树](https://leetcode.cn/problems/flip-equivalent-binary-trees/description/)
+
+我们可以为二叉树 **T** 定义一个 **翻转操作** ，如下所示：选择任意节点，然后交换它的左子树和右子树。
+
+只要经过一定次数的翻转操作后，能使 **X** 等于 **Y**，我们就称二叉树 **X** *翻转 等价* 于二叉树 **Y**。
+
+这些树由根节点 `root1` 和 `root2` 给出。如果两个二叉树是否是*翻转 等价* 的函数，则返回 `true` ，否则返回 `false` 。
+
+ 
+
+**示例 1：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250102201927270.png" alt="Flipped Trees Diagram" style="zoom: 50%;" />
+
+```
+输入：root1 = [1,2,3,4,5,6,null,null,null,7,8], root2 = [1,3,2,null,6,4,5,null,null,null,null,8,7]
+输出：true
+解释：我们翻转值为 1，3 以及 5 的三个节点。
+```
+
+**示例 2:**
+
+```
+输入: root1 = [], root2 = []
+输出: true
+```
+
+**示例 3:**
+
+```
+输入: root1 = [], root2 = [1]
+输出: false
+```
+
+ 
+
+**提示：**
+
+- 每棵树节点数在 `[0, 100]` 范围内
+- 每棵树中的每个值都是唯一的、在 `[0, 99]` 范围内的整数
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
+ * right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool flipEquiv(TreeNode* root1, TreeNode* root2) {
+        if (root1 == nullptr && root2 == nullptr) {
+            return true;
+        }
+        if (root1 == nullptr || root2 == nullptr || root1->val != root2->val) {
+            return false;
+        }
+        return (flipEquiv(root1->left, root2->left) && (flipEquiv(root1->right, root2->right))) ||
+               (flipEquiv(root1->left, root2->right) && (flipEquiv(root1->right, root2->left)));
+    }
+};
+```
+
+
+
+#### 124.[二叉树中的最大路径和](https://leetcode.cn/problems/binary-tree-maximum-path-sum/description/)
+
+二叉树中的 **路径** 被定义为一条节点序列，序列中每对相邻节点之间都存在一条边。同一个节点在一条路径序列中 **至多出现一次** 。该路径 **至少包含一个** 节点，且不一定经过根节点。
+
+**路径和** 是路径中各节点值的总和。
+
+给你一个二叉树的根节点 `root` ，返回其 **最大路径和** 。
+
+ 
+
+**示例 1：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250102212832038.jpeg" alt="img" style="zoom:80%;" />
+
+```
+输入：root = [1,2,3]
+输出：6
+解释：最优路径是 2 -> 1 -> 3 ，路径和为 2 + 1 + 3 = 6
+```
+
+**示例 2：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250102212832055.jpeg" alt="img" style="zoom:80%;" />
+
+```
+输入：root = [-10,9,20,null,null,15,7]
+输出：42
+解释：最优路径是 15 -> 20 -> 7 ，路径和为 15 + 20 + 7 = 42
+```
+
+ 
+
+**提示：**
+
+- 树中节点数目范围是 `[1, 3 * 10^4]`
+- `-1000 <= Node.val <= 1000`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int ans = INT_MIN;
+    int maxPathSum(TreeNode* root) {
+        _maxPathSum(root);
+        return ans;
+    }
+    int _maxPathSum(TreeNode* root) {
+        if (root == nullptr) {
+            return 0;
+        }
+        int leftMaxSum = max(0, _maxPathSum(root->left));
+        int rightMaxSum = max(0, _maxPathSum(root->right));
+        ans = max(ans, leftMaxSum + root->val + rightMaxSum);
+        return root->val + max(leftMaxSum, rightMaxSum);
+    }
+};
+```
+
+
+
+#### 112.[路径总和](https://leetcode.cn/problems/path-sum/description/)
+
+给你二叉树的根节点 `root` 和一个表示目标和的整数 `targetSum` 。判断该树中是否存在 **根节点到叶子节点** 的路径，这条路径上所有节点值相加等于目标和 `targetSum` 。如果存在，返回 `true` ；否则，返回 `false` 。
+
+**叶子节点** 是指没有子节点的节点。
+
+ 
+
+**示例 1：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250103013758687.jpeg" alt="img" style="zoom: 50%;" />
+
+```
+输入：root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
+输出：true
+解释：等于目标和的根节点到叶节点路径如上图所示。
+```
+
+**示例 2：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250103013758501.jpeg)
+
+```
+输入：root = [1,2,3], targetSum = 5
+输出：false
+解释：树中存在两条根节点到叶子节点的路径：
+(1 --> 2): 和为 3
+(1 --> 3): 和为 4
+不存在 sum = 5 的根节点到叶子节点的路径。
+```
+
+**示例 3：**
+
+```
+输入：root = [], targetSum = 0
+输出：false
+解释：由于树是空的，所以不存在根节点到叶子节点的路径。
+```
+
+ 
+
+**提示：**
+
+- 树中节点的数目在范围 `[0, 5000]` 内
+- `-1000 <= Node.val <= 1000`
+- `-1000 <= targetSum <= 1000`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        if (root == nullptr) {
+            return false;
+        }
+        if (root->left == nullptr && root->right == nullptr && root->val == targetSum) {
+            return true;
+        }
+        return hasPathSum(root->left, targetSum - root->val) || hasPathSum(root->right, targetSum - root->val);
+    }
+};
+```
+
+
+
+#### 617.[合并二叉树](https://leetcode.cn/problems/merge-two-binary-trees/description/)
+
+给你两棵二叉树： `root1` 和 `root2` 。
+
+想象一下，当你将其中一棵覆盖到另一棵之上时，两棵树上的一些节点将会重叠（而另一些不会）。你需要将这两棵树合并成一棵新二叉树。合并的规则是：如果两个节点重叠，那么将这两个节点的值相加作为合并后节点的新值；否则，**不为** null 的节点将直接作为新二叉树的节点。
+
+返回合并后的二叉树。
+
+**注意:** 合并过程必须从两个树的根节点开始。
+
+ 
+
+**示例 1：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250103230149889.jpeg)
+
+```
+输入：root1 = [1,3,2,5], root2 = [2,1,3,null,4,null,7]
+输出：[3,4,5,5,4,null,7]
+```
+
+**示例 2：**
+
+```
+输入：root1 = [1], root2 = [1,2]
+输出：[2,2]
+```
+
+ 
+
+**提示：**
+
+- 两棵树中的节点数目在范围 `[0, 2000]` 内
+- `-10^4 <= Node.val <= 10^4`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
+        if (root1 == nullptr) {
+            return root2;
+        } else if (root2 == nullptr) {
+            return root1;
+        }
+        root1->val += root2->val;
+        root1->left = mergeTrees(root1->left, root2->left);
+        root1->right = mergeTrees(root1->right, root2->right);
+        return root1;
+    }
+};
+```
+
+
+
+#### 897.[递增顺序搜索树](https://leetcode.cn/problems/increasing-order-search-tree/description/)
+
+给你一棵二叉搜索树的 `root` ，请你 **按中序遍历** 将其重新排列为一棵递增顺序搜索树，使树中最左边的节点成为树的根节点，并且每个节点没有左子节点，只有一个右子节点。
+
+ 
+
+**示例 1：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250103233402614.jpeg" alt="img" style="zoom:50%;" />
+
+```
+输入：root = [5,3,6,2,4,null,8,1,null,null,null,7,9]
+输出：[1,null,2,null,3,null,4,null,5,null,6,null,7,null,8,null,9]
+```
+
+**示例 2：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250103233402870.jpeg" alt="img" style="zoom:50%;" />
+
+```
+输入：root = [5,1,7]
+输出：[1,null,5,null,7]
+```
+
+ 
+
+**提示：**
+
+- 树中节点数的取值范围是 `[1, 100]`
+- `0 <= Node.val <= 1000`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* increasingBST(TreeNode* root) {
+        if (root == nullptr) {
+            return nullptr;
+        }
+        TreeNode* left = increasingBST(root->left);
+        root->left = nullptr;
+        TreeNode* right = increasingBST(root->right);
+        root->right = right;
+        if (left == nullptr) {
+            return root;
+        }
+        TreeNode* cur = left;
+        while (cur->right != nullptr) {
+            cur = cur->right;
+        }
+        cur->right = root;
+        return left;
+    }
+};
+```
+
+
+
+#### 1379.[找出克隆二叉树中的相同节点](https://leetcode.cn/problems/find-a-corresponding-node-of-a-binary-tree-in-a-clone-of-that-tree/description/)
+
+给你两棵二叉树，原始树 `original` 和克隆树 `cloned`，以及一个位于原始树 `original` 中的目标节点 `target`。
+
+其中，克隆树 `cloned` 是原始树 `original` 的一个 **副本** 。
+
+请找出在树 `cloned` 中，与 `target` **相同** 的节点，并返回对该节点的引用（在 C/C++ 等有指针的语言中返回 节点指针，其他语言返回节点本身）。
+
+ 
+
+**注意：**你 **不能** 对两棵二叉树，以及 `target` 节点进行更改。**只能** 返回对克隆树 `cloned` 中已有的节点的引用。
+
+
+
+ 
+
+
+
+**示例 1:**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250104010109517.png" alt="img" style="zoom:67%;" />
+
+```
+输入: tree = [7,4,3,null,null,6,19], target = 3
+输出: 3
+解释: 上图画出了树 original 和 cloned。target 节点在树 original 中，用绿色标记。答案是树 cloned 中的黄颜色的节点（其他示例类似）。
+```
+
+**示例 2:**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250104010109538.png)
+
+```
+输入: tree = [7], target =  7
+输出: 7
+```
+
+**示例 3:**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250104010109737.png" alt="img" style="zoom:67%;" />
+
+```
+输入: tree = [8,null,6,null,5,null,4,null,3,null,2,null,1], target = 4
+输出: 4
+```
+
+ 
+
+**提示：**
+
+- 树中节点的数量范围为 `[1, 10^4]` 。
+- 同一棵树中，没有值相同的节点。
+- `target` 节点是树 `original` 中的一个节点，并且不会是 `null` 。
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+class Solution {
+public:
+    TreeNode* getTargetCopy(TreeNode* original, TreeNode* cloned, TreeNode* target) {
+        if (original == nullptr) {
+            return nullptr;
+        }
+        if (original == target) {
+            return cloned;
+        }
+        TreeNode* left = getTargetCopy(original->left, cloned->left, target);
+        TreeNode* right = getTargetCopy(original->right, cloned->right, target);
+        return left != nullptr ? left : right;
+    }
+};
+```
+
+
+
+#### LCR143.[子结构判断](https://leetcode.cn/problems/shu-de-zi-jie-gou-lcof/description/)
+
+给定两棵二叉树 `tree1` 和 `tree2`，判断 `tree2` 是否以 `tree1` 的某个节点为根的子树具有 **相同的结构和节点值** 。
+注意，**空树** 不会是以 `tree1` 的某个节点为根的子树具有 **相同的结构和节点值** 。
+
+ 
+
+**示例 1：**
+
+ 
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250104171436386.png" alt="img" style="zoom:67%;" />
+
+ 
+
+```
+输入：tree1 = [1,7,5], tree2 = [6,1]
+输出：false
+解释：tree2 与 tree1 的一个子树没有相同的结构和节点值。
+```
+
+**示例 2：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250104171436401.png" alt="img" style="zoom:67%;" />
+
+```
+输入：tree1 = [3,6,7,1,8], tree2 = [6,1]
+输出：true
+解释：tree2 与 tree1 的一个子树拥有相同的结构和节点值。即 6 - > 1。
+```
+
+ 
+
+**提示：**
+
+- `0 <= 节点个数 <= 10000`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSubStructure(TreeNode* A, TreeNode* B) {
+        if (A == nullptr || B == nullptr) {
+            return false;
+        }
+        if (check(A, B)) {
+            return true;
+        }
+        return isSubStructure(A->left, B) || isSubStructure(A->right, B);
+    }
+    bool check(TreeNode* A, TreeNode* B) {
+        if (B == nullptr) {
+            return true;
+        }
+        if (A == nullptr || A->val != B->val) {
+            return false;
+        }
+        return check(A->left, B->left) && check(A->right, B->right);
+    }
+};
+```
+
+
+
+#### 508.[出现次数最多的子树元素和](https://leetcode.cn/problems/most-frequent-subtree-sum/description/)
+
+给你一个二叉树的根结点 `root` ，请返回出现次数最多的子树元素和。如果有多个元素出现的次数相同，返回所有出现次数最多的子树元素和（不限顺序）。
+
+一个结点的 **「子树元素和」** 定义为以该结点为根的二叉树上所有结点的元素之和（包括结点本身）。
+
+ 
+
+**示例 1：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250104203938752.jpeg)
+
+```
+输入: root = [5,2,-3]
+输出: [2,-3,4]
+```
+
+**示例 2：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250104203938740.jpeg)
+
+```
+输入: root = [5,2,-5]
+输出: [2]
+```
+
+ 
+
+**提示:**
+
+- 节点数在 `[1, 10^4]` 范围内
+- `-10^5 <= Node.val <= 10^5`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    unordered_map<int, int> sums;
+    vector<int> findFrequentTreeSum(TreeNode* root) {
+        vector<int> ans;
+        dfs(root);
+        int maxNum = 0;
+        for (auto& it : sums) {
+            maxNum = max(maxNum, it.second);
+        }
+        for (auto& it : sums) {
+            if (it.second == maxNum) {
+                ans.push_back(it.first);
+            }
+        }
+        return ans;
+    }
+    int dfs(TreeNode* root) {
+        if (root == nullptr) {
+            return 0;
+        }
+        int sum = dfs(root->left) + dfs(root->right) + root->val;
+        sums[sum]++;
+        return sum;
+    }
+};
+```
+
+
+
+#### 687.[最长同值路径](https://leetcode.cn/problems/longest-univalue-path/description/)
+
+给定一个二叉树的 `root` ，返回 *最长的路径的长度* ，这个路径中的 *每个节点具有相同值* 。 这条路径可以经过也可以不经过根节点。
+
+**两个节点之间的路径长度** 由它们之间的边数表示。
+
+ 
+
+**示例 1:**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250104211322437.jpeg" alt="img" style="zoom:67%;" />
+
+```
+输入：root = [5,4,5,1,1,5]
+输出：2
+```
+
+**示例 2:**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250104211322443.jpeg" alt="img" style="zoom:67%;" />
+
+```
+输入：root = [1,4,5,4,4,5]
+输出：2
+```
+
+ 
+
+**提示:**
+
+- 树的节点数的范围是 `[0, 104]` 
+- `-1000 <= Node.val <= 1000`
+- 树的深度将不超过 `1000` 
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int maxPathLen = 0;
+    int longestUnivaluePath(TreeNode* root) {
+        if (root == nullptr) {
+            return 0;
+        }
+        dfs(root, root->val);
+        return maxPathLen - 1;
+    }
+    int dfs(TreeNode* root, int parentVal) {
+        if (root == nullptr) {
+            return 0;
+        }
+        int left = dfs(root->left, root->val);
+        int right = dfs(root->right, root->val);
+        maxPathLen = max(maxPathLen, left + right + 1);
+        if (root->val != parentVal) {
+            return 0;
+        }
+        return max(left, right) + 1;
+    }
+};
+```
+
+
+
+#### 1026.[节点与其祖先之间的最大差值](https://leetcode.cn/problems/maximum-difference-between-node-and-ancestor/description/)
+
+给定二叉树的根节点 `root`，找出存在于 **不同** 节点 `A` 和 `B` 之间的最大值 `V`，其中 `V = |A.val - B.val|`，且 `A` 是 `B` 的祖先。
+
+（如果 A 的任何子节点之一为 B，或者 A 的任何子节点是 B 的祖先，那么我们认为 A 是 B 的祖先）
+
+ 
+
+**示例 1：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250104215007885.jpeg" alt="img" style="zoom:50%;" />
+
+```
+输入：root = [8,3,10,1,6,null,14,null,null,4,7,13]
+输出：7
+解释： 
+我们有大量的节点与其祖先的差值，其中一些如下：
+|8 - 3| = 5
+|3 - 7| = 4
+|8 - 1| = 7
+|10 - 13| = 3
+在所有可能的差值中，最大值 7 由 |8 - 1| = 7 得出。
+```
+
+**示例 2：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250104215007890.jpeg" alt="img" style="zoom: 50%;" />
+
+```
+输入：root = [1,null,2,null,0,3]
+输出：3
+```
+
+ 
+
+**提示：**
+
+- 树中的节点数在 `2` 到 `5000` 之间。
+- `0 <= Node.val <= 10^5`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int ans = 0;
+    int maxAncestorDiff(TreeNode* root) {
+        if (root == nullptr) {
+            return 0;
+        }
+        dfs(root);
+        return ans;
+    }
+    pair<int, int> dfs(TreeNode* root) {
+        if (root == nullptr) {
+            return {INT_MIN, INT_MAX};
+        }
+        auto left = dfs(root->left);
+        auto right = dfs(root->right);
+        int maxNum = max({root->val, left.first, right.first});
+        int minNum = min({root->val, left.second, right.second});
+        ans = max({ans, maxNum - root->val, root->val - minNum});
+        return {maxNum, minNum};
+    }
+};
+```
+
+
+
+#### 1372.[二叉树中的最长交错路径](https://leetcode.cn/problems/longest-zigzag-path-in-a-binary-tree/description/)
+
+给你一棵以 `root` 为根的二叉树，二叉树中的交错路径定义如下：
+
+- 选择二叉树中 **任意** 节点和一个方向（左或者右）。
+- 如果前进方向为右，那么移动到当前节点的的右子节点，否则移动到它的左子节点。
+- 改变前进方向：左变右或者右变左。
+- 重复第二步和第三步，直到你在树中无法继续移动。
+
+交错路径的长度定义为：**访问过的节点数目 - 1**（单个节点的路径长度为 0 ）。
+
+请你返回给定树中最长 **交错路径** 的长度。
+
+ 
+
+**示例 1：**
+
+**<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250105003631864.png" alt="img" style="zoom:80%;" />**
+
+```
+输入：root = [1,null,1,1,1,null,null,1,1,null,1,null,null,null,1,null,1]
+输出：3
+解释：蓝色节点为树中最长交错路径（右 -> 左 -> 右）。
+```
+
+**示例 2：**
+
+**<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250105003631899.png" alt="img" style="zoom:80%;" />**
+
+```
+输入：root = [1,1,1,null,1,null,null,1,1,null,1]
+输出：4
+解释：蓝色节点为树中最长交错路径（左 -> 右 -> 左 -> 右）。
+```
+
+**示例 3：**
+
+```
+输入：root = [1]
+输出：0
+```
+
+ 
+
+**提示：**
+
+- 每棵树最多有 `50000` 个节点。
+- 每个节点的值在 `[1, 100]` 之间。
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int ans = 0;
+    int longestZigZag(TreeNode* root) {
+        dfs(root);
+        return ans - 1;
+    }
+
+    pair<int, int> dfs(TreeNode* root) {
+        if (root == nullptr) {
+            return {0, 0};
+        }
+        int left = dfs(root->left).second + 1;
+        int right = dfs(root->right).first + 1;
+        ans = max({ans, left, right});
+        // ans = max(ans, max(left, right));
+        return {left, right};
+    }
+};
+```
+
+
+
+#### 1080.[根到叶路径上的不足节点](https://leetcode.cn/problems/insufficient-nodes-in-root-to-leaf-paths/description/)
+
+给你二叉树的根节点 `root` 和一个整数 `limit` ，请你同时删除树中所有 **不足节点** ，并返回最终二叉树的根节点。
+
+假如通过节点 `node` 的每种可能的 “根-叶” 路径上值的总和全都小于给定的 `limit`，则该节点被称之为 **不足节点** ，需要被删除。
+
+**叶子节点**，就是没有子节点的节点。
+
+ 
+
+**示例 1：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250105194210188.png" alt="img" style="zoom: 50%;" />
+
+```
+输入：root = [1,2,3,4,-99,-99,7,8,9,-99,-99,12,13,-99,14], limit = 1
+输出：[1,2,3,4,null,null,7,8,9,null,14]
+```
+
+**示例 2：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250105194210163.png" alt="img" style="zoom:50%;" />
+
+```
+输入：root = [5,4,8,11,null,17,4,7,1,null,null,5,3], limit = 22
+输出：[5,4,8,11,null,17,4,7,null,null,null,5]
+```
+
+**示例 3：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250105194210183.png" alt="img" style="zoom:50%;" />
+
+```
+输入：root = [1,2,-3,-5,null,4,null], limit = -1
+输出：[1,null,-3,4]
+```
+
+ 
+
+**提示：**
+
+- 树中节点数目在范围 `[1, 5000]` 内
+- `-10^5 <= Node.val <= 10^5`
+- `-10^9 <= limit <= 10^9`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* sufficientSubset(TreeNode* root, int limit) {
+        if (dfs(root, 0, limit)) {
+            return root;
+        }
+        return nullptr;
+    }
+    bool dfs(TreeNode* root, int sum, int limit) {
+        if (root == nullptr) {
+            return false;
+        }
+        sum += root->val;
+        if (root->left == nullptr && root->right == nullptr) {
+            return sum >= limit;
+        }
+        bool left = dfs(root->left, sum, limit);
+        bool right = dfs(root->right, sum, limit);
+        if (!left) {
+            root->left = nullptr;
+        }
+        if (!right) {
+            root->right = nullptr;
+        }
+        return left || right;
+    }
+};
+```
+
+
+
+#### 968.[监控二叉树](https://leetcode.cn/problems/binary-tree-cameras/description/)
+
+给定一个二叉树，我们在树的节点上安装摄像头。
+
+节点上的每个摄影头都可以监视**其父对象、自身及其直接子对象。**
+
+计算监控树的所有节点所需的最小摄像头数量。
+
+ 
+
+**示例 1：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250105200953506.png)
+
+```
+输入：[0,0,null,0,0]
+输出：1
+解释：如图所示，一台摄像头足以监控所有节点。
+```
+
+**示例 2：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250105200953491.png" alt="img" style="zoom:67%;" />
+
+```
+输入：[0,0,null,0,null,0,null,null,0]
+输出：2
+解释：需要至少两个摄像头来监视树的所有节点。 上图显示了摄像头放置的有效位置之一。
+```
+
+
+**提示：**
+
+1. 给定树的节点数的范围是 `[1, 1000]`。
+2. 每个节点的值都是 0。
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int ans = 0;
+    int minCameraCover(TreeNode* root) {
+        if (dfs(root) < 0) {
+            ans++;
+        }
+        return ans;
+    }
+    // -1表示未被覆盖,0表示被覆盖,1表示已安装摄像头
+    int dfs(TreeNode* root) {
+        if (root == nullptr) {
+            return 0;
+        }
+        int left = dfs(root->left);
+        int right = dfs(root->right);
+        if (left < 0 || right < 0) {
+            ans++;
+            return 1;
+        }
+        if (left > 0 || right > 0) {
+            return 0;
+        }
+        return -1;
+    }
+};
+```
+
+
+
+#### 2049.[统计最高分的节点数目](https://leetcode.cn/problems/count-nodes-with-the-highest-score/description/)
+
+给你一棵根节点为 `0` 的 **二叉树** ，它总共有 `n` 个节点，节点编号为 `0` 到 `n - 1` 。同时给你一个下标从 **0** 开始的整数数组 `parents` 表示这棵树，其中 `parents[i]` 是节点 `i` 的父节点。由于节点 `0` 是根，所以 `parents[0] == -1` 。
+
+一个子树的 **大小** 为这个子树内节点的数目。每个节点都有一个与之关联的 **分数** 。求出某个节点分数的方法是，将这个节点和与它相连的边全部 **删除** ，剩余部分是若干个 **非空** 子树，这个节点的 **分数** 为所有这些子树 **大小的乘积** 。
+
+请你返回有 **最高得分** 节点的 **数目** 。
+
+ 
+
+**示例 1:**
+
+![example-1](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250105205821610.png)
+
+```
+输入：parents = [-1,2,0,2,0]
+输出：3
+解释：
+- 节点 0 的分数为：3 * 1 = 3
+- 节点 1 的分数为：4 = 4
+- 节点 2 的分数为：1 * 1 * 2 = 2
+- 节点 3 的分数为：4 = 4
+- 节点 4 的分数为：4 = 4
+最高得分为 4 ，有三个节点得分为 4 （分别是节点 1，3 和 4 ）。
+```
+
+**示例 2：**
+
+![example-2](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250105205821698.png)
+
+```
+输入：parents = [-1,2,0]
+输出：2
+解释：
+- 节点 0 的分数为：2 = 2
+- 节点 1 的分数为：2 = 2
+- 节点 2 的分数为：1 * 1 = 1
+最高分数为 2 ，有两个节点分数为 2 （分别为节点 0 和 1 ）。
+```
+
+ 
+
+**提示：**
+
+- `n == parents.length`
+- `2 <= n <= 10^5`
+- `parents[0] == -1`
+- 对于 `i != 0` ，有 `0 <= parents[i] <= n - 1`
+- `parents` 表示一棵二叉树。
+
+
+
+==**代码**==
+
+一开始根据parents构造二叉树,但是测试用例超时
+
+后来发现没有必要构造二叉树,可以使用二维数组来存储二叉树的信息
+
+```c++
+class Solution {
+public:
+    long long maxScore = 0;
+    int maxScoreNum = 0;
+    int countHighestScoreNodes(vector<int>& parents) {
+        int n = parents.size();
+        vector<vector<int>> nodes(n);
+        for (int i = 0; i < n; i++) {
+            if (parents[i] >= 0) {
+                nodes[parents[i]].push_back(i);
+            }
+        }
+        dfs(nodes, 0);
+        return maxScoreNum;
+    }
+    int dfs(vector<vector<int>>& nodes, int node) {
+        int n = nodes.size();
+        int size = n - 1;
+        long long score = 1;
+        for (auto child : nodes[node]) {
+            int nodeNum = dfs(nodes, child);
+            score = nodeNum > 0 ? score * nodeNum : score;
+            size -= nodeNum;
+        }
+        score = size > 0 ? score * size : score;
+        if (score > maxScore) {
+            maxScore = score;
+            maxScoreNum = 1;
+        } else if (score == maxScore) {
+            maxScoreNum++;
+        }
+        return n - size;
     }
 };
 ```
