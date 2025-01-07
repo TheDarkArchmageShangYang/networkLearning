@@ -307,7 +307,9 @@ npm install ws
 npm install wrtc
 
 // 如果npm install wrtc报错
-npm i -g node-pre-gyp
+sudo npm i -g node-pre-gyp
+// 如果还失败
+sudo npm i -g node-pre-gyp --registry=https://registry.npmmirror.com --verbose
 ```
 
 
