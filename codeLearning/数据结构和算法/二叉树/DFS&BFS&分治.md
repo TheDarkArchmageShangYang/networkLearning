@@ -69,8 +69,16 @@
    - 1104.[二叉树寻路](https://leetcode.cn/problems/path-in-zigzag-labelled-binary-tree/description/)
    - 559.[N叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-n-ary-tree/description/)
 2. BFS
+   - 102.[二叉树的层序遍历](https://leetcode.cn/problems/binary-tree-level-order-traversal/description/)
+   - 107.[二叉树的层序遍历II](https://leetcode.cn/problems/binary-tree-level-order-traversal-ii/description/)
+   - 103.[二叉树的锯齿形层序遍历](https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/description/)
+   - 117.[填充每个节点的下一个右侧节点指针II](https://leetcode.cn/problems/populating-next-right-pointers-in-each-node-ii/description/)
    - 513.[找树左下角的值](https://leetcode.cn/problems/find-bottom-left-tree-value/description/)
    - 199.[二叉树的右视图](https://leetcode.cn/problems/binary-tree-right-side-view/description/)
+   - 662.[二叉树最大宽度](https://leetcode.cn/problems/maximum-width-of-binary-tree/description/)
+   - 1609.[奇偶树](https://leetcode.cn/problems/even-odd-tree/description/)
+   - 958.[二叉树的完全性检验](https://leetcode.cn/problems/check-completeness-of-a-binary-tree/description/)
+   - 919.[完全二叉树插入器](https://leetcode.cn/problems/complete-binary-tree-inserter/description/)
 3. 分治
    - 623.[在二叉树中增加一行](https://leetcode.cn/problems/add-one-row-to-tree/description/)
    - 572.[另一棵树的子树](https://leetcode.cn/problems/subtree-of-another-tree/description/)
@@ -104,9 +112,9 @@
 
 1457,113,437,559相似,均为前序位置遍历二叉树的所有路径,遍历到叶子节点需要回溯
 
-987:需要记录每个节点的深度,宽度,值
+987:记录每个节点的深度,宽度,值
 
-993,1315:需要记录父节点/祖父节点
+993,1315:记录父节点/祖父节点
 
 437:二叉树+前缀和
 
@@ -116,7 +124,11 @@
 
 **BFS**:
 
-513,199相似,常规层序遍历
+102,107,103,117,513,199,662,1609相似,常规层序遍历
+
+958:需要遍历nullptr节点
+
+919:需要保存非叶子节点
 
 **分治**:
 
@@ -124,7 +136,7 @@
 
 572,1367,LCR143需要两次递归
 
-894需要对递归结果进行交叉计算
+894:对递归结果进行交叉计算
 
 1145:二叉树+贪心
 
@@ -132,7 +144,7 @@
 
 ==968:dfs不返回常规信息,而是返回新定义的状态==
 
-==2049:使用二维数组来存储二叉树信息==
+==2049:使用二维数组来构造逻辑上的二叉树==
 
 ## 深度优先搜索
 
@@ -1744,9 +1756,10 @@ public:
 ```c++
 class Solution {
 public:
-    void levelOrdderTraverse(TreeNode* root) {
+    vector<vector<int>> levelOrdderTraverse(TreeNode* root) {
+        vector<vector<int>> ans;
         if (root == nullptr) {
-            return {};
+            return ans;
         }
         
         queue<TreeNode*> q;
@@ -1756,9 +1769,11 @@ public:
         while (!q.empty()) {
             // 需要在循环开始前记录队列长度,因为循环过程中队列长度会变化
             int n = q.size();
+            vector<int> tmp;
             for (int i = 0; i < n; i++) {
                 TreeNode* cur = q.front();
                 q.pop();
+                tmp.push_back(cur->val);
                 // 将当前节点的左右子树加入到队列中
                 if (cur->left != nullptr) {
                     q.push(cur->left);
@@ -1767,6 +1782,7 @@ public:
                     q.push(cur->right);
                 }
             }
+            ans.push_back(tmp);
             depth++;
         }
         return ans;
@@ -1777,6 +1793,370 @@ public:
 
 
 ### 例题
+
+#### 102.[二叉树的层序遍历](https://leetcode.cn/problems/binary-tree-level-order-traversal/description/)
+
+给你二叉树的根节点 `root` ，返回其节点值的 **层序遍历** 。 （即逐层地，从左到右访问所有节点）。
+
+ 
+
+**示例 1：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250106131820608.jpeg)
+
+```
+输入：root = [3,9,20,null,null,15,7]
+输出：[[3],[9,20],[15,7]]
+```
+
+**示例 2：**
+
+```
+输入：root = [1]
+输出：[[1]]
+```
+
+**示例 3：**
+
+```
+输入：root = []
+输出：[]
+```
+
+ 
+
+**提示：**
+
+- 树中节点数目在范围 `[0, 2000]` 内
+- `-1000 <= Node.val <= 1000`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> ans;
+        if (root == nullptr) {
+            return ans;
+        }
+        queue<TreeNode*> q;
+        q.push(root);
+        while (!q.empty()) {
+            int n = q.size();
+            vector<int> tmp;
+            for (int i = 0; i < n; i++) {
+                TreeNode* cur = q.front();
+                q.pop();
+                tmp.push_back(cur->val);
+                if (cur->left != nullptr) {
+                    q.push(cur->left);
+                }
+                if (cur->right != nullptr) {
+                    q.push(cur->right);
+                }
+            }
+            ans.push_back(tmp);
+        }
+        return ans;
+    }
+};
+```
+
+
+
+#### 107.[二叉树的层序遍历II](https://leetcode.cn/problems/binary-tree-level-order-traversal-ii/description/)
+
+给你二叉树的根节点 `root` ，返回其节点值 **自底向上的层序遍历** 。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
+
+ 
+
+**示例 1：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250106132646492.jpeg)
+
+```
+输入：root = [3,9,20,null,null,15,7]
+输出：[[15,7],[9,20],[3]]
+```
+
+**示例 2：**
+
+```
+输入：root = [1]
+输出：[[1]]
+```
+
+**示例 3：**
+
+```
+输入：root = []
+输出：[]
+```
+
+ 
+
+**提示：**
+
+- 树中节点数目在范围 `[0, 2000]` 内
+- `-1000 <= Node.val <= 1000`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> levelOrderBottom(TreeNode* root) {
+        vector<vector<int>> ans;
+        if (root == nullptr) {
+            return ans;
+        }
+        queue<TreeNode*> q;
+        q.push(root);
+        while (!q.empty()) {
+            int n = q.size();
+            vector<int> tmp;
+            for (int i = 0; i < n; i++) {
+                TreeNode* cur = q.front();
+                q.pop();
+                tmp.push_back(cur->val);
+                if (cur->left != nullptr) {
+                    q.push(cur->left);
+                }
+                if (cur->right != nullptr) {
+                    q.push(cur->right);
+                }
+            }
+            ans.insert(ans.begin(), tmp);
+        }
+        return ans;
+    }
+};
+```
+
+
+
+#### 103.[二叉树的锯齿形层序遍历](https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/description/)
+
+给你二叉树的根节点 `root` ，返回其节点值的 **锯齿形层序遍历** 。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。
+
+ 
+
+**示例 1：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250106133722003.jpeg)
+
+```
+输入：root = [3,9,20,null,null,15,7]
+输出：[[3],[20,9],[15,7]]
+```
+
+**示例 2：**
+
+```
+输入：root = [1]
+输出：[[1]]
+```
+
+**示例 3：**
+
+```
+输入：root = []
+输出：[]
+```
+
+ 
+
+**提示：**
+
+- 树中节点数目在范围 `[0, 2000]` 内
+- `-100 <= Node.val <= 100`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<vector<int>> ans;
+        if (root == nullptr) {
+            return ans;
+        }
+        
+        queue<TreeNode*> q;
+        q.push(root);
+        int depth = 1;
+        while (!q.empty()) {
+            int n = q.size();
+            vector<int> tmp;
+            for (int i = 0; i < n; i++) {
+                TreeNode* cur = q.front();
+                q.pop();
+                if (depth % 2 == 1) {
+                    tmp.push_back(cur->val);
+                } else {
+                    tmp.insert(tmp.begin(), cur->val);
+                }
+                if (cur->left != nullptr) {
+                    q.push(cur->left);
+                }
+                if (cur->right != nullptr) {
+                    q.push(cur->right);
+                }
+            }
+            ans.push_back(tmp);
+            depth++;
+        }
+        return ans;
+    }
+};
+```
+
+
+
+#### 117.[填充每个节点的下一个右侧节点指针II](https://leetcode.cn/problems/populating-next-right-pointers-in-each-node-ii/description/)
+
+给定一个二叉树：
+
+```
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+```
+
+填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 `NULL` 。
+
+初始状态下，所有 next 指针都被设置为 `NULL` 。
+
+ 
+
+**示例 1：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250106134305905.png)
+
+```
+输入：root = [1,2,3,4,5,null,7]
+输出：[1,#,2,3,#,4,5,7,#]
+解释：给定二叉树如图 A 所示，你的函数应该填充它的每个 next 指针，以指向其下一个右侧节点，如图 B 所示。序列化输出按层序遍历顺序（由 next 指针连接），'#' 表示每层的末尾。
+```
+
+**示例 2：**
+
+```
+输入：root = []
+输出：[]
+```
+
+ 
+
+**提示：**
+
+- 树中的节点数在范围 `[0, 6000]` 内
+- `-100 <= Node.val <= 100`
+
+**进阶：**
+
+- 你只能使用常量级额外空间。
+- 使用递归解题也符合要求，本题中递归程序的隐式栈空间不计入额外空间复杂度。
+
+
+
+==**代码**==
+
+```c++
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+
+    Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val, Node* _left, Node* _right, Node* _next)
+        : val(_val), left(_left), right(_right), next(_next) {}
+};
+*/
+
+class Solution {
+public:
+    Node* connect(Node* root) {
+        if (root == nullptr) {
+            return nullptr;
+        }
+
+        queue<Node*> q;
+        q.push(root);
+        while (!q.empty()) {
+            int n = q.size();
+            for (int i = 0; i < n; i++) {
+                Node* cur = q.front();
+                q.pop();
+                if (i != n - 1) {
+                    cur->next = q.front();
+                } else {
+                    cur->next = nullptr;
+                }
+                if (cur->left != nullptr) {
+                    q.push(cur->left);
+                }
+                if (cur->right != nullptr) {
+                    q.push(cur->right);
+                }
+            }
+        }
+        return root;
+    }
+};
+```
+
+
 
 #### 513.[找树左下角的值](https://leetcode.cn/problems/find-bottom-left-tree-value/description/)
 
@@ -1949,6 +2329,432 @@ public:
         return ans;
     }
 };
+```
+
+
+
+#### 662.[二叉树最大宽度](https://leetcode.cn/problems/maximum-width-of-binary-tree/description/)
+
+给你一棵二叉树的根节点 `root` ，返回树的 **最大宽度** 。
+
+树的 **最大宽度** 是所有层中最大的 **宽度** 。
+
+每一层的 **宽度** 被定义为该层最左和最右的非空节点（即，两个端点）之间的长度。将这个二叉树视作与满二叉树结构相同，两端点间会出现一些延伸到这一层的 `null` 节点，这些 `null` 节点也计入长度。
+
+题目数据保证答案将会在 **32 位** 带符号整数范围内。
+
+ 
+
+**示例 1：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250106141527188.jpeg" alt="img" style="zoom:67%;" />
+
+```
+输入：root = [1,3,2,5,3,null,9]
+输出：4
+解释：最大宽度出现在树的第 3 层，宽度为 4 (5,3,null,9) 。
+```
+
+**示例 2：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250106141527402.jpeg" alt="img" style="zoom:50%;" />
+
+```
+输入：root = [1,3,2,5,null,null,9,6,null,7]
+输出：7
+解释：最大宽度出现在树的第 4 层，宽度为 7 (6,null,null,null,null,null,7) 。
+```
+
+**示例 3：**
+
+<img src="https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250106141527197.jpeg" alt="img" style="zoom:67%;" />
+
+```
+输入：root = [1,3,2,5]
+输出：2
+解释：最大宽度出现在树的第 2 层，宽度为 2 (3,2) 。
+```
+
+ 
+
+**提示：**
+
+- 树中节点的数目范围是 `[1, 3000]`
+- `-100 <= Node.val <= 100`
+
+
+
+==**代码**==
+
+注意数据类型
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int widthOfBinaryTree(TreeNode* root) {
+        if (root == nullptr) {
+            return 0;
+        }
+
+        queue<pair<TreeNode*, unsigned long long>> q;
+        q.push({root, 1});
+        int maxWidth = 0;
+        while (!q.empty()) {
+            int n = q.size();
+            unsigned long long left = 0, right = 0;
+            for (int i = 0; i < n; i++) {
+                auto cur = q.front();
+                q.pop();
+                if (i == 0) left = cur.second;
+                if (i == n - 1) right = cur.second;
+                if (cur.first->left != nullptr) {
+                    q.push({cur.first->left, cur.second*2});
+                }
+                if (cur.first->right != nullptr) {
+                    q.push({cur.first->right, cur.second*2+1});
+                }
+            }
+            maxWidth = max(maxWidth, static_cast<int>(right - left + 1));
+        }
+        return maxWidth;
+    }
+};
+```
+
+
+
+#### 1609.[奇偶树](https://leetcode.cn/problems/even-odd-tree/description/)
+
+如果一棵二叉树满足下述几个条件，则可以称为 **奇偶树** ：
+
+- 二叉树根节点所在层下标为 `0` ，根的子节点所在层下标为 `1` ，根的孙节点所在层下标为 `2` ，依此类推。
+- **偶数下标** 层上的所有节点的值都是 **奇** 整数，从左到右按顺序 **严格递增**
+- **奇数下标** 层上的所有节点的值都是 **偶** 整数，从左到右按顺序 **严格递减**
+
+给你二叉树的根节点，如果二叉树为 **奇偶树** ，则返回 `true` ，否则返回 `false` 。
+
+ 
+
+**示例 1：**
+
+**![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250106204938679.png)**
+
+```
+输入：root = [1,10,4,3,null,7,9,12,8,6,null,null,2]
+输出：true
+解释：每一层的节点值分别是：
+0 层：[1]
+1 层：[10,4]
+2 层：[3,7,9]
+3 层：[12,8,6,2]
+由于 0 层和 2 层上的节点值都是奇数且严格递增，而 1 层和 3 层上的节点值都是偶数且严格递减，因此这是一棵奇偶树。
+```
+
+**示例 2：**
+
+**![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250106204938644.png)**
+
+```
+输入：root = [5,4,2,3,3,7]
+输出：false
+解释：每一层的节点值分别是：
+0 层：[5]
+1 层：[4,2]
+2 层：[3,3,7]
+2 层上的节点值不满足严格递增的条件，所以这不是一棵奇偶树。
+```
+
+**示例 3：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250106204938557.png)
+
+```
+输入：root = [5,9,1,3,5,7]
+输出：false
+解释：1 层上的节点值应为偶数。
+```
+
+**示例 4：**
+
+```
+输入：root = [1]
+输出：true
+```
+
+**示例 5：**
+
+```
+输入：root = [11,8,6,1,3,9,11,30,20,18,16,12,10,4,2,17]
+输出：true
+```
+
+ 
+
+**提示：**
+
+- 树中节点数在范围 `[1, 10^5]` 内
+- `1 <= Node.val <= 10^6`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isEvenOddTree(TreeNode* root) {
+        queue<TreeNode*> q;
+        q.push(root);
+        int depth = 0;
+        while (!q.empty()) {
+            int n = q.size();
+            int last = INT_MIN;
+            for (int i = 0; i < n; i++) {
+                TreeNode* cur = q.front();
+                q.pop();
+                if (depth % 2 == 0) {
+                    if (cur->val % 2 == 0) {
+                        return false;
+                    }
+                    if (last != INT_MIN && cur->val <= last) {
+                        return false;
+                    }
+                } else if (depth % 2 == 1) {
+                    if (cur->val % 2 == 1) {
+                        return false;
+                    }
+                    if (last != INT_MIN && cur->val >= last) {
+                        return false;
+                    }
+                }
+                last = cur->val;
+                if (cur->left != nullptr) {
+                    q.push(cur->left);
+                }
+                if (cur->right != nullptr) {
+                    q.push(cur->right);
+                }
+            }
+            depth++;
+        }
+        return true;
+    }
+};
+```
+
+
+
+#### 958.[二叉树的完全性检验](https://leetcode.cn/problems/check-completeness-of-a-binary-tree/description/)
+
+给你一棵二叉树的根节点 `root` ，请你判断这棵树是否是一棵 **完全二叉树** 。
+
+在一棵 **[完全二叉树](https://baike.baidu.com/item/完全二叉树/7773232?fr=aladdin)** 中，除了最后一层外，所有层都被完全填满，并且最后一层中的所有节点都尽可能靠左。最后一层（第 `h` 层）中可以包含 `1` 到 `2h` 个节点。
+
+ 
+
+**示例 1：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250106143455650.png)
+
+```
+输入：root = [1,2,3,4,5,6]
+输出：true
+解释：最后一层前的每一层都是满的（即，节点值为 {1} 和 {2,3} 的两层），且最后一层中的所有节点（{4,5,6}）尽可能靠左。
+```
+
+**示例 2：**
+
+**![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250106143455753.png)**
+
+```
+输入：root = [1,2,3,4,5,null,7]
+输出：false
+解释：值为 7 的节点不满足条件「节点尽可能靠左」。
+```
+
+ 
+
+**提示：**
+
+- 树中节点数目在范围 `[1, 100]` 内
+- `1 <= Node.val <= 1000`
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isCompleteTree(TreeNode* root) {
+        queue<TreeNode*> q;
+        q.push(root);
+        bool flag = false;
+        while (!q.empty()) {
+            int n = q.size();
+            for (int i = 0; i < n; i++) {
+                TreeNode* cur = q.front();
+                q.pop();
+                if (flag == true && cur != nullptr) {
+                    return false;
+                }
+                if (flag == false && cur == nullptr) {
+                    flag = true;
+                }
+                if (cur != nullptr) {
+                    q.push(cur->left);
+                    q.push(cur->right);
+                }
+            }
+        }
+        return true;
+    }
+};
+```
+
+
+
+#### 919.[完全二叉树插入器](https://leetcode.cn/problems/complete-binary-tree-inserter/description/)
+
+**完全二叉树** 是每一层（除最后一层外）都是完全填充（即，节点数达到最大）的，并且所有的节点都尽可能地集中在左侧。
+
+设计一种算法，将一个新节点插入到一棵完全二叉树中，并在插入后保持其完整。
+
+实现 `CBTInserter` 类:
+
+- `CBTInserter(TreeNode root)` 使用头节点为 `root` 的给定树初始化该数据结构；
+- `CBTInserter.insert(int v)` 向树中插入一个值为 `Node.val == val`的新节点 `TreeNode`。使树保持完全二叉树的状态，**并返回插入节点** `TreeNode` **的父节点的值**；
+- `CBTInserter.get_root()` 将返回树的头节点。
+
+ 
+
+
+
+**示例 1：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250106211020324.jpeg)
+
+```
+输入
+["CBTInserter", "insert", "insert", "get_root"]
+[[[1, 2]], [3], [4], []]
+输出
+[null, 1, 2, [1, 2, 3, 4]]
+
+解释
+CBTInserter cBTInserter = new CBTInserter([1, 2]);
+cBTInserter.insert(3);  // 返回 1
+cBTInserter.insert(4);  // 返回 2
+cBTInserter.get_root(); // 返回 [1, 2, 3, 4]
+```
+
+ 
+
+**提示：**
+
+- 树中节点数量范围为 `[1, 1000]` 
+- `0 <= Node.val <= 5000`
+- `root` 是完全二叉树
+- `0 <= val <= 5000` 
+- 每个测试用例最多调用 `insert` 和 `get_root` 操作 `10^4` 次
+
+
+
+==**代码**==
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class CBTInserter {
+public:
+    CBTInserter(TreeNode* root) {
+        this->root = root;
+        queue<TreeNode*> tmp;
+        tmp.push(root);
+        while (!tmp.empty()) {
+            TreeNode* cur = tmp.front();
+            tmp.pop();
+            if (cur->left != nullptr) {
+                tmp.push(cur->left);
+            }
+            if (cur->right != nullptr) {
+                tmp.push(cur->right);
+            }
+            if (cur->left == nullptr || cur->right == nullptr) {
+                q.push(cur);
+            }
+        }
+    }
+    
+    int insert(int val) {
+        TreeNode* node = new TreeNode(val);
+        TreeNode* cur = q.front();
+        if (cur->left == nullptr) {
+            cur->left = node;
+        } else {
+            cur->right = node;
+            q.pop();
+        }
+        q.push(node);
+        return cur->val;
+    }
+    
+    TreeNode* get_root() {
+        return root;
+    }
+private:
+    queue<TreeNode*> q;
+    TreeNode* root;
+};
+
+/**
+ * Your CBTInserter object will be instantiated and called as such:
+ * CBTInserter* obj = new CBTInserter(root);
+ * int param_1 = obj->insert(val);
+ * TreeNode* param_2 = obj->get_root();
+ */
 ```
 
 
