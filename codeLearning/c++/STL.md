@@ -63,7 +63,7 @@ STL(Standard Template Library,标准模板库)是c++标准库的一部分,不需
 
 STL六大组件:
 
-容器(Container):各种数据结构,如动态数组(vector),链表(list),双端队列(deque),集合(set),映射(map)等
+容器(Container):各种数据结构,如动态数组(vector),单向链表(forward_list),双向链表(list),双端队列(deque),集合(set),映射(map)等
 
 算法(Algorithm):各种常用算法,提供了执行各种操作的方式,包括对容器内容执行初始化,排序,搜索和转换等操作,如排序(sort),查找(find),copy,erase函数等
 
@@ -82,8 +82,9 @@ STL六大组件:
 序列式容器(Sequence containers):每个元素有固定位置,取决于插入时间和地点,和元素值无关,如vector,deque,list
 
 - vector:把元素放在一个动态数组中管理,可以用索引(下标)存取(O(1)查找)
-- deque:double-ended queue的缩写,可以用索引(下标)存取(O(1)查找)
+- forward_list:单向链表
 - list:双向链表,不能用索引存取(O(n)查找)
+- deque:double-ended queue的缩写,可以用索引(下标)存取(O(1)查找)
 
 关联式容器(Associated containers):元素位置取决与特定的排序原则,和插入顺序无关,如set,multiset,map,multimap
 
@@ -98,13 +99,23 @@ STL六大组件:
 
 #### 介绍
 
-vector为动态数组
+vector为可以改变大小的数组容器
 
 #### 实现原理
 
 vector相当于一个动态数组,它的占用内存会随着数据的增多而进行扩容,每次扩容根据不同的操作系统变成原来的1.5/2倍.在进行扩容时会先在内存中找到一块满足需求的连续内存,把源数据拷贝到新内存块中,释放原内存.
 
-vector存储了3个指针指向数组第一个元素,最后一个元素和已使用的最后一个元素,所以在进行头部和尾部操作时时间复杂度为O(1),在进行数组中操作(如在第n个位置插入元素)时时间复杂度为O(n)
+vector存储了3个指针指向数组第一个元素,最后一个元素和已分配内存的末尾,所以在进行头部和尾部操作时时间复杂度为O(1),在进行数组中操作(如在第n个位置插入元素)时时间复杂度为O(n)
+
+```
+vector<int> vector1 = {1, 2, 3};
+[ begin_ptr ] -> [ 1 ] [ 2 ] [ 3 ] [ _ ] [ _ ] <- capacity_ptr
+                              ^
+                              |
+                         [ end_ptr ]
+```
+
+
 
 #### 常用操作
 
@@ -114,31 +125,36 @@ vector存储了3个指针指向数组第一个元素,最后一个元素和已使
 #include <vector>
 ```
 
-##### 初始化
+##### 构造&析构
 
-###### 一维初始化
+==**一维初始化**==
 
 ```c++
-// 一维初始化
-vector<int> a;
+// 构造空容器
+vector<int> vector1;
 
-// 指定长度和初始值的初始化
-vector<int> a(10); // 定义一个长度为10的数组,初始值默认为0
-vector<int> a(10,1); // 定义一个长度为10的数组,初始值为1
+// 构造具有n个val的容器
+vector<int> vector1(10); // 定义一个长度为10的数组,初始值默认为0
+vector<int> vector1(10, 1); // 定义一个长度为10的数组,初始值为1
 
-//拷贝初始化
-vector<int> a(n,0);
-vector<int> b(a); // 方法1
-vector<int> c = a; // 方法2
-
-//指定初始值
-vector<int> a{1,2,3,4,5}; // 方法1
-vector<int> a(b.begin(),b.begin()+3); // 方法2
+// 根据迭代器构造容器
+vector<int> vector1(vector2.begin(), vector2.begin()+3);
 int num[5] = {1,2,3,4,5};
-vector<int> a(num, num+5); // 方法3
+vector<int> vector1(num, num+5);
+
+// 复制构造
+vector<int> vector2(vector1);
+
+// 移动构造
+// 构造完成后,vector2拥有原vector1的内容(包括原来分配给vector1的内存),vector1为空
+// 由于vector内部维护3个指针,分别指向第一个元素,最后一个元素和已分配内存的末尾.所以vector2只需要复制这三个指针,再重置vector1的3个指针
+vector<int> vector2(std::move(vector1));
+
+// 根据初始化列表构造容器
+vector<int> a = {1,2,3,4,5};
 ```
 
-###### 二维初始化
+==**二维初始化**==
 
 ```c++
 // 行不可变,列可变
@@ -151,38 +167,333 @@ vector<vector<int>> a;
 vector<vector<int>> a(size1, vector<int>(size2, 0)) //有size1行,size2列,且初始值全为0
 ```
 
+==**析构**==
 
-
-##### 成员函数
-
-获取vector中元素个数
 ```c++
-// 一维
-a.size()
-// 二维
-int row = a.size();
-int column = a[0].size();
+~vector();
 ```
 
-| 代码                 | 含义                                                         | 返回值类型   |
-| :------------------- | ------------------------------------------------------------ | ------------ |
-| a.size()             | 返回元素个数                                                 | unsigned int |
-| a.capacity()         | 返回a的容量                                                  |              |
-| a.front()            | 返回第一个元素                                               |              |
-| a.back()             | 返回最后一个元素                                             |              |
-| a.push_back(element) | 在尾部添加一个元素                                           |              |
-| a.pop_back()         | 删除最后一个元素                                             |              |
-| a.begin()            | 返回第一个元素的迭代器                                       |              |
-| a.end()              | 返回最后一个元素后一个位置的迭代器                           |              |
-| a.resize(n,val)      | 改变数组大小为n,新插入的元素赋值为val(如果数组变小了,之前的元素值不会修改为val),没有则默认为0, |              |
-| a.reserve(n)         | 将a的容量扩容到n                                             |              |
-| a.insert(it,val)     | 向迭代器it插入一个元素val                                    |              |
-| a.erase(first,last)  | 删除[first,last)的所有元素                                   |              |
-| a.empty()            | 判断是否为空,为空返回true,否则返回flase                      |              |
-| a.find(val)          | 查询元素val,如果存在则返回对应迭代器,否则返回最后一个键值对后一个位置的迭代器(end()方法返回的迭代器) |              |
-| a.at(index)          | 返回a[index]的值,越界会报错                                  |              |
-| a.clear()            | 清空a中的元素                                                |              |
-| a.swap(b)            | 将a中的元素和b中的元素整体交换                               |              |
+
+
+##### 迭代器
+
+| 迭代器Iterators | 版本  | 返回值                                                       |
+| --------------- | ----- | ------------------------------------------------------------ |
+| begin()         | C++98 | 返回指向容器中第一个元素的迭代器                             |
+| end()           | C++98 | 返回指向容器中最后一个元素后一个位置的迭代器<br />如果容器为空,end()=begin() |
+| rbegin()        | C++98 | reverse_begin<br />返回指向最后一个元素的迭代器<br />这是反向迭代器,增加它会移向容器开头 |
+| rend()          | C++98 | reverse_end<br />返回指向容器中第一个元素前一个位置的迭代器  |
+| cbegin()        | C++11 | const_begin<br />返回指向容器中第一个元素的常量迭代器<br />begin()的const版本,可以移动,不能修改值 |
+| cend()          | C++11 | const_end<br />返回指向容器中最后一个元素后一个位置的常量迭代器 |
+| crbegin()       | C++11 | const_reverse_begin<br />返回指向最后一个元素的常量迭代器<br />rbegin()的const版本,可以移动,不能修改值 |
+| crend()         | C++11 | const_reverse_end<br />返回指向容器中第一个元素前一个位置的常量迭代器 |
+
+
+
+##### 容器容量
+
+==**size()**==
+
+返回实际元素数量
+
+```c++
+size_type size() const noexcept;
+```
+
+在不同位数的系统中,int等数据类型可能位数不同,所以需要使用size_t/size_type这样的数据类型来方便程序在不同系统中迁移.
+
+在大多数情况下,size_type可以理解unsigned int(或unsigned long)
+
+
+
+==**max_size()**==
+
+返回容量的最大值,通常为$2^{31}-1$
+
+```c++
+size_type max_size() const noexcept;
+```
+
+
+
+==**resize()**==
+
+调整容器大小，使其包含n个元素。
+如果n小于当前元素数量，将容器缩减为其前n个元素，移除超出的元素
+如果n大于当前元素数量，则通过在末尾插入足够多的元素来达到数量n。如果指定了val，则将新元素初始化为val的副本，否则，它们将被值初始化。
+如果n大于当前容器容量，则自动重新分配已分配的存储空间。
+
+```c++
+void resize (size_type n);
+void resize (size_type n, const value_type& val);
+```
+
+
+
+==**capacity()**==
+
+返回当前容器容量
+容量不一定等于元素个数。它可以相等或更大，额外的空间可以适应增长，而不需要在每次插入时重新分配。
+当这个容量耗尽并且需要更多容量时，容器会自动扩展它（重新分配它的存储空间）。容量大小的理论限制由max_size给出。
+
+```c++
+size_type capacity() const noexcept;
+```
+
+
+
+==**empty()**==
+
+判断容器中是否有元素,若无元素则返回true,有元素则返回false
+
+```c++
+bool empty() const noexcept;
+```
+
+
+
+==**reserve()**==
+
+在当前容量不足n时,将容量设置为n
+
+如果n小于当前容量,不会重新分配容量
+
+如果n大于当前容量,重新分配存储空间,使容量增加到n
+
+```c++
+void reserve (size_type n);
+```
+
+
+
+==**shrink_to_fit()**==
+
+将内存大小减少到当前元素实际所使用的大小
+
+```c++
+void shrink_to_fit();
+```
+
+
+
+##### 访问元素
+
+==**operator[]**==
+
+重载了[]运算符,可以与访问数组元素一样通过下标访问vector中的元素
+
+如果超过边界,不会抛出异常,会导致未定义的行为
+
+
+
+==**at()**==
+
+使用经过边界检查的索引访问元素
+
+如果超过边界,抛出out_of_range异常
+
+
+
+==**front()**==
+
+返回容器中第一个元素的引用
+
+对空容器调用会导致未定义的行为
+
+
+
+==**back()**==
+
+返回容器中最后一个元素的引用
+
+对空容器调用会导致未定义的行为
+
+
+
+- []运算符访问
+
+```c++
+for (int i = 0; i < vector1.size(); i++) {
+    cout << vector1[i] << endl; 
+}
+```
+
+- 迭代器访问
+
+```c++
+// 迭代器访问方法1,不推荐,对vector适用,但对其他容器不一定适用
+vector<int>::iterator it = vector1.begin();
+for (int i = 0; i < vector1.size(); i++) {
+    cout << *(it + i) << endl; // a[i]和*(a.begin()+i)等价
+}
+
+// 迭代器访问方法2
+vector<int>::iterator it;
+for (it = a.begin(); it != a.end(); it++) {
+    cout << *it << endl;
+}
+```
+
+- 智能指针
+
+```c++
+for (auto val : a) {
+    cout << val << endl;
+}
+```
+
+
+
+##### 修改元素
+
+==**assign()**==
+
+用新元素替换原有元素
+
+```c++
+// 替换容器内容为[first, last)
+template <class InputIterator>
+void assign (InputIterator first, InputIterator last);
+// 替换容器内容为n个val
+void assign (size_type n, const value_type& val);
+// 替换容器内容为初始化列表
+// C++11新特性,允许{}包裹一组值来初始化或赋值
+// vector1.assign({1,2,3})
+void assign (initializer_list<value_type> il);
+```
+
+
+
+
+
+==**push_back()**==
+
+在尾部添加一个元素,值为val
+
+```c++
+void push_back (value_type&& val);
+void push_back (const value_type& val);
+```
+
+
+
+==**pop_back()**==
+
+删除尾部最后一个元素
+
+```c++
+void pop_back();
+```
+
+
+
+==**insert()**==
+
+在指定位置插入一个元素或多个元素
+
+```c++
+// 在it插入val
+iterator insert (const_iterator position, value_type&& val);
+iterator insert (const_iterator position, const value_type& val);
+// 在it插入n个val
+iterator insert (const_iterator position, size_type n, const value_type& val);
+// 在it插入[first,last)
+// 例如要在vector1的开头插入vector2全部元素时
+// vector1.insert(vector1.begin(), vector2.begin(), vector2.end());
+template <class InputIterator>
+iterator insert (const_iterator position, InputIterator first, InputIterator last);
+// C++11新特性,按照初始化列表插入元素
+// vector1.insert(vector1.begin(), {1,2,3});
+iterator insert (const_iterator position, initializer_list<value_type> il);
+
+```
+
+
+
+
+
+==**erase()**==
+
+移除一个元素或一定范围内的元素
+
+```c++
+iterator erase (const_iterator position);
+iterator erase (const_iterator first, const_iterator last);
+
+// 使用范例
+vector<int> val = {1, 2, 3, 4, 5, 6};
+val.erase(val.begin()+4); // {1,2,3,4,6}
+val.erase(val.begin(), val.begin()+1); // {3,4,6}
+```
+
+
+
+==**swap()**==
+
+交换两个容器的所有元素
+
+```c++
+void swap (vector& x);
+```
+
+
+
+==**clear()**==
+
+移除容器中所有元素,元素个数变为0,不一定会改变容量
+
+```c++
+void clear() noexcept;
+```
+
+
+
+==**emplace()**==
+
+在it前面插入一个元素
+
+emplace()在插入元素时，是在容器的指定位置直接构造元素，而不是先单独生成，再将其复制（或移动）到容器中。优先使用emplace().
+
+```c++
+template <class... Args>
+iterator emplace (const_iterator position, Args&&... args);
+
+// 使用范例
+vector<int> val = {1, 3, 4, 5, 6};
+auto it = val.emplace(val.begin()+1, 2); // {1,2,3,4,5,6}
+```
+
+
+
+==**emplace_back()**==
+
+在尾部插入一个元素
+
+emplace_back()的执行效率比push_back()高。优先使用emplace_back().
+
+例如现在`vector1 = {1,2,3}`,
+
+`vector1.push_back(4)`将构造一个vector2为{1,2,3,4},然后让vector1=vector2
+
+`vector1.emplace_back(4)`将直接在vector1中生成元素
+
+```c++
+template <class... Args>
+void emplace_back (Args&&... args);
+
+// 使用范例
+vector<int> val = {1, 2, 4, 5, 6};
+val.emplace(3); // {1,2,4,5,6,3}
+```
+
+
+
+
+
+|             |                                                              |      |
+| :---------- | ------------------------------------------------------------ | ---- |
+|             |                                                              |      |
+| a.find(val) | 查询元素val,如果存在则返回对应迭代器,否则返回最后一个键值对后一个位置的迭代器(end()方法返回的迭代器) |      |
 
 额外补充
 
@@ -194,7 +505,7 @@ int raw = a.size();
 int column = a[0].size();
 ```
 
-2.a.size()的数据类型是size_t,在64位系统中为long unsigned int(占用8字节),所以可能会出现
+2.a.size()的数据类型是size_type,在64位系统中为long unsigned int(占用8字节),所以可能会出现
 
 ```c++
 cout << a.size() << endl; // 输出2
@@ -213,66 +524,6 @@ dest.insert(dest.end(), src.begin(), src.end());
 ```
 
 
-
-
-
-##### 访问
-
-- 下标访问
-
-```c++
-// 添加元素 
-vector<int> a;
-for (int i = 0; i < 5; i++) {
-    a.push_back(i); 
-}
-
-// 下标访问 
-for (int i = 0; i < 5; i++) {
-    cout << a[i] << endl; 
-}
-```
-
-- 迭代器访问
-
-```c++
-// 添加元素 
-for (int i = 0; i < 5; i++) {
-    a.push_back(i); 
-}
-
-// 迭代器访问方法1,不推荐,对vector适用,但对其他容器不一定适用
-vector<int>::iterator it = a.begin();
-for (int i = 0; i < 5; i++) {
-    cout << *(it + i) << endl; // a[i]和*(a.begin()+i)等价
-}
-
-// 迭代器访问方法2
-vector<int>::iterator it;
-for (it = a.begin(); it != a.end(); it++) {
-    cout << *it << endl;
-}
-
-// 迭代器访问方法3
-auto it = a.begin();
-while (it != a.end()) {
-    cout << *it << endl;
-}
-```
-
-- 智能指针
-
-```c++
-// 添加元素 
-for (int i = 0; i < 5; i++) {
-    a.push_back(i); 
-}
-
-// 智能指针访问
-for (auto val : a) {
-    cout << val << endl;
-}
-```
 
 ### unordered_set
 
@@ -548,18 +799,27 @@ STL提供的栈和队列并不是容器,而是容器适配器.stack和queue封�
 
 #### stack
 
-##### 成员函数
-
-| 函数名  | 含义               |
-| ------- | ------------------ |
-| empty   | 判断stack是否为空  |
-| size    | 返回stack是否为空  |
-| top     | 返回栈顶元素的引用 |
-| push    | 将元素压入栈中     |
-| emplace |                    |
-| pop     |                    |
-| swap    |                    |
+| 函数名    | 含义                   |
+| --------- | ---------------------- |
+| empty()   | 判断栈是否为空         |
+| size()    | 返回栈中元素           |
+| top()     | 返回栈顶元素的引用     |
+| push()    | 将元素压入栈中         |
+| emplace() | 于栈顶构造元素         |
+| pop()     | 弹出栈顶元素           |
+| swap()    | 将栈中元素与其他栈交换 |
 
 
 
 #### queue
+
+| 函数名    | 含义                       |
+| --------- | -------------------------- |
+| empty()   | 判断队列是否为空           |
+| size()    | 返回队列中元素             |
+| top()     | 返回队头元素的引用         |
+| back()    | 返回队尾元素的引用         |
+| push()    | 将元素插入队尾中           |
+| emplace() | 于队头构造元素             |
+| pop()     | 弹出队头元素               |
+| swap()    | 将队列中元素与其他队列交换 |
