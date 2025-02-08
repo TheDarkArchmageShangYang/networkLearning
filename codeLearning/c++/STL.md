@@ -81,10 +81,11 @@ STL六大组件:
 
 序列式容器(Sequence containers):每个元素有固定位置,取决于插入时间和地点,和元素值无关,如vector,deque,list
 
-- vector:把元素放在一个动态数组中管理,可以用索引(下标)存取(O(1)查找)
+- vector:动态数组
 - forward_list:单向链表
-- list:双向链表,不能用索引存取(O(n)查找)
-- deque:double-ended queue的缩写,可以用索引(下标)存取(O(1)查找)
+- list:双向链表
+- deque:双端队列
+- priority_queue:优先级队列
 
 关联式容器(Associated containers):元素位置取决与特定的排序原则,和插入顺序无关,如set,multiset,map,multimap
 
@@ -488,14 +489,7 @@ val.emplace(3); // {1,2,4,5,6,3}
 
 
 
-
-
-|             |                                                              |      |
-| :---------- | ------------------------------------------------------------ | ---- |
-|             |                                                              |      |
-| a.find(val) | 查询元素val,如果存在则返回对应迭代器,否则返回最后一个键值对后一个位置的迭代器(end()方法返回的迭代器) |      |
-
-额外补充
+##### 额外补充
 
 1.
 
@@ -515,21 +509,13 @@ cout << a.size() - 3 << endl // 输出18446744073709551615(2^64-1)
 int vectorSize = a.size();
 ```
 
-3.vector追加到另一个vector上
-
-```c++
-vector<int> src;
-vector<int> dest;
-dest.insert(dest.end(), src.begin(), src.end());
-```
-
 
 
 ### unordered_set
 
 #### 介绍
 
-unordered_set为无序集合
+unordered_set是无序集合
 
 #### 常用操作
 
@@ -537,7 +523,7 @@ unordered_set为无序集合
 
 ```c++
 #include <unordered_set>
-using namespace std; // 在std命名空间中
+using namespace std;
 ```
 
 其他基本都和unordered_map相同
@@ -564,7 +550,6 @@ map内部实现了一个红黑树,具有自动排序的功能,使用中序遍历
 
 ```c++
 #include <unordered_map>
-using namespace std; // 在std命名空间中
 ```
 
 ##### 定义
@@ -675,6 +660,12 @@ if (myHashMap.find(i)) {...} // 错误
 if (myHashMap.find(i) != myHashMap.end()) {...} //正确
 ```
 
+
+
+### set
+
+
+
 ## 算法
 
 ### 简介
@@ -762,13 +753,11 @@ vector<int> myVector{1, 2, 3, 4, 5};
 int num = find(myVector.begin(), myVector.end(), 5);
 ```
 
-## 容器适配器
+## 适配器
 
 ### 简介
 
 如果类(或函数)的成员,功能与类(或函数)B类似,但有一些不同,可以通过封装B来实现A,从而把B的接口转化为A的接口.
-
-#### 分类
 
 STL的适配器分为三类:
 
@@ -799,27 +788,115 @@ STL提供的栈和队列并不是容器,而是容器适配器.stack和queue封�
 
 #### stack
 
-| 函数名    | 含义                   |
-| --------- | ---------------------- |
-| empty()   | 判断栈是否为空         |
-| size()    | 返回栈中元素           |
-| top()     | 返回栈顶元素的引用     |
-| push()    | 将元素压入栈中         |
-| emplace() | 于栈顶构造元素         |
-| pop()     | 弹出栈顶元素           |
-| swap()    | 将栈中元素与其他栈交换 |
+stack是栈
+
+主要API:
+
+容器容量:size(),empty()
+
+访问元素:top()
+
+修改元素:push(item),emplace(item),pop()
+
+**头文件**
+
+```c++
+#include <stack>
+```
+
+**构造函数**
+
+```c++
+```
+
+
 
 
 
 #### queue
 
-| 函数名    | 含义                       |
-| --------- | -------------------------- |
-| empty()   | 判断队列是否为空           |
-| size()    | 返回队列中元素             |
-| front()   | 返回队头元素的引用         |
-| back()    | 返回队尾元素的引用         |
-| push()    | 将元素插入队尾中           |
-| emplace() | 于队尾构造元素             |
-| pop()     | 弹出队头元素               |
-| swap()    | 将队列中元素与其他队列交换 |
+queue是队列
+
+主要API:
+
+容器容量:size(),empty()
+
+访问元素:front(),back()
+
+修改元素:push(item),emplace(item),pop()
+
+**头文件**
+
+```c++
+#include <queue>
+```
+
+**构造函数**
+
+```c++
+```
+
+
+
+
+
+#### priority_queue
+
+priority_queue是优先级队列
+
+主要API:
+
+容器容量:size(),empty()
+
+访问元素:top()
+
+修改元素:push(item),emplace(item),pop()
+
+**头文件**
+
+```c++
+#include <queue>
+```
+
+**构造函数**
+
+```c++
+// 构造一个int优先队列
+// 优先队列默认使用vector作为底层容器,使用其他容器需要指定
+// 优先队列默认使用less<int>(大顶堆)作为排序方法,使用greater<int>(小顶堆)需要指定
+priority_queue<int, deque<int>, less<int>> pq;
+priority_queue<int> pq;
+
+// 构造一个结构体优先队列
+struct node {
+    int index;
+    int val;
+    bool operator < (const node b) const { return index < b.index; }
+}
+priority_queue<node> pq;
+
+// 构造自定义类型的优先队列
+struct cmp {
+    bool operator()(const ListNode* a, const ListNode* b) {
+        // 小值优先
+        // 如果返回true,则表示a的优先级低,b的优先级高
+    	return a->val > b->val;
+	}
+}
+// ListNode*表示优先队列中存储的元素类型
+// vector<ListNode*>表示存储 ListNode* 指针的容器类型
+// cmp表示优先队列的比较器
+priority_queue<ListNode*, vector<ListNode*>, cmp> pq;
+
+// 使用lambda表达式构造自定义类型的优先队列
+auto cmp = [](const ListNode* a, const ListNode* b) {
+    return a->val > b->val;
+}
+priority_queue<ListNode*, vector<ListNode*>, decltype(cmp)> pq;
+
+// 有捕获的lambda表达式
+auto cmp = [&nums](const int& a, const int& b) {
+    return nums[a] > nums[b];
+};
+priority_queue<int, vector<int>, decltype(cmp)> pq(cmp);
+```
