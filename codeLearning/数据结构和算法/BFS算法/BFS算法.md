@@ -44,12 +44,16 @@ int bfs(const Graph& graph, int s, int target) {
 - 1926.[迷宫中离入口最近的出口](https://leetcode.cn/problems/nearest-exit-from-entrance-in-maze/description/)
 - 773.[滑动谜题](https://leetcode.cn/problems/sliding-puzzle/description/)
 - 752.[打开转盘锁](https://leetcode.cn/problems/open-the-lock/description/)
+- 994.[腐烂的橘子](https://leetcode.cn/problems/rotting-oranges/description/)
+- 924.[尽量减少恶意软件的传播](https://leetcode.cn/problems/minimize-malware-spread/description/)
 
 
 
-841,1306,433最基础的BFS
+841,1306,433,1926最基础的BFS
 
-773,752把问题抽象成BFS
+773,752,994把问题抽象成BFS
+
+924对多个连通分量依次BFS
 
 
 
@@ -602,6 +606,201 @@ public:
             step++;
         }
         return -1;
+    }
+};
+```
+
+
+
+### 994.[腐烂的橘子](https://leetcode.cn/problems/rotting-oranges/description/)
+
+在给定的 `m x n` 网格 `grid` 中，每个单元格可以有以下三个值之一：
+
+- 值 `0` 代表空单元格；
+- 值 `1` 代表新鲜橘子；
+- 值 `2` 代表腐烂的橘子。
+
+每分钟，腐烂的橘子 **周围 4 个方向上相邻** 的新鲜橘子都会腐烂。
+
+返回 *直到单元格中没有新鲜橘子为止所必须经过的最小分钟数。如果不可能，返回 `-1`* 。
+
+ 
+
+**示例 1：**
+
+**![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250211130026136.png)**
+
+```
+输入：grid = [[2,1,1],[1,1,0],[0,1,1]]
+输出：4
+```
+
+**示例 2：**
+
+```
+输入：grid = [[2,1,1],[0,1,1],[1,0,1]]
+输出：-1
+解释：左下角的橘子（第 2 行， 第 0 列）永远不会腐烂，因为腐烂只会发生在 4 个方向上。
+```
+
+**示例 3：**
+
+```
+输入：grid = [[0,2]]
+输出：0
+解释：因为 0 分钟时已经没有新鲜橘子了，所以答案就是 0 。
+```
+
+ 
+
+**提示：**
+
+- `m == grid.length`
+- `n == grid[i].length`
+- `1 <= m, n <= 10`
+- `grid[i][j]` 仅为 `0`、`1` 或 `2`
+
+
+
+==**代码**==
+
+```c++
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        queue<pair<int, int>> q;
+        int num = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1) {
+                    num++;
+                }
+                if (grid[i][j] == 2) {
+                    q.emplace(i, j);
+                }
+            }
+        }
+        if (num == 0) return 0;
+        int step = 1;
+        int dirs[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        while (!q.empty()) {
+            int sz = q.size();
+            for (int i = 0; i < sz; i++) {
+                auto cur = q.front();
+                q.pop();
+                for (int j = 0; j < 4; j++) {
+                    int x = cur.first + dirs[j][0];
+                    int y = cur.second + dirs[j][1];
+                    if (x < 0 || x >= m || y < 0 || y >= n || grid[x][y] != 1) continue;
+                    q.emplace(x, y);
+                    grid[x][y] = 2;
+                    num--;
+                    if (num == 0) return step;
+                }
+            }
+            step++;
+        }
+        return -1;
+    }
+};
+```
+
+
+
+### 924.[尽量减少恶意软件的传播](https://leetcode.cn/problems/minimize-malware-spread/description/)
+
+给出了一个由 `n` 个节点组成的网络，用 `n × n` 个邻接矩阵图 `graph` 表示。在节点网络中，当 `graph[i][j] = 1` 时，表示节点 `i` 能够直接连接到另一个节点 `j`。 
+
+一些节点 `initial` 最初被恶意软件感染。只要两个节点直接连接，且其中至少一个节点受到恶意软件的感染，那么两个节点都将被恶意软件感染。这种恶意软件的传播将继续，直到没有更多的节点可以被这种方式感染。
+
+假设 `M(initial)` 是在恶意软件停止传播之后，整个网络中感染恶意软件的最终节点数。
+
+如果从 `initial` 中**移除某一节点**能够最小化 `M(initial)`， 返回该节点。如果有多个节点满足条件，就返回**索引最小**的节点。
+
+请注意，如果某个节点已从受感染节点的列表 `initial` 中删除，它以后仍有可能因恶意软件传播而受到感染。
+
+ 
+
+
+
+**示例 1：**
+
+```
+输入：graph = [[1,1,0],[1,1,0],[0,0,1]], initial = [0,1]
+输出：0
+```
+
+**示例 2：**
+
+```
+输入：graph = [[1,0,0],[0,1,0],[0,0,1]], initial = [0,2]
+输出：0
+```
+
+**示例 3：**
+
+```
+输入：graph = [[1,1,1],[1,1,1],[1,1,1]], initial = [1,2]
+输出：1
+```
+
+ 
+
+**提示：**
+
+- `n == graph.length`
+- `n == graph[i].length`
+- `2 <= n <= 300`
+- `graph[i][j] == 0` 或 `1`.
+- `graph[i][j] == graph[j][i]`
+- `graph[i][i] == 1`
+- `1 <= initial.length <= n`
+- `0 <= initial[i] <= n - 1`
+- `initial` 中所有整数均**不重复**
+
+
+
+==**代码**==
+
+```c++
+class Solution {
+public:
+    int minMalwareSpread(vector<vector<int>>& graph, vector<int>& initial) {
+        int n = graph.size();
+        unordered_set<int> initialSet(initial.begin(), initial.end());
+        sort(initial.begin(), initial.end());
+        int targetNode = initial[0], maxReduce = 0;
+
+        vector<bool> visited(n);
+        for (int badNode : initial) {
+            if (visited[badNode]) continue;
+            queue<int> q;
+            q.push(badNode);
+            visited[badNode] = true;
+            int nodeCount = 0, badNodeCount = 0;
+            while (!q.empty()) {
+                int cur = q.front();
+                q.pop();
+                nodeCount++;
+                if (initialSet.count(cur)) {
+                    badNodeCount++;
+                }
+                for (int i = 0; i < n; i++) {
+                    if (visited[i]) continue;
+                    if (graph[cur][i] == 0) continue;
+                    q.push(i);
+                    visited[i] = true;
+                }
+            }
+            if (badNodeCount == 1) {
+                if (nodeCount > maxReduce) {
+                    maxReduce = nodeCount;
+                    targetNode = badNode;
+                }
+            }
+        }
+        return targetNode;
     }
 };
 ```
