@@ -42,18 +42,27 @@ int bfs(const Graph& graph, int s, int target) {
 - 1306.[跳跃游戏III](https://leetcode.cn/problems/jump-game-iii/description/)
 - 433.[最小基因变化](https://leetcode.cn/problems/minimum-genetic-mutation/description/)
 - 1926.[迷宫中离入口最近的出口](https://leetcode.cn/problems/nearest-exit-from-entrance-in-maze/description/)
+- 542.[01矩阵](https://leetcode.cn/problems/01-matrix/description/)
 - 773.[滑动谜题](https://leetcode.cn/problems/sliding-puzzle/description/)
 - 752.[打开转盘锁](https://leetcode.cn/problems/open-the-lock/description/)
 - 994.[腐烂的橘子](https://leetcode.cn/problems/rotting-oranges/description/)
+- 2101.[引爆最多的炸弹](https://leetcode.cn/problems/detonate-the-maximum-bombs/description/)
+- 399.[除法求值](https://leetcode.cn/problems/evaluate-division/description/)
 - 924.[尽量减少恶意软件的传播](https://leetcode.cn/problems/minimize-malware-spread/description/)
+- 417.[太平洋大西洋水流问题](https://leetcode.cn/problems/pacific-atlantic-water-flow/description/)
+- 365.[水壶问题](https://leetcode.cn/problems/water-and-jug-problem/description/)
 
 
 
-841,1306,433,1926最基础的BFS
+841,1306,433,1926,542最基础的BFS
 
-773,752,994把问题抽象成BFS
+773,752,994,2101,399把问题抽象成BFS
 
 924对多个连通分量依次BFS
+
+417两次BFS来优化搜索效率
+
+365向旁边节点探索的过程比较特殊
 
 
 
@@ -399,6 +408,86 @@ public:
 
 
 
+### 542.[01矩阵](https://leetcode.cn/problems/01-matrix/description/)
+
+给定一个由 `0` 和 `1` 组成的矩阵 `mat` ，请输出一个大小相同的矩阵，其中每一个格子是 `mat` 中对应位置元素到最近的 `0` 的距离。
+
+两个相邻元素间的距离为 `1` 。
+
+ 
+
+**示例 1：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250211193105653.png)
+
+```
+输入：mat = [[0,0,0],[0,1,0],[0,0,0]]
+输出：[[0,0,0],[0,1,0],[0,0,0]]
+```
+
+**示例 2：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250211193105662.png)
+
+```
+输入：mat = [[0,0,0],[0,1,0],[1,1,1]]
+输出：[[0,0,0],[0,1,0],[1,2,1]]
+```
+
+ 
+
+**提示：**
+
+- `m == mat.length`
+- `n == mat[i].length`
+- `1 <= m, n <= 10^4`
+- `1 <= m * n <= 10^4`
+- `mat[i][j] is either 0 or 1.`
+- `mat` 中至少有一个 `0 `
+
+
+
+==**代码**==
+
+```c++
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        int m = mat.size(), n = mat[0].size();
+        vector<vector<int>> ans(m, vector<int>(n, -1));
+        queue<pair<int, int>> q;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (mat[i][j] == 0) {
+                    ans[i][j] = 0;
+                    q.emplace(i, j);
+                }
+            }
+        }
+        vector<pair<int, int>> dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        int cost = 1;
+        while (!q.empty()) {
+            int sz = q.size();
+            for (int i = 0; i < sz; i++) {
+                auto [x, y] = q.front();
+                q.pop();
+                for (auto [dx, dy] : dirs) {
+                    int nx = x + dx;
+                    int ny = y + dy;
+                    if (nx < 0 || nx >= m || ny < 0 || ny >= n || ans[nx][ny] >= 0) continue;
+                    q.emplace(nx, ny);
+                    ans[nx][ny] = cost;
+                }
+            }
+            cost++;
+        }
+        return ans;
+    }
+};
+```
+
+
+
 ### 773.[滑动谜题](https://leetcode.cn/problems/sliding-puzzle/description/)
 
 在一个 `2 x 3` 的板上（`board`）有 5 块砖瓦，用数字 `1~5` 来表示, 以及一块空缺用 `0` 来表示。一次 **移动** 定义为选择 `0` 与一个相邻的数字（上下左右）进行交换.
@@ -708,6 +797,229 @@ public:
 
 
 
+### 2101.[引爆最多的炸弹](https://leetcode.cn/problems/detonate-the-maximum-bombs/description/)
+
+给你一个炸弹列表。一个炸弹的 **爆炸范围** 定义为以炸弹为圆心的一个圆。
+
+炸弹用一个下标从 **0** 开始的二维整数数组 `bombs` 表示，其中 `bombs[i] = [xi, yi, ri]` 。`xi` 和 `yi` 表示第 `i` 个炸弹的 X 和 Y 坐标，`ri` 表示爆炸范围的 **半径** 。
+
+你需要选择引爆 **一个** 炸弹。当这个炸弹被引爆时，**所有** 在它爆炸范围内的炸弹都会被引爆，这些炸弹会进一步将它们爆炸范围内的其他炸弹引爆。
+
+给你数组 `bombs` ，请你返回在引爆 **一个** 炸弹的前提下，**最多** 能引爆的炸弹数目。
+
+ 
+
+**示例 1：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250211215203134.png)
+
+```
+输入：bombs = [[2,1,3],[6,1,4]]
+输出：2
+解释：
+上图展示了 2 个炸弹的位置和爆炸范围。
+如果我们引爆左边的炸弹，右边的炸弹不会被影响。
+但如果我们引爆右边的炸弹，两个炸弹都会爆炸。
+所以最多能引爆的炸弹数目是 max(1, 2) = 2 。
+```
+
+**示例 2：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250211215202665.png)
+
+```
+输入：bombs = [[1,1,5],[10,10,5]]
+输出：1
+解释：
+引爆任意一个炸弹都不会引爆另一个炸弹。所以最多能引爆的炸弹数目为 1 。
+```
+
+**示例 3：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250211215204030.png)
+
+```
+输入：bombs = [[1,2,3],[2,3,1],[3,4,2],[4,5,3],[5,6,4]]
+输出：5
+解释：
+最佳引爆炸弹为炸弹 0 ，因为：
+- 炸弹 0 引爆炸弹 1 和 2 。红色圆表示炸弹 0 的爆炸范围。
+- 炸弹 2 引爆炸弹 3 。蓝色圆表示炸弹 2 的爆炸范围。
+- 炸弹 3 引爆炸弹 4 。绿色圆表示炸弹 3 的爆炸范围。
+所以总共有 5 个炸弹被引爆。
+```
+
+ 
+
+**提示：**
+
+- `1 <= bombs.length <= 100`
+- `bombs[i].length == 3`
+- `1 <= xi, yi, ri <= 10^5`
+
+
+
+==**代码**==
+
+```c++
+class Solution {
+public:
+    int maximumDetonation(vector<vector<int>>& bombs) {
+        int n = bombs.size();
+        vector<vector<int>> graph(n);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == j) continue;
+                if (pow(bombs[i][0] - bombs[j][0], 2) + pow(bombs[i][1] - bombs[j][1], 2) <= pow(bombs[i][2], 2)) {
+                    graph[i].push_back(j);
+                }
+            }
+        }
+        int maxBombCount = 0;
+        for (int i = 0; i < n; i++) {
+            queue<int> q;
+            vector<bool> visited(n);
+            q.push(i);
+            visited[i] = true;
+            int bombCount = 0;
+            while (!q.empty()) {
+                int cur = q.front();
+                q.pop();
+                bombCount++;
+                for (int j = 0; j < graph[cur].size(); j++) {
+                    int next = graph[cur][j];
+                    if (visited[next]) continue;
+                    q.push(next);
+                    visited[next] = true;
+                }
+            }
+            maxBombCount = max(maxBombCount, bombCount);
+        }
+        return maxBombCount;
+    }
+};
+```
+
+
+
+### 399.[除法求值](https://leetcode.cn/problems/evaluate-division/description/)
+
+给你一个变量对数组 `equations` 和一个实数值数组 `values` 作为已知条件，其中 `equations[i] = [Ai, Bi]` 和 `values[i]` 共同表示等式 `Ai / Bi = values[i]` 。每个 `Ai` 或 `Bi` 是一个表示单个变量的字符串。
+
+另有一些以数组 `queries` 表示的问题，其中 `queries[j] = [Cj, Dj]` 表示第 `j` 个问题，请你根据已知条件找出 `Cj / Dj = ?` 的结果作为答案。
+
+返回 **所有问题的答案** 。如果存在某个无法确定的答案，则用 `-1.0` 替代这个答案。如果问题中出现了给定的已知条件中没有出现的字符串，也需要用 `-1.0` 替代这个答案。
+
+**注意：**输入总是有效的。你可以假设除法运算中不会出现除数为 0 的情况，且不存在任何矛盾的结果。
+
+**注意：**未在等式列表中出现的变量是未定义的，因此无法确定它们的答案。
+
+ 
+
+**示例 1：**
+
+```
+输入：equations = [["a","b"],["b","c"]], values = [2.0,3.0], queries = [["a","c"],["b","a"],["a","e"],["a","a"],["x","x"]]
+输出：[6.00000,0.50000,-1.00000,1.00000,-1.00000]
+解释：
+条件：a / b = 2.0, b / c = 3.0
+问题：a / c = ?, b / a = ?, a / e = ?, a / a = ?, x / x = ?
+结果：[6.0, 0.5, -1.0, 1.0, -1.0 ]
+注意：x 是未定义的 => -1.0
+```
+
+**示例 2：**
+
+```
+输入：equations = [["a","b"],["b","c"],["bc","cd"]], values = [1.5,2.5,5.0], queries = [["a","c"],["c","b"],["bc","cd"],["cd","bc"]]
+输出：[3.75000,0.40000,5.00000,0.20000]
+```
+
+**示例 3：**
+
+```
+输入：equations = [["a","b"]], values = [0.5], queries = [["a","b"],["b","a"],["a","c"],["x","y"]]
+输出：[0.50000,2.00000,-1.00000,-1.00000]
+```
+
+ 
+
+**提示：**
+
+- `1 <= equations.length <= 20`
+- `equations[i].length == 2`
+- `1 <= Ai.length, Bi.length <= 5`
+- `values.length == equations.length`
+- `0.0 < values[i] <= 20.0`
+- `1 <= queries.length <= 20`
+- `queries[i].length == 2`
+- `1 <= Cj.length, Dj.length <= 5`
+- `Ai, Bi, Cj, Dj` 由小写英文字母与数字组成
+
+
+
+==**代码**==
+
+```c++
+class Solution {
+public:
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+        int nodeCount = 0;
+        unordered_map<string, int> nodeMap;
+        for (auto& equation : equations) {
+            if (!nodeMap.count(equation[0])) {
+                nodeMap[equation[0]] = nodeCount;
+                nodeCount++;
+            }
+            if (!nodeMap.count(equation[1])) {
+                nodeMap[equation[1]] = nodeCount;
+                nodeCount++;
+            }
+        }
+        vector<vector<pair<int, double>>> edges(nodeCount);
+        for (int i = 0; i < equations.size(); i++) {
+            int left = nodeMap[equations[i][0]];
+            int right = nodeMap[equations[i][1]];
+            edges[left].emplace_back(right, values[i]);
+            edges[right].emplace_back(left, 1.0 / values[i]);
+        }
+        vector<double> ans;
+        for (auto& query : queries) {
+            if (!nodeMap.count(query[0]) || !nodeMap.count(query[1])) {
+                ans.emplace_back(-1.0);
+                continue;
+            }
+            queue<pair<int, double>> q;
+            vector<bool> visited(nodeCount);
+            int left = nodeMap[query[0]];
+            int right = nodeMap[query[1]];
+            q.emplace(left, 1.0);
+            visited[left] = true;
+            bool found = false;
+            while (!q.empty()) {
+                auto [cur, result] = q.front();
+                q.pop();
+                if (cur == right) {
+                    found = true;
+                    ans.emplace_back(result);
+                }
+                for (auto& [next, val] : edges[cur]) {
+                    if (visited[next]) continue;
+                    q.emplace(next, result * val);
+                    visited[next] = true;
+                }
+            }
+            if (!found) {
+                ans.emplace_back(-1.0);
+            }
+        }
+        return ans;
+    }
+};
+```
+
+
+
 ### 924.[尽量减少恶意软件的传播](https://leetcode.cn/problems/minimize-malware-spread/description/)
 
 给出了一个由 `n` 个节点组成的网络，用 `n × n` 个邻接矩阵图 `graph` 表示。在节点网络中，当 `graph[i][j] = 1` 时，表示节点 `i` 能够直接连接到另一个节点 `j`。 
@@ -801,6 +1113,201 @@ public:
             }
         }
         return targetNode;
+    }
+};
+```
+
+
+
+### 417.[太平洋大西洋水流问题](https://leetcode.cn/problems/pacific-atlantic-water-flow/description/)
+
+有一个 `m × n` 的矩形岛屿，与 **太平洋** 和 **大西洋** 相邻。 **“太平洋”** 处于大陆的左边界和上边界，而 **“大西洋”** 处于大陆的右边界和下边界。
+
+这个岛被分割成一个由若干方形单元格组成的网格。给定一个 `m x n` 的整数矩阵 `heights` ， `heights[r][c]` 表示坐标 `(r, c)` 上单元格 **高于海平面的高度** 。
+
+岛上雨水较多，如果相邻单元格的高度 **小于或等于** 当前单元格的高度，雨水可以直接向北、南、东、西流向相邻单元格。水可以从海洋附近的任何单元格流入海洋。
+
+返回网格坐标 `result` 的 **2D 列表** ，其中 `result[i] = [ri, ci]` 表示雨水从单元格 `(ri, ci)` 流动 **既可流向太平洋也可流向大西洋** 。
+
+ 
+
+**示例 1：**
+
+![img](https://fzchen-picgo.oss-cn-shanghai.aliyuncs.com/Github/learning/20250211200411967.jpeg)
+
+```
+输入: heights = [[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]
+输出: [[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]]
+```
+
+**示例 2：**
+
+```
+输入: heights = [[2,1],[1,2]]
+输出: [[0,0],[0,1],[1,0],[1,1]]
+```
+
+ 
+
+**提示：**
+
+- `m == heights.length`
+- `n == heights[r].length`
+- `1 <= m, n <= 200`
+- `0 <= heights[r][c] <= 10^5`
+
+
+
+==**代码**==
+
+```c++
+class Solution {
+public:
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        int m = heights.size(), n = heights[0].size();
+        vector<vector<bool>> visitedP(m, vector<bool>(n));
+        queue<pair<int, int>> qToP;
+        for (int i = 0; i < m; i++) {
+            visitedP[i][0] = true;
+            qToP.emplace(i, 0);
+        }
+        for (int i = 1; i < n; i++) {
+            visitedP[0][i] = true;
+            qToP.emplace(0, i);
+        }
+        bfs(heights, qToP, visitedP);
+        vector<vector<bool>> visitedA(m, vector<bool>(n));
+        queue<pair<int, int>> qToA;
+        for (int i = 0; i < m; i++) {
+            visitedA[i][n-1] = true;
+            qToA.emplace(i, n-1);
+        }
+        for (int i = 0; i < n - 1; i++) {
+            visitedA[m-1][i] = true;
+            qToA.emplace(m-1, i);
+        }
+        bfs(heights, qToA, visitedA);
+
+        vector<vector<int>> ans;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (visitedP[i][j] && visitedA[i][j]) {
+                    ans.emplace_back(vector<int>{i ,j});
+                }
+            }
+        }
+        return ans;
+    }
+     void bfs(vector<vector<int>>& heights, queue<pair<int, int>>& q, vector<vector<bool>>& visited) {
+        int m = heights.size(), n = heights[0].size();
+        vector<pair<int, int>> dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        while (!q.empty()) {
+            auto [x, y] = q.front();
+            q.pop();
+            for (auto& [dx, dy] : dirs) {
+                int nx = x + dx;
+                int ny = y + dy;
+                if (nx < 0 || nx >= m || ny < 0 || ny >= n || visited[nx][ny] || heights[nx][ny] < heights[x][y]) continue;
+                q.emplace(nx, ny);
+                visited[nx][ny] = true;
+            }
+        }
+    }
+};
+```
+
+
+
+### 365.[水壶问题](https://leetcode.cn/problems/water-and-jug-problem/description/)
+
+有两个水壶，容量分别为 `x` 和 `y` 升。水的供应是无限的。确定是否有可能使用这两个壶准确得到 `target` 升。
+
+你可以：
+
+- 装满任意一个水壶
+- 清空任意一个水壶
+- 将水从一个水壶倒入另一个水壶，直到接水壶已满，或倒水壶已空。
+
+ 
+
+**示例 1:** 
+
+```
+输入: x = 3,y = 5,target = 4
+输出: true
+解释：
+按照以下步骤操作，以达到总共 4 升水：
+1. 装满 5 升的水壶(0, 5)。
+2. 把 5 升的水壶倒进 3 升的水壶，留下 2 升(3, 2)。
+3. 倒空 3 升的水壶(0, 2)。
+4. 把 2 升水从 5 升的水壶转移到 3 升的水壶(2, 0)。
+5. 再次加满 5 升的水壶(2, 5)。
+6. 从 5 升的水壶向 3 升的水壶倒水直到 3 升的水壶倒满。5 升的水壶里留下了 4 升水(3, 4)。
+7. 倒空 3 升的水壶。现在，5 升的水壶里正好有 4 升水(0, 4)。
+参考：来自著名的 "Die Hard"
+```
+
+**示例 2:**
+
+```
+输入: x = 2, y = 6, target = 5
+输出: false
+```
+
+**示例 3:**
+
+```
+输入: x = 1, y = 2, target = 3
+输出: true
+解释：同时倒满两个水壶。现在两个水壶中水的总量等于 3。
+```
+
+ 
+
+**提示:**
+
+- `1 <= x, y, target <= 10^3`
+
+
+
+==**代码**==
+
+```c++
+class Solution {
+public:
+    bool canMeasureWater(int x, int y, int target) {
+        if (target > x + y) return false;
+        queue<pair<int, int>> q;
+        unordered_set<long long> visited;
+        q.emplace(0, 0);
+        visited.insert(0);
+        while (!q.empty()) {
+            auto [curx, cury] = q.front();
+            cout << curx << " " << cury << endl;
+            q.pop();
+            if (curx == target || cury == target || curx + cury == target) return true;
+
+            vector<pair<int, int>> temp;
+            temp.emplace_back(x, cury);
+            temp.emplace_back(curx, y);
+            temp.emplace_back(0, cury);
+            temp.emplace_back(curx, 0);
+            temp.emplace_back(
+                curx - min(curx, y - cury),
+                cury + min(curx, y - cury)
+            );
+            temp.emplace_back(
+                curx + min(cury, x - curx),
+                cury - min(cury, x - curx)
+            );
+            for (auto& [nx, ny] : temp) {
+                long long hash = nx * (y + 1) + ny;
+                if (visited.count(hash)) continue;
+                q.emplace(nx, ny);
+                visited.insert(hash);
+            }
+        }
+        return false;
     }
 };
 ```
